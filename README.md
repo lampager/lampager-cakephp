@@ -33,12 +33,12 @@ one of the following methods:
 
 ### Use in Controller
 
-At first, load the default Paginator component with the Lampager `Paginator` in your
-Controller class (`AppController` is preferable).
+At first, load the default Paginator component with the Lampager `Paginator` in
+your Controller class (`AppController` is preferable).
 
 Accept cursor parameters from a request and pass it through
 `PaginatorComponent::paginate()`. The `Paginator` also accepts `Query`
-expression that is created from `Table` classes.
+expression that is created by `Table` classes.
 
 ```php
 namespace App\Controller;
@@ -137,10 +137,10 @@ if ($posts->hasNext) {
 ### Use in Table
 
 Initialize `LampagerBehavior` in your Table class (`AppTable` is preferable)
-and simply use `lampager()` from the `Table` class. The query builder is based
-on the plain old `\Cake\ORM\Query` and is mixed in with `\Lampager\Paginator`.
-Note that some of the method in `\Lampager\Paginator`, viz., `orderBy()`,
-`orderByDesc()`, and `clearOrderBy()` is not exposed because their method
+and simply use `lampager()` from the `Table` class. The query builder extends
+the plain old `\Cake\ORM\Query` and is mixed in with `\Lampager\Paginator`. Note
+that some of the methods in `\Lampager\Paginator`, viz., `orderBy()`,
+`orderByDesc()`, and `clearOrderBy()` are not exposed because their method
 signatures are not compatible with the CakePHP query builder.
 
 ```php

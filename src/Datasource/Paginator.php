@@ -10,6 +10,7 @@ class Paginator extends CakePaginator
 {
     /**
      * {@inheritDoc}
+     * @return PaginationResult
      */
     public function paginate($object, array $params = [], array $settings = [])
     {

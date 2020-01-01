@@ -57,7 +57,7 @@ class Paginator extends BasePaginator
     /**
      * Configure -> Transform.
      *
-     * @param  Cursor|int[]|string[] $curosr
+     * @param  Cursor|int[]|string[] $cursor
      * @return Query
      */
     public function build($cursor = [])

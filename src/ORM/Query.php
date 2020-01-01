@@ -7,9 +7,9 @@ use Cake\Database\Expression\OrderClauseExpression;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Database\ExpressionInterface;
 use Cake\ORM\Query as BaseQuery;
+use Lampager\Ckae\PaginationResult;
 use Lampager\Cake\Paginator;
 use Lampager\Contracts\Cursor;
-use Lampager\PaginationResult;
 
 /**
  * @method $this forward(bool $forward = true) Define that the current pagination is going forward.

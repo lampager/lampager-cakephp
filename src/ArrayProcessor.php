@@ -10,6 +10,14 @@ use Lampager\Query as LampagerQuery;
 class ArrayProcessor extends BaseArrayProcessor
 {
     /**
+     * {@inheritDoc}
+     */
+    protected function defaultFormat($rows, array $meta, LampagerQuery $query)
+    {
+        return new PaginationResult($rows, $meta);
+    }
+
+    /**
      * Remove alias if prexied.
      * e.g., Foos.bar -> bar
      *

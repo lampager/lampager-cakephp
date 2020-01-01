@@ -8,8 +8,8 @@ use Cake\ORM\Table;
 use Lampager\Cake\ArrayProcessor;
 use Lampager\Cake\ORM\Query;
 use Lampager\Cake\Paginator;
+use Lampager\Cake\PaginationResult;
 use Lampager\Cake\Test\TestCase\TestCase;
-use Lampager\PaginationResult;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class ArrayProcessorTest extends TestCase

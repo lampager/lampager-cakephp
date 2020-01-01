@@ -18,14 +18,14 @@ class LampagerBehaviorTest extends TestCase
     ];
 
     /**
-     * @param        LampagerBehavior|Table $factory
+     * @param        LampagerBehavior&Table $factory
      * @param        PaginationResult       $expected
      * @dataProvider valueProvider
      * @dataProvider queryExpressionProvider
      */
     public function testLampager(callable $factory, PaginationResult $expected)
     {
-        /** @var LampagerBehavior|Table $posts */
+        /** @var LampagerBehavior&Table $posts */
         $posts = TableRegistry::getTableLocator()->get('Posts');
         $posts->addBehavior(LampagerBehavior::class);
 
@@ -38,7 +38,7 @@ class LampagerBehaviorTest extends TestCase
     {
         yield 'Ascending forward start inclusive' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->forward()
                     ->seekable()
@@ -75,7 +75,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Ascending forward start exclusive' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->forward()
                     ->seekable()
@@ -113,7 +113,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Ascending forward inclusive' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->forward()
                     ->seekable()
@@ -157,7 +157,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Ascending forward exclusive' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->forward()
                     ->seekable()
@@ -199,7 +199,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Ascending backward start inclusive' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->backward()
                     ->seekable()
@@ -236,7 +236,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Ascending backward start exclusive' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->backward()
                     ->seekable()
@@ -274,7 +274,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Ascending backward inclusive' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->backward()
                     ->seekable()
@@ -311,7 +311,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Ascending backward exclusive' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->backward()
                     ->seekable()
@@ -345,7 +345,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Descending forward start inclusive' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->forward()
                     ->seekable()
@@ -382,7 +382,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Descending forward start exclusive' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->forward()
                     ->seekable()
@@ -420,7 +420,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Descending forward inclusive' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->forward()
                     ->seekable()
@@ -457,7 +457,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Descending forward exclusive' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->forward()
                     ->seekable()
@@ -491,7 +491,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Descending backward start inclusive' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->backward()
                     ->seekable()
@@ -528,7 +528,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Descending backward start exclusive' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->backward()
                     ->seekable()
@@ -566,7 +566,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Descending backward inclusive' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->backward()
                     ->seekable()
@@ -610,7 +610,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Descending backward exclusive' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->backward()
                     ->seekable()
@@ -655,7 +655,7 @@ class LampagerBehaviorTest extends TestCase
     {
         yield 'Ascending forward start inclusive with QueryExpression' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->forward()
                     ->seekable()
@@ -692,7 +692,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Ascending forward inclusive with QueryExpression' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->forward()
                     ->seekable()
@@ -736,7 +736,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Ascending forward exclusive with QueryExpression' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->forward()
                     ->seekable()
@@ -778,7 +778,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Ascending backward start inclusive with QueryExpression' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->backward()
                     ->seekable()
@@ -815,7 +815,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Ascending backward start exclusive with QueryExpression' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->backward()
                     ->seekable()
@@ -853,7 +853,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Ascending backward inclusive with QueryExpression' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->backward()
                     ->seekable()
@@ -890,7 +890,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Ascending backward exclusive with QueryExpression' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->backward()
                     ->seekable()
@@ -924,7 +924,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Descending forward start inclusive with QueryExpression' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->forward()
                     ->seekable()
@@ -961,7 +961,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Descending forward start exclusive with QueryExpression' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->forward()
                     ->seekable()
@@ -999,7 +999,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Descending forward inclusive with QueryExpression' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->forward()
                     ->seekable()
@@ -1036,7 +1036,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Descending forward exclusive with QueryExpression' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->forward()
                     ->seekable()
@@ -1070,7 +1070,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Descending backward start inclusive with QueryExpression' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->backward()
                     ->seekable()
@@ -1107,7 +1107,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Descending backward start exclusive with QueryExpression' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->backward()
                     ->seekable()
@@ -1145,7 +1145,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Descending backward inclusive with QueryExpression' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->backward()
                     ->seekable()
@@ -1189,7 +1189,7 @@ class LampagerBehaviorTest extends TestCase
 
         yield 'Descending backward exclusive with QueryExpression' => [
             function (Table $posts) {
-                /** @var LampagerBehavior|Table $posts */
+                /** @var LampagerBehavior&Table $posts */
                 return $posts->lampager()
                     ->backward()
                     ->seekable()

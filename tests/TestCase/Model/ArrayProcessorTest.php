@@ -23,11 +23,11 @@ class ArrayProcessorTest extends TestCase
      */
     public function testProcess(array $options, $cursor, array $rows, PaginationResult $expected)
     {
-        /** @var MockObject|Table $repository */
+        /** @var MockObject&Table $repository */
         $repository = $this->createMock(Table::class);
         $repository->method('getAlias')->willReturn('Posts');
 
-        /** @var MockObject|Query $builder */
+        /** @var MockObject&Query $builder */
         $builder = $this->createMock(Query::class);
         $builder->method('getRepository')->willReturn($repository);
 

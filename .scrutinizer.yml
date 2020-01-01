@@ -1,0 +1,11 @@
+checks:
+  php:
+    code_rating: true
+
+filter:
+  excluded_paths:
+    - vendor/*
+
+build:
+  environment:
+    php: '7.4'

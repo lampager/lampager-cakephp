@@ -7,7 +7,7 @@ use Cake\Database\Expression\OrderClauseExpression;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Database\ExpressionInterface;
 use Cake\ORM\Query as BaseQuery;
-use Lampager\Ckae\PaginationResult;
+use Lampager\Cake\PaginationResult;
 use Lampager\Cake\Paginator;
 use Lampager\Contracts\Cursor;
 

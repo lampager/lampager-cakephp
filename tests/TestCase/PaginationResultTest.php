@@ -48,7 +48,7 @@ class PaginationResultTest extends TestCase
         $this->assertTrue($actual->valid());
     }
 
-    public function testSerialize()
+    public function testJsonSerialize()
     {
         $entities = [
             new Entity([

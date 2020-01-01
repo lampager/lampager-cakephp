@@ -70,7 +70,7 @@ class PaginationResult implements ResultSetInterface
             $this->iterator = $this->getIterator();
         }
 
-        return $this->iterator->next();
+        $this->iterator->next();
     }
 
     /**
@@ -98,7 +98,7 @@ class PaginationResult implements ResultSetInterface
      */
     public function jsonSerialize()
     {
-        return $this->result;
+        return (array)$this->result;
     }
 
     /**

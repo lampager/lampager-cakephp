@@ -12,8 +12,11 @@ services:
   - mysql
 
 env:
-  - DB_DSN=
-  - DB_DSN=mysql://root:@localhost/lampager_test
+  global:
+    - COVERALLS_PARALLEL=true
+  jobs:
+    - DB_DSN=
+    - DB_DSN=mysql://root:@localhost/lampager_test
 
 cache:
   directories:
@@ -30,3 +33,6 @@ script:
 
 after_success:
   - travis_retry vendor/bin/php-coveralls
+
+notifications:
+  webhooks: https://coveralls.io/webhook

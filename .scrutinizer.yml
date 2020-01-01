@@ -12,6 +12,5 @@ build:
       tests:
         override:
           - php-scrutinizer-run
-    tests-and-coverage:
-      environment:
-        php: '7.4'
+  environment:
+    php: '7.4'

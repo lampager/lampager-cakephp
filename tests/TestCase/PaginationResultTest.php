@@ -102,4 +102,36 @@ class PaginationResultTest extends TestCase
 
         $this->assertJsonStringEqualsJsonString($expected, $actual);
     }
+
+    public function testSerializeAndUnserialize()
+    {
+        $entities = [
+            new Entity([
+                'id' => 1,
+                'modified' => new Time('2017-01-01 10:00:00'),
+            ]),
+            new Entity([
+                'id' => 3,
+                'modified' => new Time('2017-01-01 10:00:00'),
+            ]),
+            new Entity([
+                'id' => 5,
+                'modified' => new Time('2017-01-01 10:00:00'),
+            ]),
+        ];
+
+        $meta = [
+            'hasPrevious' => null,
+            'previousCursor' => null,
+            'hasNext' => true,
+            'nextCursor' => [
+                'Posts.id' => 2,
+                'Posts.modified' => new Time('2017-01-01 11:00:00'),
+            ],
+        ];
+
+        $actual = unserialize(serialize(new PaginationResult($entities, $meta)));
+        $expected = new PaginationResult($entities, $meta);
+        $this->assertJsonEquals($expected, $actual);
+    }
 }

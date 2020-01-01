@@ -115,7 +115,10 @@ class PaginationResult implements ResultSetInterface
     public function unserialize($serialized)
     {
         $obj = json_decode($serialized, true);
-        $this->result = new LampagerPaginationResult($obj['records'], $obj['meta']);
+        $meta = $obj;
+        unset($meta['records']);
+
+        $this->result = new LampagerPaginationResult($obj['records'], $meta);
     }
 
     /**

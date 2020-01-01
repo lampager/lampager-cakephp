@@ -5,11 +5,13 @@ namespace Lampager\Cake\Datasource;
 use Cake\Datasource\Paginator as CakePaginator;
 use Cake\Datasource\QueryInterface;
 use Lampager\Cake\ORM\Query;
+use Lampager\PaginationResult;
 
 class Paginator extends CakePaginator
 {
     /**
      * {@inheritDoc}
+     * @return PaginationResult
      */
     public function paginate($object, array $params = [], array $settings = [])
     {

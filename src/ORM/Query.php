@@ -9,6 +9,7 @@ use Cake\Database\ExpressionInterface;
 use Cake\ORM\Query as BaseQuery;
 use Lampager\Cake\Paginator;
 use Lampager\Contracts\Cursor;
+use Lampager\PaginationResult;
 
 /**
  * @method $this forward(bool $forward = true) Define that the current pagination is going forward.
@@ -118,6 +119,7 @@ class Query extends BaseQuery
 
     /**
      * {@inheritDoc}
+     * @return PaginationResult
      */
     public function all()
     {
@@ -188,10 +190,6 @@ class Query extends BaseQuery
      */
     protected function _executeLimit($limit)
     {
-        if ($limit === null) {
-            return;
-        }
-
         if (is_int($limit)) {
             $this->_paginator->limit($limit);
             return;
@@ -201,6 +199,7 @@ class Query extends BaseQuery
             $generator = $this->getValueBinder();
             $generator->resetCount();
             $this->_paginator->limit($limit->sql($generator));
+            return;
         }
     }
 

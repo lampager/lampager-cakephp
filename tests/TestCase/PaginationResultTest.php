@@ -46,6 +46,8 @@ class PaginationResultTest extends TestCase
 
         $actual->rewind();
         $this->assertTrue($actual->valid());
+        $this->assertSame(0, $actual->key());
+        $this->assertSame($entities[0], $actual->current());
     }
 
     public function testJsonSerialize()

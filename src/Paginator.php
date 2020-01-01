@@ -3,9 +3,9 @@
 namespace Lampager\Cake;
 
 use Lampager\Cake\ORM\Query;
+use Lampager\Cake\PaginationResult;
 use Lampager\Concerns\HasProcessor;
 use Lampager\Contracts\Cursor;
-use Lampager\PaginationResult;
 use Lampager\Paginator as BasePaginator;
 use Lampager\Query as LampagerQuery;
 use Lampager\Query\Condition;

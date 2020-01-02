@@ -168,9 +168,9 @@ See also: [lampager/lampager][].
 | Lampager\\Cake\\Database\\`SqliteCompiler` | Class | Cake\\Database\\`SqliteCompiler` | Query compiler implementation for SQLite |
 | Lampager\\Cake\\Database\\Driver\\`Sqlite` | Class | Cake\\Database\\Driver\\`Sqlite` | Driver implementation which delegates to Lampager\\Cake\\Database\\`SqliteCompiler` |
 
-Note that Lampager\\Cake\\`PaginationResult` does not extend
-Lampager\\`PaginationResult` as it conflicts with
-Cake\\Datasource\\`ResultSetInterface`.
+Note that `Lampager\Cake\PaginationResult` does not extend
+`Lampager\PaginationResult` as it conflicts with
+`Cake\Datasource\ResultSetInterface`.
 
 ## API
 

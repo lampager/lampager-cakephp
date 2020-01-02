@@ -8,8 +8,8 @@ use Cake\ORM\Table;
 use Lampager\Cake\ArrayProcessor;
 use Lampager\Cake\ORM\Query;
 use Lampager\Cake\Paginator;
+use Lampager\Cake\PaginationResult;
 use Lampager\Cake\Test\TestCase\TestCase;
-use Lampager\PaginationResult;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class ArrayProcessorTest extends TestCase
@@ -23,11 +23,11 @@ class ArrayProcessorTest extends TestCase
      */
     public function testProcess(array $options, $cursor, array $rows, PaginationResult $expected)
     {
-        /** @var MockObject|Table $repository */
+        /** @var MockObject&Table $repository */
         $repository = $this->createMock(Table::class);
         $repository->method('getAlias')->willReturn('Posts');
 
-        /** @var MockObject|Query $builder */
+        /** @var MockObject&Query $builder */
         $builder = $this->createMock(Query::class);
         $builder->method('getRepository')->willReturn($repository);
 

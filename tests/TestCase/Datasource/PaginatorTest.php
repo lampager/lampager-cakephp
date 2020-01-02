@@ -8,8 +8,8 @@ use Cake\I18n\Time;
 use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Lampager\Cake\Datasource\Paginator;
+use Lampager\Cake\PaginationResult;
 use Lampager\Cake\Test\TestCase\TestCase;
-use Lampager\PaginationResult;
 
 class PaginatorTest extends TestCase
 {

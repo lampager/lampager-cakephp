@@ -29,5 +29,8 @@
         "cakephp/cakephp": "^3.6",
         "phpunit/phpunit": "^5.7 || ^6.0",
         "php-coveralls/php-coveralls": "^2.2"
+    },
+    "scripts": {
+        "test": "phpunit"
     }
 }

@@ -5,7 +5,7 @@ namespace Lampager\Cake\Datasource;
 use Cake\Datasource\Paginator as CakePaginator;
 use Cake\Datasource\QueryInterface;
 use Lampager\Cake\ORM\Query;
-use Lampager\PaginationResult;
+use Lampager\Cake\PaginationResult;
 
 class Paginator extends CakePaginator
 {

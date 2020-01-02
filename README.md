@@ -64,7 +64,7 @@ class AppController extends Controller
         $next = json_decode($this->request->getQuery('next_cursor'), true);
         $cursor = $previous ?: $next ?: [];
 
-        /** @var \Lampager\PaginationResult<\Cake\ORM\Entity> $posts */
+        /** @var \Lampager\Cake\PaginationResult<\Cake\ORM\Entity> $posts */
         $posts = $this->paginate('Posts', [
             // Lampager options
             // If the previous_cursor is not set, paginate forward; otherwise backward
@@ -96,7 +96,7 @@ class AppController extends Controller
             ->orderDesc('id')
             ->limit(15);
 
-        /** @var \Lampager\PaginationResult<\Cake\ORM\Entity> $posts */
+        /** @var \Lampager\Cake\PaginationResult<\Cake\ORM\Entity> $posts */
         $posts = $this->paginate($query, [
             // If the previous_cursor is not set, paginate forward; otherwise backward
             'forward' => !$previous,
@@ -159,7 +159,7 @@ class AppTable extends Table
     }
 
     /**
-     * @return \Lampager\PaginationResult
+     * @return \Lampager\Cake\PaginationResult
      */
     public function latest(array $cursor = [])
     {
@@ -174,7 +174,7 @@ class AppTable extends Table
     }
 
     /**
-     * @return \Lampager\PaginationResult
+     * @return \Lampager\Cake\PaginationResult
      */
     public function draft(array $cursor = [])
     {

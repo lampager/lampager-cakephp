@@ -210,6 +210,10 @@ class Query extends BaseQuery
             $this->_paginator->limit((int)$sql);
             return;
         }
+
+        // @codeCoverageIgnoreStart
+        throw new \LogicException('Unreachable here');
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -240,8 +244,6 @@ class Query extends BaseQuery
      */
     public function __debugInfo()
     {
-        $eagerLoader = $this->getEagerLoader();
-
         try {
             $info = $this->_paginator->build($this->_cursor)->__debugInfo();
         } catch (InsufficientConstraintsException $e) {
@@ -255,8 +257,8 @@ class Query extends BaseQuery
                 'buffered' => $this->_useBufferedResults,
                 'formatters' => count($this->_formatters),
                 'mapReducers' => count($this->_mapReduce),
-                'contain' => $eagerLoader ? $eagerLoader->getContain() : [],
-                'matching' => $eagerLoader ? $eagerLoader->getMatching() : [],
+                'contain' => $this->_eagerLoader ? $this->_eagerLoader->getContain() : [],
+                'matching' => $this->_eagerLoader ? $this->_eagerLoader->getMatching() : [],
                 'extraOptions' => $this->_options,
                 'repository' => $this->_repository,
             ];

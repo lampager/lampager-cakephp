@@ -49,9 +49,12 @@ class SqliteCompilerTest extends TestCase
             FROM
                 (
                     SELECT
-                        Posts.* AS "Posts__*"
+                        Posts.id AS "Posts__id",
+                        Posts.modified AS "Posts__modified"
                     FROM
                         posts Posts
+                    WHERE
+                        id > :c0
                     ORDER BY
                         modified ASC
                 )
@@ -60,16 +63,27 @@ class SqliteCompilerTest extends TestCase
                 *
             FROM
                 (
-                    DATETIME(\'now\')
+                    SELECT
+                        Posts.id AS "Posts__id",
+                        Posts.modified AS "Posts__modified"
+                    FROM
+                        posts Posts
+                    ORDER BY
+                        modified ASC
                 )
         ';
 
-        $actual = $posts->find()
-            ->select(['*'])
-            ->orderAsc('modified')
-            ->unionAll($posts->query()->func()->now())
-            ->sql();
+        $subQuery = $posts->find()
+            ->select(['id', 'modified'])
+            ->orderAsc('modified');
 
+        $mainQuery = $posts->find()
+            ->select(['id', 'modified'])
+            ->where(['id >' => 1])
+            ->orderAsc('modified')
+            ->unionAll($subQuery);
+
+        $actual = $mainQuery->sql();
         $this->assertSqlEquals($expected, $actual);
     }
 }

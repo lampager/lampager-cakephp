@@ -3,6 +3,7 @@
 namespace Lampager\Cake;
 
 use Cake\ORM\Table;
+use Cake\ORM\Query as CakeQuery;
 use Lampager\Cake\ORM\Query;
 use Lampager\Cake\PaginationResult;
 use Lampager\Concerns\HasProcessor;
@@ -26,7 +27,7 @@ class Paginator extends BasePaginator
     /**
      * Create paginator.
      *
-     * @param Query $builder
+     * @param  Query  $builder
      * @return static
      */
     public static function create(Query $builder)
@@ -49,7 +50,7 @@ class Paginator extends BasePaginator
      * Build CakePHP Query instance from Lampager Query config.
      *
      * @param  LampagerQuery $query
-     * @return Query
+     * @return CakeQuery
      */
     public function transform(LampagerQuery $query)
     {
@@ -60,7 +61,7 @@ class Paginator extends BasePaginator
      * Configure -> Transform.
      *
      * @param  Cursor|int[]|string[] $cursor
-     * @return Query
+     * @return CakeQuery
      */
     public function build($cursor = [])
     {
@@ -81,7 +82,7 @@ class Paginator extends BasePaginator
 
     /**
      * @param  SelectOrUnionAll $selectOrUnionAll
-     * @return Query
+     * @return CakeQuery
      */
     protected function compileSelectOrUnionAll(SelectOrUnionAll $selectOrUnionAll)
     {
@@ -101,9 +102,8 @@ class Paginator extends BasePaginator
     }
 
     /**
-     * @param  Query  $builder
      * @param  Select $select
-     * @return Query
+     * @return CakeQuery
      */
     protected function compileSelect(Select $select)
     {
@@ -113,6 +113,8 @@ class Paginator extends BasePaginator
 
         /** @var Table $repository */
         $repository = $this->builder->getRepository();
+
+        /** @var \Cake\ORM\Query $builder */
         $builder = $repository->query()
             ->where($this->builder->clause('where'))
             ->modifier($this->builder->clause('modifier'))
@@ -123,12 +125,13 @@ class Paginator extends BasePaginator
             ->compileWhere($builder, $select)
             ->compileOrderBy($builder, $select)
             ->compileLimit($builder, $select);
+
         return $builder;
     }
 
     /**
-     * @param  Query  $builder
-     * @param  Select $select
+     * @param  CakeQuery $builder
+     * @param  Select    $select
      * @return $this
      */
     protected function compileWhere($builder, Select $select)
@@ -142,7 +145,7 @@ class Paginator extends BasePaginator
     }
 
     /**
-     * @param  ConditionGroup     $group
+     * @param  ConditionGroup            $group
      * @return \Generator<string,string>
      */
     protected function compileWhereGroup(ConditionGroup $group)
@@ -156,8 +159,8 @@ class Paginator extends BasePaginator
     }
 
     /**
-     * @param  Query  $builder
-     * @param  Select $select
+     * @param  CakeQuery $builder
+     * @param  Select    $select
      * @return $this
      */
     protected function compileOrderBy($builder, Select $select)
@@ -169,8 +172,8 @@ class Paginator extends BasePaginator
     }
 
     /**
-     * @param  Query  $builder
-     * @param  Select $select
+     * @param  CakeQuery $builder
+     * @param  Select    $select
      * @return $this
      */
     protected function compileLimit($builder, Select $select)

@@ -42,11 +42,7 @@ class PaginationResult implements ResultSetInterface
      */
     public function current()
     {
-        if (!$this->iterator) {
-            $this->iterator = $this->getIterator();
-        }
-
-        return $this->iterator->current();
+        return $this->unwrap()->current();
     }
 
     /**
@@ -54,11 +50,7 @@ class PaginationResult implements ResultSetInterface
      */
     public function key()
     {
-        if (!$this->iterator) {
-            $this->iterator = $this->getIterator();
-        }
-
-        return $this->iterator->key();
+        return $this->unwrap()->key();
     }
 
     /**
@@ -66,11 +58,7 @@ class PaginationResult implements ResultSetInterface
      */
     public function next()
     {
-        if (!$this->iterator) {
-            $this->iterator = $this->getIterator();
-        }
-
-        $this->iterator->next();
+        $this->unwrap()->next();
     }
 
     /**
@@ -78,11 +66,7 @@ class PaginationResult implements ResultSetInterface
      */
     public function rewind()
     {
-        if (!$this->iterator) {
-            $this->iterator = $this->getIterator();
-        }
-
-        $this->iterator->rewind();
+        $this->unwrap()->rewind();
     }
 
     /**
@@ -90,11 +74,30 @@ class PaginationResult implements ResultSetInterface
      */
     public function valid()
     {
+        return $this->unwrap()->valid();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function unwrap()
+    {
         if (!$this->iterator) {
             $this->iterator = $this->getIterator();
         }
 
-        return $this->iterator->valid();
+        return $this->iterator;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function toArray($preserveKeys = true)
+    {
+        $array = (array)$this->result;
+        $array['records'] = iterator_to_array($this->unwrap());
+
+        return $array;
     }
 
     /**
@@ -102,7 +105,7 @@ class PaginationResult implements ResultSetInterface
      */
     public function jsonSerialize()
     {
-        return (array)$this->result;
+        return $this->toArray();
     }
 
     /**
@@ -110,7 +113,7 @@ class PaginationResult implements ResultSetInterface
      */
     public function serialize()
     {
-        return json_encode($this->result);
+        return json_encode($this->jsonSerialize());
     }
 
     /**
@@ -138,5 +141,18 @@ class PaginationResult implements ResultSetInterface
         }
 
         return $iterator;
+    }
+
+    /**
+     * Returns an array that can be used to describe the internal state of this
+     * object.
+     *
+     * @return array
+     */
+    public function __debugInfo()
+    {
+        return [
+            '(help)' => 'This is a Lampager Pagination Result object.',
+        ] + $this->jsonSerialize();
     }
 }

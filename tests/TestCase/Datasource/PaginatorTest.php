@@ -23,7 +23,7 @@ class PaginatorTest extends TestCase
      * @dataProvider valueProvider
      * @dataProvider queryExpressionProvider
      */
-    public function testPaginate(callable $factory, PaginationResult $expected)
+    public function testPaginateTable(callable $factory, PaginationResult $expected)
     {
         $controller = new Controller();
         $controller->loadComponent('Paginator');
@@ -36,6 +36,27 @@ class PaginatorTest extends TestCase
         $options = $factory($posts);
 
         $this->assertJsonEquals($expected, $controller->paginate('Posts', $options));
+    }
+
+    /**
+     * @param        callable         $factory
+     * @param        PaginationResult $expected
+     * @dataProvider valueProvider
+     * @dataProvider queryExpressionProvider
+     */
+    public function testPaginateQuery(callable $factory, PaginationResult $expected)
+    {
+        $controller = new Controller();
+        $controller->loadComponent('Paginator');
+        $controller->Paginator->setPaginator(new Paginator());
+
+        /** @var Table $posts */
+        $posts = $controller->loadModel('Posts');
+
+        /** @var mixed[] $options */
+        $options = $factory($posts);
+
+        $this->assertJsonEquals($expected, $controller->paginate($posts->find('all'), $options));
     }
 
     public function valueProvider()

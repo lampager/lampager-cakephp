@@ -2,10 +2,12 @@
 
 namespace Lampager\Cake;
 
+use Cake\ORM\Table;
 use Lampager\Cake\ORM\Query;
 use Lampager\Cake\PaginationResult;
 use Lampager\Concerns\HasProcessor;
 use Lampager\Contracts\Cursor;
+use Lampager\Exceptions\Query\InsufficientConstraintsException;
 use Lampager\Paginator as BasePaginator;
 use Lampager\Query as LampagerQuery;
 use Lampager\Query\Condition;
@@ -83,15 +85,13 @@ class Paginator extends BasePaginator
      */
     protected function compileSelectOrUnionAll(SelectOrUnionAll $selectOrUnionAll)
     {
-        $repository = $this->builder->getRepository();
-
         if ($selectOrUnionAll instanceof Select) {
-            return $this->compileSelect($repository->query(), $selectOrUnionAll);
+            return $this->compileSelect($selectOrUnionAll);
         }
 
         if ($selectOrUnionAll instanceof UnionAll) {
-            $supportQuery = $this->compileSelect($repository->query(), $selectOrUnionAll->supportQuery());
-            $mainQuery = $this->compileSelect($repository->query(), $selectOrUnionAll->mainQuery());
+            $supportQuery = $this->compileSelect($selectOrUnionAll->supportQuery());
+            $mainQuery = $this->compileSelect($selectOrUnionAll->mainQuery());
             return $supportQuery->unionAll($mainQuery);
         }
 
@@ -105,8 +105,20 @@ class Paginator extends BasePaginator
      * @param  Select $select
      * @return Query
      */
-    protected function compileSelect($builder, Select $select)
+    protected function compileSelect(Select $select)
     {
+        if ($this->builder->clause('group') || $this->builder->clause('union')) {
+            throw new InsufficientConstraintsException('group()/union() are not supported');
+        }
+
+        /** @var Table $repository */
+        $repository = $this->builder->getRepository();
+        $builder = $repository->query()
+            ->where($this->builder->clause('where'))
+            ->modifier($this->builder->clause('modifier'))
+            ->join($this->builder->clause('join'))
+            ->epilog($this->builder->clause('epilog'));
+
         $this
             ->compileWhere($builder, $select)
             ->compileOrderBy($builder, $select)
@@ -174,16 +186,16 @@ class Paginator extends BasePaginator
      */
     public function __debugInfo()
     {
+        $query = $this->configure();
+
         return [
-            'query' => isset($this->query) ? [
-                'orders' => $this->query->orders(),
-                'limit' => $this->query->limit(),
-                'forward' => $this->query->forward(),
-                'inclusive' => $this->query->inclusive(),
-                'seekable' => $this->query->seekable(),
-                'direction' => $this->query->direction(),
-                'cursor' => $this->query->cursor(),
-            ] : null,
+            'query' => [
+                'orders' => $query->orders(),
+                'limit' => $query->limit(),
+                'forward' => $query->forward(),
+                'inclusive' => $query->inclusive(),
+                'seekable' => $query->seekable(),
+            ],
         ];
     }
 }

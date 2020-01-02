@@ -28,7 +28,8 @@
     "require-dev": {
         "cakephp/cakephp": "^3.6",
         "phpunit/phpunit": "^5.7 || ^6.0",
-        "php-coveralls/php-coveralls": "^2.2"
+        "php-coveralls/php-coveralls": "^2.2",
+        "nilportugues/sql-query-formatter": "^1.2"
     },
     "scripts": {
         "test": "phpunit"

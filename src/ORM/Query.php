@@ -10,6 +10,9 @@ use Cake\ORM\Query as BaseQuery;
 use Lampager\Cake\PaginationResult;
 use Lampager\Cake\Paginator;
 use Lampager\Contracts\Cursor;
+use Lampager\Exceptions\Query\BadKeywordException;
+use Lampager\Exceptions\Query\InsufficientConstraintsException;
+use Lampager\Exceptions\Query\LimitParameterException;
 
 /**
  * @method $this forward(bool $forward = true) Define that the current pagination is going forward.
@@ -131,7 +134,7 @@ class Query extends BaseQuery
      */
     protected function _performCount()
     {
-        return $this->_paginator->build($this->_cursor)->_performCount();
+        return $this->all()->count();
     }
 
     /**
@@ -160,7 +163,7 @@ class Query extends BaseQuery
                 $generator->resetCount();
 
                 if (!preg_match('/ (?<direction>ASC|DESC)$/', $condition->sql($generator), $matches)) {
-                    throw new \LogicException('OrderClauseExpression does not have direction');
+                    throw new BadKeywordException('OrderClauseExpression does not have direction');
                 }
 
                 /** @var string $direction */
@@ -198,9 +201,19 @@ class Query extends BaseQuery
         if ($limit instanceof QueryExpression) {
             $generator = $this->getValueBinder();
             $generator->resetCount();
-            $this->_paginator->limit($limit->sql($generator));
+            $sql = $limit->sql($generator);
+
+            if (!ctype_digit($sql) || $sql <= 0) {
+                throw new LimitParameterException('Limit must be positive integer');
+            }
+
+            $this->_paginator->limit((int)$sql);
             return;
         }
+
+        // @codeCoverageIgnoreStart
+        throw new \LogicException('Unreachable here');
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -231,9 +244,29 @@ class Query extends BaseQuery
      */
     public function __debugInfo()
     {
+        try {
+            $info = $this->_paginator->build($this->_cursor)->__debugInfo();
+        } catch (InsufficientConstraintsException $e) {
+            $info = [
+                'sql' => 'SQL could not be generated for this query as it is incomplete: ' . $e->getMessage(),
+                'params' => [],
+                'defaultTypes' => $this->getDefaultTypes(),
+                'decorators' => count($this->_resultDecorators),
+                'executed' => (bool)$this->_iterator,
+                'hydrate' => $this->_hydrate,
+                'buffered' => $this->_useBufferedResults,
+                'formatters' => count($this->_formatters),
+                'mapReducers' => count($this->_mapReduce),
+                'contain' => $this->_eagerLoader ? $this->_eagerLoader->getContain() : [],
+                'matching' => $this->_eagerLoader ? $this->_eagerLoader->getMatching() : [],
+                'extraOptions' => $this->_options,
+                'repository' => $this->_repository,
+            ];
+        }
+
         return [
             '(help)' => 'This is a Lampager Query object to get the paginated results.',
             'paginator' => $this->_paginator,
-        ] + $this->_paginator->build($this->_cursor)->__debugInfo();
+        ] + $info;
     }
 }

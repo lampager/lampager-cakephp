@@ -2,9 +2,8 @@
 
 namespace Lampager\Cake;
 
-use Cake\ORM\Query as CakeQuery;
+use Cake\ORM\Query;
 use Cake\ORM\Table;
-use Lampager\Cake\ORM\Query;
 use Lampager\Concerns\HasProcessor;
 use Lampager\Contracts\Cursor;
 use Lampager\Exceptions\Query\InsufficientConstraintsException;
@@ -45,7 +44,7 @@ class Paginator extends BasePaginator
     /**
      * Build CakePHP Query instance from Lampager Query config.
      *
-     * @return CakeQuery
+     * @return Query
      */
     public function transform(LampagerQuery $query)
     {
@@ -56,7 +55,7 @@ class Paginator extends BasePaginator
      * Configure -> Transform.
      *
      * @param  Cursor|int[]|string[] $cursor
-     * @return CakeQuery
+     * @return Query
      */
     public function build($cursor = [])
     {
@@ -76,7 +75,7 @@ class Paginator extends BasePaginator
     }
 
     /**
-     * @return CakeQuery
+     * @return Query
      */
     protected function compileSelectOrUnionAll(SelectOrUnionAll $selectOrUnionAll)
     {
@@ -96,7 +95,7 @@ class Paginator extends BasePaginator
     }
 
     /**
-     * @return CakeQuery
+     * @return Query
      */
     protected function compileSelect(Select $select)
     {
@@ -107,7 +106,7 @@ class Paginator extends BasePaginator
         /** @var Table $repository */
         $repository = $this->builder->getRepository();
 
-        /** @var \Cake\ORM\Query $builder */
+        /** @var Query $builder */
         $builder = $repository->query()
             ->where($this->builder->clause('where'))
             ->modifier($this->builder->clause('modifier'))
@@ -123,7 +122,7 @@ class Paginator extends BasePaginator
     }
 
     /**
-     * @param  CakeQuery $builder
+     * @param  Query $builder
      * @return $this
      */
     protected function compileWhere($builder, Select $select)

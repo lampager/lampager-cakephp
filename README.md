@@ -30,8 +30,8 @@ For SQLite users, see [SQLite](#sqlite) to set up `SqliteCompiler`.
 
 ## Basic Usage
 
-The `Plugin` is not provided. Simply install as a Composer package and use in
-one of the following methods:
+Simply install as a Composer package and use in one or more of the following
+methods:
 
 - Use in Controller (via `Lampager\Cake\Datasource\Paginator`)
 - Use in Table (via `Lampager\Cake\Model\Behavior\LampagerBehavior`)

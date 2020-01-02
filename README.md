@@ -60,7 +60,7 @@ class AppController extends Controller
 }
 ```
 
-The `Paginator` also accepts `Query` expression that is created by `Table` classes.
+Use in a way described in the Cookbook: [Pagination][]. Note the `cursor`.
 
 ```php
 $query = $this->Posts
@@ -82,7 +82,7 @@ $this->set('posts', $posts);
 ### Use in Table
 
 Initialize `LampagerBehavior` in your Table class (`AppTable` is preferable)
-and simply use `lampager()` from the `Table` class.
+and simply use `lampager()` there.
 
 ```php
 namespace App\Model\Table;
@@ -101,11 +101,11 @@ class AppTable extends Table
 }
 ```
 
-The query builder extends the plain old `\Cake\ORM\Query` and is mixed in with
-`\Lampager\Paginator`. Note that some of the methods in `\Lampager\Paginator`,
-viz., `orderBy()`, `orderByDesc()`, and `clearOrderBy()` are not exposed
-because their method signatures are not compatible with the CakePHP query
-builder.
+The query builder (`\Lampager\Cake\ORM\Query`) extends the plain old
+`\Cake\ORM\Query` and is mixed in with `\Lampager\Paginator`. Note that some of
+the methods in `\Lampager\Paginator`, viz., `orderBy()`, `orderByDesc()`, and
+`clearOrderBy()` are not exposed because their method signatures are not
+compatible with the CakePHP query builder.
 
 ```php
 $cursor = [
@@ -132,7 +132,7 @@ foreach ($latest as $post) {
 ```
 
 The methods from the CakePHP query builder, e.g., `where()`, are available.
-`\Cake\Database\Expression\QueryExpression` can be accepted as well.
+`\Cake\Database\Expression\QueryExpression` is accepted as well.
 
 ```php
 /** @var \Lampager\Cake\PaginationResult $drafts */
@@ -168,6 +168,10 @@ See also: [lampager/lampager][].
 | Lampager\\Cake\\Database\\`SqliteCompiler` | Class | Cake\\Database\\`SqliteCompiler` | Query compiler implementation for SQLite |
 | Lampager\\Cake\\Database\\Driver\\`Sqlite` | Class | Cake\\Database\\Driver\\`Sqlite` | Driver implementation which delegates to Lampager\\Cake\\Database\\`SqliteCompiler` |
 
+Note that Lampager\\Cake\\`PaginationResult` does not extend
+Lampager\\`PaginationResult` as it conflicts with
+Cake\\Datasource\\`ResultSetInterface`.
+
 ## API
 
 See also: [lampager/lampager][].
@@ -192,7 +196,7 @@ Paginator::__construct(\Cake\ORM\Query $builder)
 
 ### Paginator::transform()
 
-Transform Lampager query into CakePHP query.
+Transform a Lampager query into a CakePHP query.
 
 ```php
 Paginator::transform(\Lampager\Query $query): \Cake\ORM\Query
@@ -369,7 +373,7 @@ if ($posts->hasNext) {
 
 ## SQLite
 
-SQLite does not allow `UNION ALL` statements to combine `SELECT` statements
+SQLite does not allow `UNION ALL` statements which combine `SELECT` statements
 that have `ORDER BY` clause. In order to get this to work, those `SELECT`
 statements have to be wrapped by a subquery like `SELECT * FROM (...)`.
 CakePHP not natively handling this situation, Lampager for CakePHP introduces
@@ -382,7 +386,7 @@ return [
         'default' => [
             'className' => Connection::class,
             'driver' => \Lampager\Cake\Database\Driver\Sqlite::class,
-            'username' => '********,
+            'username' => '********',
             'password' => '********',
             'database' => '********',
         ],
@@ -392,4 +396,5 @@ return [
 
 [lampager/lampager]:          https://github.com/lampager/lampager
 [lampager/lampager-cakephp2]: https://github.com/lampager/lampager-cakephp2
+[Pagination]:                 https://book.cakephp.org/3/en/controllers/components/pagination.html
 [Working with Result Sets]:   https://book.cakephp.org/3/en/orm/retrieving-data-and-resultsets.html#working-with-result-sets

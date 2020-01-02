@@ -149,7 +149,7 @@ class Paginator extends BasePaginator
     }
 
     /**
-     * @param  CakeQuery $builder
+     * @param  Query $builder
      * @return $this
      */
     protected function compileOrderBy($builder, Select $select)
@@ -161,7 +161,7 @@ class Paginator extends BasePaginator
     }
 
     /**
-     * @param  CakeQuery $builder
+     * @param  Query $builder
      * @return $this
      */
     protected function compileLimit($builder, Select $select)

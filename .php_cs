@@ -27,6 +27,7 @@ return \PhpCsFixer\Config::create()->setRules([
     'phpdoc_order' => true,
     'phpdoc_separation' => false,
     'phpdoc_summary' => null,
+    'phpdoc_to_comment' => false,
     'phpdoc_types_order' => true,
     'return_type_declaration' => true,
     'void_return' => false,

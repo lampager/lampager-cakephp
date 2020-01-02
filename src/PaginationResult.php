@@ -30,7 +30,6 @@ class PaginationResult implements ResultSetInterface
      * Merge $meta entries into $this.
      *
      * @param mixed $rows
-     * @param array $meta
      */
     public function __construct($rows, array $meta)
     {
@@ -38,7 +37,7 @@ class PaginationResult implements ResultSetInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function current()
     {
@@ -46,7 +45,7 @@ class PaginationResult implements ResultSetInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function key()
     {
@@ -54,7 +53,7 @@ class PaginationResult implements ResultSetInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function next()
     {
@@ -62,7 +61,7 @@ class PaginationResult implements ResultSetInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function rewind()
     {
@@ -70,7 +69,7 @@ class PaginationResult implements ResultSetInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function valid()
     {
@@ -78,7 +77,7 @@ class PaginationResult implements ResultSetInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function unwrap()
     {
@@ -90,7 +89,7 @@ class PaginationResult implements ResultSetInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function toArray($preserveKeys = true)
     {
@@ -101,7 +100,7 @@ class PaginationResult implements ResultSetInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function jsonSerialize()
     {
@@ -109,7 +108,7 @@ class PaginationResult implements ResultSetInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function serialize()
     {
@@ -117,7 +116,7 @@ class PaginationResult implements ResultSetInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function unserialize($serialized)
     {

@@ -13,9 +13,9 @@ abstract class TestCase extends BaseTestCase
      * @param  mixed                                                        $expected
      * @param  mixed                                                        $actual
      * @param  string                                                       $message
-     * @return void
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @return void
      */
     public function assertJsonEquals($expected, $actual, $message = '')
     {

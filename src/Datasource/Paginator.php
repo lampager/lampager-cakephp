@@ -10,7 +10,7 @@ use Lampager\Cake\PaginationResult;
 class Paginator extends CakePaginator
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      * @return PaginationResult
      */
     public function paginate($object, array $params = [], array $settings = [])

@@ -25,8 +25,6 @@ class QueryTest extends TestCase
     ];
 
     /**
-     * @param        callable         $factory
-     * @param        PaginationResult $expected
      * @dataProvider orderProvider
      */
     public function testOrder(callable $factory, PaginationResult $expected)
@@ -41,8 +39,7 @@ class QueryTest extends TestCase
     }
 
     /**
-     * @param        callable         $factory
-     * @param        PaginationResult $expected
+     * @param PaginationResult $expected
      * @dataProvider orderProvider
      */
     public function testOrderClear(callable $factory)
@@ -301,8 +298,7 @@ class QueryTest extends TestCase
     }
 
     /**
-     * @param        callable      $factory
-     * @param        int           $expected
+     * @param int $expected
      * @dataProvider countProvider
      */
     public function testCount(callable $factory, $expected)

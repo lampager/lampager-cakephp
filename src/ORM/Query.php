@@ -15,13 +15,13 @@ use Lampager\Exceptions\Query\InsufficientConstraintsException;
 use Lampager\Exceptions\Query\LimitParameterException;
 
 /**
- * @method $this forward(bool $forward = true) Define that the current pagination is going forward.
- * @method $this backward(bool $backward = true) Define that the current pagination is going backward.
- * @method $this exclusive(bool $exclusive = true) Define that the cursor value is not included in the previous/next result.
- * @method $this inclusive(bool $inclusive = true) Define that the cursor value is included in the previous/next result.
- * @method $this seekable(bool $seekable = true) Define that the query can detect both "has_previous" and "has_next".
+ * @method $this forward(bool $forward = true)       Define that the current pagination is going forward.
+ * @method $this backward(bool $backward = true)     Define that the current pagination is going backward.
+ * @method $this exclusive(bool $exclusive = true)   Define that the cursor value is not included in the previous/next result.
+ * @method $this inclusive(bool $inclusive = true)   Define that the cursor value is included in the previous/next result.
+ * @method $this seekable(bool $seekable = true)     Define that the query can detect both "has_previous" and "has_next".
  * @method $this unseekable(bool $unseekable = true) Define that the query can detect only either "has_previous" or "has_next".
- * @method $this fromArray(mixed[] $options) Define options from an associative array.
+ * @method $this fromArray(mixed[] $options)         Define options from an associative array.
  */
 class Query extends BaseQuery
 {
@@ -77,7 +77,7 @@ class Query extends BaseQuery
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function order($fields, $overwrite = false)
     {
@@ -88,7 +88,7 @@ class Query extends BaseQuery
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function orderAsc($field, $overwrite = false)
     {
@@ -99,7 +99,7 @@ class Query extends BaseQuery
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function orderDesc($field, $overwrite = false)
     {
@@ -110,7 +110,7 @@ class Query extends BaseQuery
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function limit($num)
     {
@@ -121,7 +121,7 @@ class Query extends BaseQuery
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      * @return PaginationResult
      */
     public function all()
@@ -130,7 +130,7 @@ class Query extends BaseQuery
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function _performCount()
     {
@@ -217,7 +217,7 @@ class Query extends BaseQuery
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function __call($method, $args)
     {
@@ -240,7 +240,7 @@ class Query extends BaseQuery
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function __debugInfo()
     {

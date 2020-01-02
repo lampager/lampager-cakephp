@@ -10,7 +10,7 @@ use Lampager\Query as LampagerQuery;
 class ArrayProcessor extends BaseArrayProcessor
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function defaultFormat($rows, array $meta, LampagerQuery $query)
     {
@@ -23,7 +23,7 @@ class ArrayProcessor extends BaseArrayProcessor
      *
      * @param  string $column Current column
      * @param  string $alias  Current model alias
-     * @return string         Unaliased column where applicable
+     * @return string Unaliased column where applicable
      */
     protected function removeAlias($column, $alias)
     {
@@ -35,7 +35,7 @@ class ArrayProcessor extends BaseArrayProcessor
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function field($row, $column)
     {
@@ -51,7 +51,7 @@ class ArrayProcessor extends BaseArrayProcessor
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function makeCursor(LampagerQuery $query, $row)
     {

@@ -191,7 +191,7 @@ Create a new paginator instance. These methods are not intended to be directly
 used in your code.
 
 ```php
-static Paginator create(\Cake\ORM\Query $builder): static
+static Paginator::create(\Cake\ORM\Query $builder): static
 Paginator::__construct(\Cake\ORM\Query $builder)
 ```
 

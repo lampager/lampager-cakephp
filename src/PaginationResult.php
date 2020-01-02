@@ -78,7 +78,11 @@ class PaginationResult implements ResultSetInterface
      */
     public function rewind()
     {
-        $this->iterator = $this->getIterator();
+        if (!$this->iterator) {
+            $this->iterator = $this->getIterator();
+        }
+
+        $this->iterator->rewind();
     }
 
     /**

@@ -7,7 +7,7 @@ use Cake\Database\SqliteCompiler as BaseSqliteCompiler;
 class SqliteCompiler extends BaseSqliteCompiler
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function _buildSelectPart($parts, $query, $generator)
     {
@@ -19,7 +19,7 @@ class SqliteCompiler extends BaseSqliteCompiler
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function _buildUnionPart($parts, $query, $generator)
     {
@@ -27,7 +27,7 @@ class SqliteCompiler extends BaseSqliteCompiler
             $p['query'] = $p['query']->sql($generator);
             $p['query'] = $p['query'][0] === '(' ? trim($p['query'], '()') : $p['query'];
             $prefix = $p['all'] ? 'ALL ' : '';
-            return sprintf("%sSELECT * FROM (%s)", $prefix, $p['query']);
+            return sprintf('%sSELECT * FROM (%s)', $prefix, $p['query']);
         }, $parts);
 
         return sprintf(")\nUNION %s", implode("\nUNION ", $parts));

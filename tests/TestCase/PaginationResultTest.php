@@ -13,9 +13,9 @@ use Traversable;
 class PaginationResultTest extends TestCase
 {
     /**
-     * @param        Entity[]                     $entities
-     * @param        Entity[]|Traversable<Entity> $records
-     * @param        mixed[]                      $meta
+     * @param Entity[]                     $entities
+     * @param Entity[]|Traversable<Entity> $records
+     * @param mixed[]                      $meta
      * @dataProvider arrayProvider
      * @dataProvider iteratorAggregateProvider
      */
@@ -45,9 +45,9 @@ class PaginationResultTest extends TestCase
     }
 
     /**
-     * @param        Entity[]                     $entities
-     * @param        Entity[]|Traversable<Entity> $records
-     * @param        mixed[]                      $meta
+     * @param Entity[]                     $entities
+     * @param Entity[]|Traversable<Entity> $records
+     * @param mixed[]                      $meta
      * @dataProvider arrayProvider
      * @dataProvider iteratorAggregateProvider
      */
@@ -77,9 +77,9 @@ class PaginationResultTest extends TestCase
     }
 
     /**
-     * @param        Entity[]                     $entities
-     * @param        Entity[]|Traversable<Entity> $records
-     * @param        mixed[]                      $meta
+     * @param Entity[]                     $entities
+     * @param Entity[]|Traversable<Entity> $records
+     * @param mixed[]                      $meta
      * @dataProvider arrayProvider
      * @dataProvider iteratorAggregateProvider
      */
@@ -107,9 +107,9 @@ class PaginationResultTest extends TestCase
     }
 
     /**
-     * @param        Entity[]                     $entities
-     * @param        Entity[]|Traversable<Entity> $records
-     * @param        mixed[]                      $meta
+     * @param Entity[]                     $entities
+     * @param Entity[]|Traversable<Entity> $records
+     * @param mixed[]                      $meta
      * @dataProvider arrayProvider
      * @dataProvider iteratorAggregateProvider
      */
@@ -141,10 +141,10 @@ class PaginationResultTest extends TestCase
     }
 
     /**
-     * @param        Entity[]                     $entities
-     * @param        Entity[]|Traversable<Entity> $records
-     * @param        mixed[]                      $meta
-     * @param        string                       $expected
+     * @param Entity[]                     $entities
+     * @param Entity[]|Traversable<Entity> $records
+     * @param mixed[]                      $meta
+     * @param string                       $expected
      * @dataProvider arrayProvider
      * @dataProvider iteratorAggregateProvider
      */
@@ -155,9 +155,9 @@ class PaginationResultTest extends TestCase
     }
 
     /**
-     * @param        Entity[]                     $entities
-     * @param        Entity[]|Traversable<Entity> $records
-     * @param        mixed[]                      $meta
+     * @param Entity[]                     $entities
+     * @param Entity[]|Traversable<Entity> $records
+     * @param mixed[]                      $meta
      * @dataProvider arrayProvider
      * @dataProvider iteratorAggregateProvider
      */
@@ -169,9 +169,9 @@ class PaginationResultTest extends TestCase
     }
 
     /**
-     * @param        Entity[]                     $entities
-     * @param        Entity[]|Traversable<Entity> $records
-     * @param        mixed[]                      $meta
+     * @param Entity[]                     $entities
+     * @param Entity[]|Traversable<Entity> $records
+     * @param mixed[]                      $meta
      * @dataProvider arrayProvider
      * @dataProvider iteratorAggregateProvider
      */

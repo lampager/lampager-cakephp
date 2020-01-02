@@ -2,10 +2,9 @@
 
 namespace Lampager\Cake;
 
-use Cake\ORM\Table;
 use Cake\ORM\Query as CakeQuery;
+use Cake\ORM\Table;
 use Lampager\Cake\ORM\Query;
-use Lampager\Cake\PaginationResult;
 use Lampager\Concerns\HasProcessor;
 use Lampager\Contracts\Cursor;
 use Lampager\Exceptions\Query\InsufficientConstraintsException;
@@ -27,7 +26,6 @@ class Paginator extends BasePaginator
     /**
      * Create paginator.
      *
-     * @param  Query  $builder
      * @return static
      */
     public static function create(Query $builder)
@@ -37,8 +35,6 @@ class Paginator extends BasePaginator
 
     /**
      * Construct paginator.
-     *
-     * @param Query $builder
      */
     public function __construct(Query $builder)
     {
@@ -49,7 +45,6 @@ class Paginator extends BasePaginator
     /**
      * Build CakePHP Query instance from Lampager Query config.
      *
-     * @param  LampagerQuery $query
      * @return CakeQuery
      */
     public function transform(LampagerQuery $query)
@@ -81,7 +76,6 @@ class Paginator extends BasePaginator
     }
 
     /**
-     * @param  SelectOrUnionAll $selectOrUnionAll
      * @return CakeQuery
      */
     protected function compileSelectOrUnionAll(SelectOrUnionAll $selectOrUnionAll)
@@ -102,7 +96,6 @@ class Paginator extends BasePaginator
     }
 
     /**
-     * @param  Select $select
      * @return CakeQuery
      */
     protected function compileSelect(Select $select)
@@ -131,7 +124,6 @@ class Paginator extends BasePaginator
 
     /**
      * @param  CakeQuery $builder
-     * @param  Select    $select
      * @return $this
      */
     protected function compileWhere($builder, Select $select)
@@ -145,7 +137,6 @@ class Paginator extends BasePaginator
     }
 
     /**
-     * @param  ConditionGroup            $group
      * @return \Generator<string,string>
      */
     protected function compileWhereGroup(ConditionGroup $group)
@@ -160,7 +151,6 @@ class Paginator extends BasePaginator
 
     /**
      * @param  CakeQuery $builder
-     * @param  Select    $select
      * @return $this
      */
     protected function compileOrderBy($builder, Select $select)
@@ -173,7 +163,6 @@ class Paginator extends BasePaginator
 
     /**
      * @param  CakeQuery $builder
-     * @param  Select    $select
      * @return $this
      */
     protected function compileLimit($builder, Select $select)

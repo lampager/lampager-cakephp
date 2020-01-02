@@ -7,18 +7,17 @@ use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Lampager\Cake\ArrayProcessor;
 use Lampager\Cake\ORM\Query;
-use Lampager\Cake\Paginator;
 use Lampager\Cake\PaginationResult;
+use Lampager\Cake\Paginator;
 use Lampager\Cake\Test\TestCase\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class ArrayProcessorTest extends TestCase
 {
     /**
-     * @param        mixed[]          $options
-     * @param        ?mixed[]         $cursor
-     * @param        Entity[]         $rows
-     * @param        PaginationResult $expected
+     * @param mixed[]  $options
+     * @param ?mixed[] $cursor
+     * @param Entity[] $rows
      * @dataProvider processProvider
      */
     public function testProcess(array $options, $cursor, array $rows, PaginationResult $expected)

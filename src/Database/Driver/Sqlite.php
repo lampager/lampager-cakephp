@@ -8,7 +8,7 @@ use Lampager\Cake\Database\SqliteCompiler;
 class Sqlite extends BaseSqlite
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function newCompiler()
     {

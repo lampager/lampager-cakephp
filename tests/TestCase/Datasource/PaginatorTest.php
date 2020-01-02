@@ -18,8 +18,6 @@ class PaginatorTest extends TestCase
     ];
 
     /**
-     * @param        callable         $factory
-     * @param        PaginationResult $expected
      * @dataProvider valueProvider
      * @dataProvider queryExpressionProvider
      */
@@ -39,8 +37,6 @@ class PaginatorTest extends TestCase
     }
 
     /**
-     * @param        callable         $factory
-     * @param        PaginationResult $expected
      * @dataProvider valueProvider
      * @dataProvider queryExpressionProvider
      */

@@ -33,13 +33,14 @@ For SQLite users, see [SQLite](#sqlite) to set up `SqliteCompiler`.
 Simply install as a Composer package and use in one or more of the following
 methods:
 
-- Use in Controller (via `Lampager\Cake\Datasource\Paginator`)
-- Use in Table (via `Lampager\Cake\Model\Behavior\LampagerBehavior`)
+- Use in Controller (via `\Lampager\Cake\Datasource\Paginator`)
+- Use in Table (via `\Lampager\Cake\Model\Behavior\LampagerBehavior`)
 
 ### Use in Controller
 
-At first, load the default Paginator component with the Lampager `Paginator` in
-your Controller class (`AppController` is preferable).
+At first, load the default Paginator component with the
+`\Lampager\Cake\Datasource\Paginator` in your Controller class (`AppController`
+is preferable).
 
 ```php
 namespace App\Controller;
@@ -168,9 +169,9 @@ See also: [lampager/lampager][].
 | Lampager\\Cake\\Database\\`SqliteCompiler` | Class | Cake\\Database\\`SqliteCompiler` | Query compiler implementation for SQLite |
 | Lampager\\Cake\\Database\\Driver\\`Sqlite` | Class | Cake\\Database\\Driver\\`Sqlite` | Driver implementation which delegates to Lampager\\Cake\\Database\\`SqliteCompiler` |
 
-Note that `Lampager\Cake\PaginationResult` does not extend
-`Lampager\PaginationResult` as it conflicts with
-`Cake\Datasource\ResultSetInterface`.
+Note that `\Lampager\Cake\PaginationResult` does not extend
+`\Lampager\PaginationResult` as it conflicts with
+`\Cake\Datasource\ResultSetInterface`.
 
 ## API
 

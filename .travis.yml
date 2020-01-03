@@ -18,7 +18,7 @@ env:
   jobs:
     - DB_DSN=
     - DB_DSN=mysql://root:@localhost/lampager_test
-    - DB_DSN=postgresql://postgres:@localhost/lampager_test
+    - DB_DSN=pgsql://postgres:@localhost/lampager_test
 
 cache:
   directories:

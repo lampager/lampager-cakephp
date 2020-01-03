@@ -386,10 +386,10 @@ Not supported.
 
 Supported but requires an additional configuration.
 
-SQLite does not allow `UNION ALL` statements which combine `SELECT` statements
-that have `ORDER BY` clause. In order to get this to work, those `SELECT`
-statements have to be wrapped by a subquery like `SELECT * FROM (...)`.
-CakePHP not natively handling this situation, Lampager for CakePHP introduces
+In SQLite `UNION ALL` statements cannot combine `SELECT` statements that have
+`ORDER BY` clause. In order to get this to work, those `SELECT` statements have
+to be wrapped by a subquery like `SELECT * FROM (...)`. CakePHP not natively
+handling this situation, Lampager for CakePHP introduces
 `\Lampager\Cake\Database\Driver\Sqlite` that needs to be installed on your
 application. Configure like the following in your `config/app.php`:
 

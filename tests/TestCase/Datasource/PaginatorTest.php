@@ -8,8 +8,10 @@ use Cake\I18n\Time;
 use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Lampager\Cake\Datasource\Paginator;
+use Lampager\Cake\Model\Behavior\LampagerBehavior;
 use Lampager\Cake\PaginationResult;
 use Lampager\Cake\Test\TestCase\TestCase;
+use Lampager\Exceptions\InvalidArgumentException;
 
 class PaginatorTest extends TestCase
 {
@@ -40,7 +42,7 @@ class PaginatorTest extends TestCase
      * @dataProvider valueProvider
      * @dataProvider queryExpressionProvider
      */
-    public function testPaginateQuery(callable $factory, PaginationResult $expected)
+    public function testPaginateCakeQuery(callable $factory, PaginationResult $expected)
     {
         $controller = new Controller();
         $controller->loadComponent('Paginator');
@@ -53,6 +55,29 @@ class PaginatorTest extends TestCase
         $options = $factory($posts);
 
         $this->assertJsonEquals($expected, $controller->paginate($posts->find('all'), $options));
+    }
+
+    /**
+     * @dataProvider valueProvider
+     * @dataProvider queryExpressionProvider
+     */
+    public function testPaginateLampagerCakeQuery(callable $factory)
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Lampager\Cake\ORM\Query cannot be paginated by Lampager\Cake\Datasource\Paginator::paginate()');
+
+        $controller = new Controller();
+        $controller->loadComponent('Paginator');
+        $controller->Paginator->setPaginator(new Paginator());
+
+        /** @var LampagerBehavior&Table $posts */
+        $posts = $controller->loadModel('Posts');
+        $posts->addBehavior(LampagerBehavior::class);
+
+        /** @var mixed[] $options */
+        $options = $factory($posts);
+        $query = $posts->lampager()->applyOptions($options);
+        $controller->paginate($query);
     }
 
     public function valueProvider()

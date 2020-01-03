@@ -6,11 +6,13 @@ use Cake\Datasource\Paginator as CakePaginator;
 use Cake\Datasource\QueryInterface;
 use Lampager\Cake\ORM\Query;
 use Lampager\Cake\PaginationResult;
+use Lampager\Exceptions\InvalidArgumentException;
 
 class Paginator extends CakePaginator
 {
     /**
      * {@inheritdoc}
+     * @throws InvalidArgumentException if the \Lampager\Cake\ORM\Query is given
      * @return PaginationResult
      */
     public function paginate($object, array $params = [], array $settings = [])
@@ -19,6 +21,10 @@ class Paginator extends CakePaginator
         if ($object instanceof QueryInterface) {
             $query = $object;
             $object = $query->getRepository();
+        }
+
+        if ($query instanceof Query) {
+            throw new InvalidArgumentException(Query::class . ' cannot be paginated by ' . __METHOD__ . '()');
         }
 
         $alias = $object->getAlias();

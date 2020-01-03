@@ -10,6 +10,7 @@ php:
 
 services:
   - mysql
+  - postgresql
 
 env:
   global:
@@ -17,6 +18,7 @@ env:
   jobs:
     - DB_DSN=
     - DB_DSN=mysql://root:@localhost/lampager_test
+    - DB_DSN=postgresql://postgres:@localhost/lampager_test
 
 cache:
   directories:
@@ -26,6 +28,7 @@ cache:
 before_script:
   - composer install
   - mysql -e 'CREATE DATABASE lampager_test;'
+  - psql -c 'create database lampager_test;' -U postgres
   - mkdir -p build/logs
 
 script:

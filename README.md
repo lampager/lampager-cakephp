@@ -26,7 +26,7 @@ for CakePHP 2.x is available!
 composer require lampager/lampager-cakephp
 ```
 
-For SQLite users, see [SQLite](#sqlite) to set up `SqliteCompiler`.
+For SQLite users, see [SQLite](#sqlite) to configure.
 
 ## Basic Usage
 
@@ -372,7 +372,19 @@ if ($posts->hasNext) {
 }
 ```
 
-## SQLite
+## Supported database engines
+
+### MySQL, MariaDB, and PostgreSQL
+
+Supported!
+
+### Microsoft SQL Server
+
+Not supported.
+
+### SQLite
+
+Supported but requires an additional configuration.
 
 SQLite does not allow `UNION ALL` statements which combine `SELECT` statements
 that have `ORDER BY` clause. In order to get this to work, those `SELECT`

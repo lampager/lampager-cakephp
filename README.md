@@ -334,6 +334,9 @@ class PostsController extends AppController
             'seekable' => true,
 
             // PaginatorComponent config
+            'conditions' => [
+                'type' => 'public',
+            ],
             'order' => [
                 'created' => 'DESC',
                 'id' => 'DESC',

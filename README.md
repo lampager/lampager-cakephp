@@ -124,9 +124,9 @@ $latest = $this->lampager()
     ->seekable()
     ->cursor($cursor)
     ->limit(10)
-    ->orderDesc('Post.modified')
-    ->orderDesc('Post.created')
-    ->orderDesc('Post.id');
+    ->orderDesc('Posts.modified')
+    ->orderDesc('Posts.created')
+    ->orderDesc('Posts.id');
 
 foreach ($latest as $post) {
     /** @var \Cake\ORM\Entity $post */

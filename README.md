@@ -162,16 +162,16 @@ $count = $drafts->count();
 
 See also: [lampager/lampager][].
 
-| Name | Type | Parent Class<br>Implemented Interface | Description |
-|:---|:---|:---|:---|
-| Lampager\\Cake\\ORM\\`Query` | Class | Cake\\ORM\\`Query` | Fluent factory implementation for CakePHP |
-| Lampager\\Cake\\Model\\Behavior\\`LampagerBehavior` | Class | Cake\\ORM\\`Behavior` | CakePHP behavior which returns Lampager\\Cake\\ORM\\`Query` |
-| Lampager\\Cake\\Datasource\\`Paginator` | Class | Cake\\Datasource\\`Paginator` | CakePHP paginatior which delegates to Lampager\\Cake\\ORM\\`Query` |
-| Lampager\\Cake\\`Paginator` | Class | Lampager\\`Paginator` | Paginator implementation for CakePHP |
-| Lampager\\Cake\\`ArrayProcessor` | Class | Lampager\\`ArrayProcessor` | Processor implementation for CakePHP |
-| Lampager\\Cake\\`PaginationResult` | Class | Cake\\Datasource\\`ResultSetInterface` | PaginationResult implementation for CakePHP |
-| Lampager\\Cake\\Database\\`SqliteCompiler` | Class | Cake\\Database\\`SqliteCompiler` | Query compiler implementation for SQLite |
-| Lampager\\Cake\\Database\\Driver\\`Sqlite` | Class | Cake\\Database\\Driver\\`Sqlite` | Driver implementation which delegates to Lampager\\Cake\\Database\\`SqliteCompiler` |
+| Name                                                | Type  | Parent Class<br>Implemented Interface  | Description                                                                         |
+|:----------------------------------------------------|:------|:---------------------------------------|:------------------------------------------------------------------------------------|
+| Lampager\\Cake\\ORM\\`Query`                        | Class | Cake\\ORM\\`Query`                     | Fluent factory implementation for CakePHP                                           |
+| Lampager\\Cake\\Model\\Behavior\\`LampagerBehavior` | Class | Cake\\ORM\\`Behavior`                  | CakePHP behavior which returns Lampager\\Cake\\ORM\\`Query`                         |
+| Lampager\\Cake\\Datasource\\`Paginator`             | Class | Cake\\Datasource\\`Paginator`          | CakePHP paginatior which delegates to Lampager\\Cake\\ORM\\`Query`                  |
+| Lampager\\Cake\\`Paginator`                         | Class | Lampager\\`Paginator`                  | Paginator implementation for CakePHP                                                |
+| Lampager\\Cake\\`ArrayProcessor`                    | Class | Lampager\\`ArrayProcessor`             | Processor implementation for CakePHP                                                |
+| Lampager\\Cake\\`PaginationResult`                  | Class | Cake\\Datasource\\`ResultSetInterface` | PaginationResult implementation for CakePHP                                         |
+| Lampager\\Cake\\Database\\`SqliteCompiler`          | Class | Cake\\Database\\`SqliteCompiler`       | Query compiler implementation for SQLite                                            |
+| Lampager\\Cake\\Database\\Driver\\`Sqlite`          | Class | Cake\\Database\\Driver\\`Sqlite`       | Driver implementation which delegates to Lampager\\Cake\\Database\\`SqliteCompiler` |
 
 Note that `\Lampager\Cake\PaginationResult` does not extend
 `\Lampager\PaginationResult` as it conflicts with

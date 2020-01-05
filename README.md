@@ -61,16 +61,19 @@ class AppController extends Controller
 }
 ```
 
-Use in a way described in the Cookbook: [Pagination][]. Note the `cursor`.
+Use in a way described in the Cookbook: [Pagination][]. Note the options that
+are specific to Lampager such as `forward`, `seekable`, or `cursor`.
 
 ```php
 $query = $this->Posts
     ->where(['Posts.type' => 'public'])
     ->orderDesc('created')
     ->orderDesc('id')
-    ->limit(15);
+    ->limit(10);
 
 $posts = $this->paginate($query, [
+    'forward' => true,
+    'seekable' => true,
     'cursor' => [
         'id' => 4,
         'created' => '2020-01-01 10:00:00',

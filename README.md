@@ -73,7 +73,7 @@ $query = $this->Posts
 $posts = $this->paginate($query, [
     'cursor' => [
         'id' => 4,
-        'modified' => '2020-01-01 10:00:00',
+        'created' => '2020-01-01 10:00:00',
     ],
 ]);
 
@@ -111,7 +111,8 @@ compatible with the CakePHP query builder.
 ```php
 $cursor = [
     'id' => 4,
-    'modified' => '2020-01-01 10:00:00',
+    'created' => '2020-01-01 10:00:00',
+    'modified' => '2020-01-01 12:00:00',
 ];
 
 /** @var \Lampager\Cake\PaginationResult $latest */
@@ -251,7 +252,7 @@ object(Lampager\Cake\PaginationResult)#1 (6) {
   bool(true)
   ["nextCursor"]=>
   array(2) {
-    ["modified"]=>
+    ["created"]=>
     object(Cake\I18n\Time)#5 (3) {
       ["date"]=>
       string(26) "2017-01-01 10:00:00.000000"

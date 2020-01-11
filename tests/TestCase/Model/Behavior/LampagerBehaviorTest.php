@@ -21,7 +21,6 @@ class LampagerBehaviorTest extends TestCase
     ];
 
     /**
-     * @param LampagerBehavior&Table $factory
      * @dataProvider valueProvider
      * @dataProvider queryExpressionProvider
      */

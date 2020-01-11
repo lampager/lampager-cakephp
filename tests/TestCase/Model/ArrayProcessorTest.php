@@ -23,7 +23,7 @@ class ArrayProcessorTest extends TestCase
      * @param Entity[] $rows
      * @dataProvider processProvider
      */
-    public function testProcess(array $options, $cursor, array $rows, PaginationResult $expected): void
+    public function testProcess(array $options, ?array $cursor, array $rows, PaginationResult $expected): void
     {
         /** @var MockObject&Table $repository */
         $repository = $this->createMock(Table::class);

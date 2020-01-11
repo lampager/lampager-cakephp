@@ -131,9 +131,6 @@ class PaginationResult implements ResultSetInterface
         $this->result = new LampagerPaginationResult($obj['records'], $meta);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getIterator(): Iterator
     {
         /** @var Iterator|IteratorAggregate */

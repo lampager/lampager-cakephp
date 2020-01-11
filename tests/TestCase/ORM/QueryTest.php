@@ -42,7 +42,6 @@ class QueryTest extends TestCase
     }
 
     /**
-     * @param PaginationResult $expected
      * @dataProvider orderProvider
      */
     public function testOrderClear(callable $factory): void
@@ -65,7 +64,7 @@ class QueryTest extends TestCase
         $this->expectException(BadKeywordException::class);
         $this->expectExceptionMessage('OrderClauseExpression does not have direction');
 
-        /** @var MockObject&OrderClauseExpression */
+        /** @var MockObject&OrderClauseExpression $expression */
         $expression = $this->getMockBuilder(OrderClauseExpression::class)->disableOriginalConstructor()->getMock();
         $expression->method('sql')->willReturn('modified');
 
@@ -301,10 +300,9 @@ class QueryTest extends TestCase
     }
 
     /**
-     * @param int $expected
      * @dataProvider countProvider
      */
-    public function testCount(callable $factory, $expected): void
+    public function testCount(callable $factory, int $expected): void
     {
         /** @var LampagerBehavior&Table $posts */
         $posts = TableRegistry::getTableLocator()->get('Posts');

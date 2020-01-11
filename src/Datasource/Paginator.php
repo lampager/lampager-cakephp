@@ -7,6 +7,7 @@ namespace Lampager\Cake\Datasource;
 use Cake\Datasource\Paginator as CakePaginator;
 use Cake\Datasource\QueryInterface;
 use Cake\Datasource\ResultSetInterface;
+use Exception;
 use Lampager\Cake\ORM\Query;
 use Lampager\Cake\PaginationResult;
 use Lampager\Exceptions\InvalidArgumentException;
@@ -24,6 +25,9 @@ class Paginator extends CakePaginator
         if ($object instanceof QueryInterface) {
             $query = $object;
             $object = $query->getRepository();
+            if ($object === null) {
+                throw new Exception('No repository set for query.');
+            }
         }
 
         if ($query instanceof Query) {

@@ -14,6 +14,6 @@ class LampagerBehavior extends Behavior
         $query = new Query($this->getTable()->getConnection(), $this->getTable());
         $query->select();
 
-        return $this->getTable()->callFinder('all', $query, []);
+        return $query;
     }
 }

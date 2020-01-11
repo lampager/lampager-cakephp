@@ -167,6 +167,8 @@ class Query extends BaseQuery
 
                 /** @var string $direction */
                 $direction = $matches['direction'];
+
+                /** @var ExpressionInterface|string $field */
                 $field = $condition->getField();
 
                 if ($field instanceof ExpressionInterface) {

@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Lampager\Cake\ORM;
 
+use Cake\Database\Connection;
 use Cake\Database\Expression\OrderByExpression;
 use Cake\Database\Expression\OrderClauseExpression;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Database\ExpressionInterface;
 use Cake\Datasource\ResultSetInterface;
 use Cake\ORM\Query as BaseQuery;
+use Cake\ORM\Table;
 use Lampager\Cake\PaginationResult;
 use Lampager\Cake\Paginator;
 use Lampager\Contracts\Cursor;
@@ -37,10 +39,10 @@ class Query extends BaseQuery
     /**
      * Construct query.
      *
-     * @param \Cake\Database\Connection $connection The connection object
-     * @param \Cake\ORM\Table           $table      The table this query is starting on
+     * @param Connection $connection The connection object
+     * @param Table      $table      The table this query is starting on
      */
-    public function __construct($connection, $table)
+    public function __construct(Connection $connection, Table $table)
     {
         parent::__construct($connection, $table);
 

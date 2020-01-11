@@ -122,10 +122,9 @@ class Paginator extends BasePaginator
     }
 
     /**
-     * @param  Query $builder
      * @return $this
      */
-    protected function compileWhere($builder, Select $select)
+    protected function compileWhere(Query $builder, Select $select)
     {
         $conditions = [];
         foreach ($select->where() as $group) {
@@ -149,10 +148,9 @@ class Paginator extends BasePaginator
     }
 
     /**
-     * @param  Query $builder
      * @return $this
      */
-    protected function compileOrderBy($builder, Select $select)
+    protected function compileOrderBy(Query $builder, Select $select)
     {
         foreach ($select->orders() as $i => $order) {
             $builder->order([$order->column() => $order->order()], $i === 0);
@@ -161,10 +159,9 @@ class Paginator extends BasePaginator
     }
 
     /**
-     * @param  Query $builder
      * @return $this
      */
-    protected function compileLimit($builder, Select $select)
+    protected function compileLimit(Query $builder, Select $select)
     {
         $builder->limit($select->limit()->toInteger());
         return $this;

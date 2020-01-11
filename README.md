@@ -13,8 +13,8 @@ Rapid pagination without using OFFSET
 
 ## Requirements
 
-- PHP: ^5.6 || ^7.0
-- CakePHP: ^3.6
+- PHP: ^7.2
+- CakePHP: ^4.0
 - [lampager/lampager][]: ^0.4
 
 Note: [lampager/lampager-cakephp2][]

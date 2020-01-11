@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lampager\Cake;
 
 use Cake\ORM\Entity;
@@ -25,7 +27,7 @@ class ArrayProcessor extends BaseArrayProcessor
      * @param  string $alias  Current model alias
      * @return string Unaliased column where applicable
      */
-    protected function removeAlias($column, $alias)
+    protected function removeAlias(string $column, string $alias): string
     {
         if (strpos($column, "{$alias}.") !== 0) {
             return $column;

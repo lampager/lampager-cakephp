@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lampager\Cake\Test\TestCase;
 
 use Lampager\Cake\ORM\Query;
@@ -9,7 +11,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 class PaginatorTest extends TestCase
 {
-    public function testDebugInfo()
+    public function testDebugInfo(): void
     {
         /** @var MockObject&Query */
         $builder = $this->getMockBuilder(Query::class)

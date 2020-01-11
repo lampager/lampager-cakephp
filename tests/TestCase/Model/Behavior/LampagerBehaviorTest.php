@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lampager\Cake\Test\TestCase\Model\Behavior;
 
 use Cake\I18n\Time;
 use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
+use Generator;
 use Lampager\Cake\Model\Behavior\LampagerBehavior;
 use Lampager\Cake\ORM\Query;
 use Lampager\Cake\Test\TestCase\TestCase;
@@ -22,7 +25,7 @@ class LampagerBehaviorTest extends TestCase
      * @dataProvider valueProvider
      * @dataProvider queryExpressionProvider
      */
-    public function testLampager(callable $factory, PaginationResult $expected)
+    public function testLampager(callable $factory, PaginationResult $expected): void
     {
         /** @var LampagerBehavior&Table $posts */
         $posts = TableRegistry::getTableLocator()->get('Posts');
@@ -33,7 +36,7 @@ class LampagerBehaviorTest extends TestCase
         $this->assertJsonEquals($expected, $query->all());
     }
 
-    public function valueProvider()
+    public function valueProvider(): Generator
     {
         yield 'Ascending forward start inclusive' => [
             function (Table $posts) {
@@ -650,7 +653,7 @@ class LampagerBehaviorTest extends TestCase
         ];
     }
 
-    public function queryExpressionProvider()
+    public function queryExpressionProvider(): Generator
     {
         yield 'Ascending forward start inclusive with QueryExpression' => [
             function (Table $posts) {

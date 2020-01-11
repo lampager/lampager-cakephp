@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lampager\Cake\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;

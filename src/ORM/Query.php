@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lampager\Cake\ORM;
 
 use Cake\Database\Expression\OrderByExpression;
 use Cake\Database\Expression\OrderClauseExpression;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Database\ExpressionInterface;
+use Cake\Datasource\ResultSetInterface;
 use Cake\ORM\Query as BaseQuery;
 use Lampager\Cake\PaginationResult;
 use Lampager\Cake\Paginator;
@@ -47,10 +50,8 @@ class Query extends BaseQuery
     /**
      * Create query based on the existing query. This factory copies the internal
      * state of the given query to a new instance.
-     *
-     * @param BaseQuery $query
      */
-    public static function fromQuery($query)
+    public static function fromQuery(BaseQuery $query)
     {
         $obj = new static($query->getConnection(), $query->getRepository());
 
@@ -124,7 +125,7 @@ class Query extends BaseQuery
      * {@inheritdoc}
      * @return PaginationResult
      */
-    public function all()
+    public function all(): ResultSetInterface
     {
         return $this->_paginator->paginate($this->_cursor);
     }
@@ -132,16 +133,12 @@ class Query extends BaseQuery
     /**
      * {@inheritdoc}
      */
-    protected function _performCount()
+    protected function _performCount(): int
     {
         return $this->all()->count();
     }
 
-    /**
-     * @param  null|OrderByExpression $order
-     * @return void
-     */
-    protected function _executeOrder($order)
+    protected function _executeOrder(?OrderByExpression $order): void
     {
         $this->_paginator->clearOrderBy();
 
@@ -188,10 +185,9 @@ class Query extends BaseQuery
     }
 
     /**
-     * @param  null|int|QueryExpression $limit
-     * @return void
+     * @param null|int|QueryExpression $limit
      */
-    protected function _executeLimit($limit)
+    protected function _executeLimit($limit): void
     {
         if (is_int($limit)) {
             $this->_paginator->limit($limit);
@@ -219,7 +215,7 @@ class Query extends BaseQuery
     /**
      * {@inheritdoc}
      */
-    public function __call($method, $args)
+    public function __call(string $method, array $arguments)
     {
         static $options = [
             'forward',
@@ -232,17 +228,17 @@ class Query extends BaseQuery
         ];
 
         if (in_array($method, $options, true)) {
-            $this->_paginator->$method(...$args);
+            $this->_paginator->$method(...$arguments);
             return $this;
         }
 
-        return parent::__call($method, $args);
+        return parent::__call($method, $arguments);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function __debugInfo()
+    public function __debugInfo(): array
     {
         try {
             $info = $this->_paginator->build($this->_cursor)->__debugInfo();

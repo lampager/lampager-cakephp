@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lampager\Cake\Test\TestCase\Datasource;
 
 use Cake\Controller\Controller;
@@ -7,6 +9,7 @@ use Cake\Database\Expression\OrderClauseExpression;
 use Cake\I18n\Time;
 use Cake\ORM\Entity;
 use Cake\ORM\Table;
+use Generator;
 use Lampager\Cake\Datasource\Paginator;
 use Lampager\Cake\Model\Behavior\LampagerBehavior;
 use Lampager\Cake\PaginationResult;
@@ -23,7 +26,7 @@ class PaginatorTest extends TestCase
      * @dataProvider valueProvider
      * @dataProvider queryExpressionProvider
      */
-    public function testPaginateTable(callable $factory, PaginationResult $expected)
+    public function testPaginateTable(callable $factory, PaginationResult $expected): void
     {
         $controller = new Controller();
         $controller->loadComponent('Paginator');
@@ -42,7 +45,7 @@ class PaginatorTest extends TestCase
      * @dataProvider valueProvider
      * @dataProvider queryExpressionProvider
      */
-    public function testPaginateCakeQuery(callable $factory, PaginationResult $expected)
+    public function testPaginateCakeQuery(callable $factory, PaginationResult $expected): void
     {
         $controller = new Controller();
         $controller->loadComponent('Paginator');
@@ -61,7 +64,7 @@ class PaginatorTest extends TestCase
      * @dataProvider valueProvider
      * @dataProvider queryExpressionProvider
      */
-    public function testPaginateLampagerCakeQuery(callable $factory)
+    public function testPaginateLampagerCakeQuery(callable $factory): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Lampager\Cake\ORM\Query cannot be paginated by Lampager\Cake\Datasource\Paginator::paginate()');
@@ -80,7 +83,7 @@ class PaginatorTest extends TestCase
         $controller->paginate($query);
     }
 
-    public function valueProvider()
+    public function valueProvider(): Generator
     {
         yield 'Ascending forward start inclusive' => [
             function () {
@@ -729,7 +732,7 @@ class PaginatorTest extends TestCase
         ];
     }
 
-    public function queryExpressionProvider()
+    public function queryExpressionProvider(): Generator
     {
         yield 'Ascending forward start inclusive with QueryExpression' => [
             function () {

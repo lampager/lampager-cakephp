@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lampager\Cake\Test\TestCase\ORM;
 
 use Cake\Database\Expression\OrderClauseExpression;
@@ -7,6 +9,7 @@ use Cake\I18n\Time;
 use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
+use Generator;
 use Lampager\Cake\Model\Behavior\LampagerBehavior;
 use Lampager\Cake\ORM\Query;
 use Lampager\Cake\PaginationResult;
@@ -27,7 +30,7 @@ class QueryTest extends TestCase
     /**
      * @dataProvider orderProvider
      */
-    public function testOrder(callable $factory, PaginationResult $expected)
+    public function testOrder(callable $factory, PaginationResult $expected): void
     {
         /** @var LampagerBehavior&Table $posts */
         $posts = TableRegistry::getTableLocator()->get('Posts');
@@ -42,7 +45,7 @@ class QueryTest extends TestCase
      * @param PaginationResult $expected
      * @dataProvider orderProvider
      */
-    public function testOrderClear(callable $factory)
+    public function testOrderClear(callable $factory): void
     {
         $this->expectException(LampagerException::class);
         $this->expectExceptionMessage('At least one order constraint required');
@@ -57,7 +60,7 @@ class QueryTest extends TestCase
         $query->all();
     }
 
-    public function testOrderIllegal()
+    public function testOrderIllegal(): void
     {
         $this->expectException(BadKeywordException::class);
         $this->expectExceptionMessage('OrderClauseExpression does not have direction');
@@ -74,7 +77,7 @@ class QueryTest extends TestCase
             ->all();
     }
 
-    public function testOrderQueryExpression()
+    public function testOrderQueryExpression(): void
     {
         /** @var LampagerBehavior&Table $posts */
         $posts = TableRegistry::getTableLocator()->get('Posts');
@@ -107,7 +110,7 @@ class QueryTest extends TestCase
         $this->assertJsonEquals($expected, $actual);
     }
 
-    public function testLimitQueryExpression()
+    public function testLimitQueryExpression(): void
     {
         /** @var LampagerBehavior&Table $posts */
         $posts = TableRegistry::getTableLocator()->get('Posts');
@@ -140,7 +143,7 @@ class QueryTest extends TestCase
         $this->assertJsonEquals($expected, $actual);
     }
 
-    public function testLimitIllegalQueryExpression()
+    public function testLimitIllegalQueryExpression(): void
     {
         $this->expectException(LimitParameterException::class);
         $this->expectExceptionMessage('Limit must be positive integer');
@@ -155,7 +158,7 @@ class QueryTest extends TestCase
             ->all();
     }
 
-    public function testWhere()
+    public function testWhere(): void
     {
         /** @var LampagerBehavior&Table $posts */
         $posts = TableRegistry::getTableLocator()->get('Posts');
@@ -189,7 +192,7 @@ class QueryTest extends TestCase
         $this->assertJsonEquals($expected, $actual);
     }
 
-    public function testGroup()
+    public function testGroup(): void
     {
         $this->expectException(InsufficientConstraintsException::class);
         $this->expectExceptionMessage('group()/union() are not supported');
@@ -204,7 +207,7 @@ class QueryTest extends TestCase
             ->all();
     }
 
-    public function testUnion()
+    public function testUnion(): void
     {
         $this->expectException(InsufficientConstraintsException::class);
         $this->expectExceptionMessage('group()/union() are not supported');
@@ -219,7 +222,7 @@ class QueryTest extends TestCase
             ->all();
     }
 
-    public function testCall()
+    public function testCall(): void
     {
         /** @var LampagerBehavior&Table $posts */
         $posts = TableRegistry::getTableLocator()->get('Posts');
@@ -239,7 +242,7 @@ class QueryTest extends TestCase
         $this->assertJsonEquals($expected, $actual);
     }
 
-    public function testDebugInfo()
+    public function testDebugInfo(): void
     {
         /** @var LampagerBehavior&Table $posts */
         $posts = TableRegistry::getTableLocator()->get('Posts');
@@ -269,7 +272,7 @@ class QueryTest extends TestCase
         $this->assertArrayHasKey('extraOptions', $actual);
     }
 
-    public function testDebugInfoIncomplete()
+    public function testDebugInfoIncomplete(): void
     {
         /** @var LampagerBehavior&Table $posts */
         $posts = TableRegistry::getTableLocator()->get('Posts');
@@ -301,7 +304,7 @@ class QueryTest extends TestCase
      * @param int $expected
      * @dataProvider countProvider
      */
-    public function testCount(callable $factory, $expected)
+    public function testCount(callable $factory, $expected): void
     {
         /** @var LampagerBehavior&Table $posts */
         $posts = TableRegistry::getTableLocator()->get('Posts');
@@ -310,7 +313,7 @@ class QueryTest extends TestCase
         $this->assertSame($expected, $factory($posts));
     }
 
-    public function orderProvider()
+    public function orderProvider(): Generator
     {
         yield 'Ascending and ascending' => [
             function (Table $posts) {
@@ -391,7 +394,7 @@ class QueryTest extends TestCase
         ];
     }
 
-    public function countProvider()
+    public function countProvider(): Generator
     {
         yield 'Ascending forward start inclusive' => [
             function (Table $posts) {

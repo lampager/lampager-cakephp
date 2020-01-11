@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lampager\Cake\Datasource;
 
 use Cake\Datasource\Paginator as CakePaginator;
 use Cake\Datasource\QueryInterface;
+use Cake\Datasource\ResultSetInterface;
 use Lampager\Cake\ORM\Query;
 use Lampager\Cake\PaginationResult;
 use Lampager\Exceptions\InvalidArgumentException;
@@ -15,7 +18,7 @@ class Paginator extends CakePaginator
      * @throws InvalidArgumentException if the \Lampager\Cake\ORM\Query is given
      * @return PaginationResult
      */
-    public function paginate($object, array $params = [], array $settings = [])
+    public function paginate(object $object, array $params = [], array $settings = []): ResultSetInterface
     {
         $query = null;
         if ($object instanceof QueryInterface) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lampager\Cake;
 
 use Cake\Collection\CollectionTrait;
@@ -7,6 +9,7 @@ use Cake\Datasource\ResultSetInterface;
 use Iterator;
 use IteratorAggregate;
 use Lampager\PaginationResult as LampagerPaginationResult;
+use Traversable;
 
 /**
  * Class PaginationResult
@@ -78,8 +81,9 @@ class PaginationResult implements ResultSetInterface
 
     /**
      * {@inheritdoc}
+     * @return Iterator
      */
-    public function unwrap()
+    public function unwrap(): Traversable
     {
         if (!$this->iterator) {
             $this->iterator = $this->getIterator();
@@ -91,7 +95,7 @@ class PaginationResult implements ResultSetInterface
     /**
      * {@inheritdoc}
      */
-    public function toArray($preserveKeys = true)
+    public function toArray(bool $preserveKeys = true): array
     {
         $array = (array)$this->result;
         $array['records'] = iterator_to_array($this->unwrap());
@@ -102,7 +106,7 @@ class PaginationResult implements ResultSetInterface
     /**
      * {@inheritdoc}
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }
@@ -128,9 +132,9 @@ class PaginationResult implements ResultSetInterface
     }
 
     /**
-     * @return Iterator
+     * {@inheritdoc}
      */
-    protected function getIterator()
+    protected function getIterator(): Iterator
     {
         /** @var Iterator|IteratorAggregate */
         $iterator = $this->result->getIterator();
@@ -145,10 +149,8 @@ class PaginationResult implements ResultSetInterface
     /**
      * Returns an array that can be used to describe the internal state of this
      * object.
-     *
-     * @return array
      */
-    public function __debugInfo()
+    public function __debugInfo(): array
     {
         return [
             '(help)' => 'This is a Lampager Pagination Result object.',

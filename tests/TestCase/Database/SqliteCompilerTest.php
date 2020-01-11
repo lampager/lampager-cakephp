@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lampager\Cake\Test\TestCase\Database;
 
 use Cake\Datasource\ConnectionManager;
@@ -12,13 +14,13 @@ class SqliteCompilerTest extends TestCase
         'plugin.Lampager\\Cake.Posts',
     ];
 
-    public function setUp()
+    public function setUp(): void
     {
         $config = ConnectionManager::getConfig('test');
         $this->skipIf(strpos($config['driver'], 'Sqlite') === false, 'Not using Sqlite');
     }
 
-    public function testSelect()
+    public function testSelect(): void
     {
         $posts = TableRegistry::getTableLocator()->get('Posts');
 
@@ -39,7 +41,7 @@ class SqliteCompilerTest extends TestCase
         $this->assertSqlEquals($expected, $actual);
     }
 
-    public function testUnion()
+    public function testUnion(): void
     {
         $posts = TableRegistry::getTableLocator()->get('Posts');
 

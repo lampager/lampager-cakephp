@@ -68,7 +68,7 @@ class Paginator extends BasePaginator
      * @param  Cursor|int[]|string[]  $cursor
      * @return mixed|PaginationResult
      */
-    public function paginate($cursor)
+    public function paginate($cursor = [])
     {
         $query = $this->configure($cursor);
         return $this->process($query, $this->transform($query)->toArray());

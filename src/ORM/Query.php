@@ -67,7 +67,7 @@ class Query extends BaseQuery
     /**
      * Set the cursor.
      *
-     * @param Cursor[]|int[]|string[] $cursor
+     * @param Cursor|int[]|string[] $cursor
      */
     public function cursor($cursor = [])
     {

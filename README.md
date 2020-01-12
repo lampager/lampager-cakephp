@@ -53,7 +53,7 @@ use Lampager\Cake\Datasource\Paginator;
 
 class AppController extends Controller
 {
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -99,7 +99,7 @@ use Lampager\Cake\Model\Behavior\LampagerBehavior;
 
 class AppTable extends Table
 {
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -297,7 +297,7 @@ class PostsController extends AppController
     /**
      * This method shows how to pass options by a query and array.
      */
-    public function query()
+    public function query(): void
     {
         // Get cursor parameters
         $previous = json_decode($this->request->getQuery('previous_cursor'), true);
@@ -325,7 +325,7 @@ class PostsController extends AppController
     /**
      * This method shows how to pass options from an array.
      */
-    public function options()
+    public function options(): void
     {
         // Get cursor parameters
         $previous = json_decode($this->request->getQuery('previous_cursor'), true);
@@ -420,5 +420,5 @@ return [
 [lampager/lampager]:              https://github.com/lampager/lampager
 [lampager/lampager-cakephp v1.x]: https://github.com/lampager/lampager-cakephp/tree/v1.x
 [lampager/lampager-cakephp2]:     https://github.com/lampager/lampager-cakephp2
-[Pagination]:                     https://book.cakephp.org/3/en/controllers/components/pagination.html
-[Working with Result Sets]:       https://book.cakephp.org/3/en/orm/retrieving-data-and-resultsets.html#working-with-result-sets
+[Pagination]:                     https://book.cakephp.org/4/en/controllers/components/pagination.html
+[Working with Result Sets]:       https://book.cakephp.org/4/en/orm/retrieving-data-and-resultsets.html#working-with-result-sets

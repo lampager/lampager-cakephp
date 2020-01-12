@@ -20,13 +20,13 @@ Rapid pagination without using OFFSET
 ### Note
 
 - For CakePHP 2.x, use [lampager/lampager-cakephp2][].
-- For CakePHP 3.x, use [v1.x][lampager/lampager (v1.x)].
-- For CakePHP 4.x, use v2.x (this version).
+- For CakePHP 3.x, use [lampager/lampager-cakephp (v1.x)][].
+- For CakePHP 4.x, use lampager/lampager-cakephp v2.x (this version).
 
 ## Installing
 
 ```bash
-composer require lampager/lampager-cakephp
+composer require lampager/lampager-cakephp:^2.0
 ```
 
 For SQLite users, see [SQLite](#sqlite) to configure.
@@ -417,8 +417,8 @@ return [
 ];
 ```
 
-[lampager/lampager]:          https://github.com/lampager/lampager
-[lampager/lampager (v1.x)]:   https://github.com/lampager/lampager-cakephp/tree/v1.x
-[lampager/lampager-cakephp2]: https://github.com/lampager/lampager-cakephp2
-[Pagination]:                 https://book.cakephp.org/3/en/controllers/components/pagination.html
-[Working with Result Sets]:   https://book.cakephp.org/3/en/orm/retrieving-data-and-resultsets.html#working-with-result-sets
+[lampager/lampager]:                https://github.com/lampager/lampager
+[lampager/lampager-cakephp (v1.x)]: https://github.com/lampager/lampager-cakephp/tree/v1.x
+[lampager/lampager-cakephp2]:       https://github.com/lampager/lampager-cakephp2
+[Pagination]:                       https://book.cakephp.org/3/en/controllers/components/pagination.html
+[Working with Result Sets]:         https://book.cakephp.org/3/en/orm/retrieving-data-and-resultsets.html#working-with-result-sets

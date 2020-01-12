@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lampager\Cake;
 
 use Cake\ORM\Query;
 use Cake\ORM\Table;
+use Generator;
 use Lampager\Concerns\HasProcessor;
 use Lampager\Contracts\Cursor;
 use Lampager\Exceptions\Query\InsufficientConstraintsException;
@@ -43,10 +46,8 @@ class Paginator extends BasePaginator
 
     /**
      * Build CakePHP Query instance from Lampager Query config.
-     *
-     * @return Query
      */
-    public function transform(LampagerQuery $query)
+    public function transform(LampagerQuery $query): Query
     {
         return $this->compileSelectOrUnionAll($query->selectOrUnionAll());
     }
@@ -54,10 +55,9 @@ class Paginator extends BasePaginator
     /**
      * Configure -> Transform.
      *
-     * @param  Cursor|int[]|string[] $cursor
-     * @return Query
+     * @param Cursor|int[]|string[] $cursor
      */
-    public function build($cursor = [])
+    public function build($cursor = []): Query
     {
         return $this->transform($this->configure($cursor));
     }
@@ -74,10 +74,7 @@ class Paginator extends BasePaginator
         return $this->process($query, $this->transform($query)->toArray());
     }
 
-    /**
-     * @return Query
-     */
-    protected function compileSelectOrUnionAll(SelectOrUnionAll $selectOrUnionAll)
+    protected function compileSelectOrUnionAll(SelectOrUnionAll $selectOrUnionAll): Query
     {
         if ($selectOrUnionAll instanceof Select) {
             return $this->compileSelect($selectOrUnionAll);
@@ -94,10 +91,7 @@ class Paginator extends BasePaginator
         // @codeCoverageIgnoreEnd
     }
 
-    /**
-     * @return Query
-     */
-    protected function compileSelect(Select $select)
+    protected function compileSelect(Select $select): Query
     {
         if ($this->builder->clause('group') || $this->builder->clause('union')) {
             throw new InsufficientConstraintsException('group()/union() are not supported');
@@ -137,7 +131,7 @@ class Paginator extends BasePaginator
     /**
      * @return \Generator<string,string>
      */
-    protected function compileWhereGroup(ConditionGroup $group)
+    protected function compileWhereGroup(ConditionGroup $group): Generator
     {
         /** @var Condition $condition */
         foreach ($group as $condition) {
@@ -169,10 +163,8 @@ class Paginator extends BasePaginator
 
     /**
      * Returns an array that can be used to describe the internal state of this object.
-     *
-     * @return array
      */
-    public function __debugInfo()
+    public function __debugInfo(): array
     {
         $query = $this->configure();
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lampager\Cake\Test\TestCase;
 
 use Cake\TestSuite\TestCase as BaseTestCase;
@@ -12,25 +14,18 @@ abstract class TestCase extends BaseTestCase
      *
      * @param  mixed                                                        $expected
      * @param  mixed                                                        $actual
-     * @param  string                                                       $message
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @return void
      */
-    public function assertJsonEquals($expected, $actual, $message = '')
+    public function assertJsonEquals($expected, $actual, string $message = ''): void
     {
         $this->assertJsonStringEqualsJsonString(json_encode($expected), json_encode($actual), $message);
     }
 
     /**
      * Asserts that two given SQL query statements are equal.
-     *
-     * @param  string $expected
-     * @param  string $actual
-     * @param  string $message
-     * @return void
      */
-    public function assertSqlEquals($expected, $actual, $message = '')
+    public function assertSqlEquals(string $expected, string $actual, string $message = ''): void
     {
         $formatter = new Formatter();
         $this->assertSame($formatter->format($expected), $formatter->format($actual), $message);

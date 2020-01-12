@@ -13,17 +13,20 @@ Rapid pagination without using OFFSET
 
 ## Requirements
 
-- PHP: ^5.6 || ^7.0
-- CakePHP: ^3.6
+- PHP: ^7.2
+- CakePHP: ^4.0
 - [lampager/lampager][]: ^0.4
 
-Note: [lampager/lampager-cakephp2][]
-for CakePHP 2.x is available!
+### Note
+
+- For CakePHP 2.x, use [lampager/lampager-cakephp2][].
+- For CakePHP 3.x, use [lampager/lampager-cakephp v1.x][].
+- For CakePHP 4.x, use lampager/lampager-cakephp v2.x (this version).
 
 ## Installing
 
 ```bash
-composer require lampager/lampager-cakephp
+composer require lampager/lampager-cakephp:^2.0
 ```
 
 For SQLite users, see [SQLite](#sqlite) to configure.
@@ -50,7 +53,7 @@ use Lampager\Cake\Datasource\Paginator;
 
 class AppController extends Controller
 {
-    public function initialize()
+    public function initialize(): void
     {
         parent::initialize();
 
@@ -96,7 +99,7 @@ use Lampager\Cake\Model\Behavior\LampagerBehavior;
 
 class AppTable extends Table
 {
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
 
@@ -294,7 +297,7 @@ class PostsController extends AppController
     /**
      * This method shows how to pass options by a query and array.
      */
-    public function query()
+    public function query(): void
     {
         // Get cursor parameters
         $previous = json_decode($this->request->getQuery('previous_cursor'), true);
@@ -322,7 +325,7 @@ class PostsController extends AppController
     /**
      * This method shows how to pass options from an array.
      */
-    public function options()
+    public function options(): void
     {
         // Get cursor parameters
         $previous = json_decode($this->request->getQuery('previous_cursor'), true);
@@ -414,7 +417,8 @@ return [
 ];
 ```
 
-[lampager/lampager]:          https://github.com/lampager/lampager
-[lampager/lampager-cakephp2]: https://github.com/lampager/lampager-cakephp2
-[Pagination]:                 https://book.cakephp.org/3/en/controllers/components/pagination.html
-[Working with Result Sets]:   https://book.cakephp.org/3/en/orm/retrieving-data-and-resultsets.html#working-with-result-sets
+[lampager/lampager]:              https://github.com/lampager/lampager
+[lampager/lampager-cakephp v1.x]: https://github.com/lampager/lampager-cakephp/tree/v1.x
+[lampager/lampager-cakephp2]:     https://github.com/lampager/lampager-cakephp2
+[Pagination]:                     https://book.cakephp.org/4/en/controllers/components/pagination.html
+[Working with Result Sets]:       https://book.cakephp.org/4/en/orm/retrieving-data-and-resultsets.html#working-with-result-sets

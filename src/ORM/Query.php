@@ -1,12 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lampager\Cake\ORM;
 
+use Cake\Database\Connection;
 use Cake\Database\Expression\OrderByExpression;
 use Cake\Database\Expression\OrderClauseExpression;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Database\ExpressionInterface;
+use Cake\Datasource\ResultSetInterface;
 use Cake\ORM\Query as BaseQuery;
+use Cake\ORM\Table;
 use Lampager\Cake\PaginationResult;
 use Lampager\Cake\Paginator;
 use Lampager\Contracts\Cursor;
@@ -34,10 +39,10 @@ class Query extends BaseQuery
     /**
      * Construct query.
      *
-     * @param \Cake\Database\Connection $connection The connection object
-     * @param \Cake\ORM\Table           $table      The table this query is starting on
+     * @param Connection $connection The connection object
+     * @param Table      $table      The table this query is starting on
      */
-    public function __construct($connection, $table)
+    public function __construct(Connection $connection, Table $table)
     {
         parent::__construct($connection, $table);
 
@@ -47,10 +52,8 @@ class Query extends BaseQuery
     /**
      * Create query based on the existing query. This factory copies the internal
      * state of the given query to a new instance.
-     *
-     * @param BaseQuery $query
      */
-    public static function fromQuery($query)
+    public static function fromQuery(BaseQuery $query)
     {
         $obj = new static($query->getConnection(), $query->getRepository());
 
@@ -124,7 +127,7 @@ class Query extends BaseQuery
      * {@inheritdoc}
      * @return PaginationResult
      */
-    public function all()
+    public function all(): ResultSetInterface
     {
         return $this->_paginator->paginate($this->_cursor);
     }
@@ -132,16 +135,12 @@ class Query extends BaseQuery
     /**
      * {@inheritdoc}
      */
-    protected function _performCount()
+    protected function _performCount(): int
     {
         return $this->all()->count();
     }
 
-    /**
-     * @param  null|OrderByExpression $order
-     * @return void
-     */
-    protected function _executeOrder($order)
+    protected function _executeOrder(?OrderByExpression $order): void
     {
         $this->_paginator->clearOrderBy();
 
@@ -168,6 +167,8 @@ class Query extends BaseQuery
 
                 /** @var string $direction */
                 $direction = $matches['direction'];
+
+                /** @var ExpressionInterface|string $field */
                 $field = $condition->getField();
 
                 if ($field instanceof ExpressionInterface) {
@@ -188,10 +189,9 @@ class Query extends BaseQuery
     }
 
     /**
-     * @param  null|int|QueryExpression $limit
-     * @return void
+     * @param null|int|QueryExpression $limit
      */
-    protected function _executeLimit($limit)
+    protected function _executeLimit($limit): void
     {
         if (is_int($limit)) {
             $this->_paginator->limit($limit);
@@ -219,7 +219,7 @@ class Query extends BaseQuery
     /**
      * {@inheritdoc}
      */
-    public function __call($method, $args)
+    public function __call(string $method, array $arguments)
     {
         static $options = [
             'forward',
@@ -232,17 +232,17 @@ class Query extends BaseQuery
         ];
 
         if (in_array($method, $options, true)) {
-            $this->_paginator->$method(...$args);
+            $this->_paginator->$method(...$arguments);
             return $this;
         }
 
-        return parent::__call($method, $args);
+        return parent::__call($method, $arguments);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function __debugInfo()
+    public function __debugInfo(): array
     {
         try {
             $info = $this->_paginator->build($this->_cursor)->__debugInfo();

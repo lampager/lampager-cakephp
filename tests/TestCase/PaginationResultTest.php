@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lampager\Cake\Test\TestCase;
 
 use ArrayIterator;
 use Cake\I18n\Time;
 use Cake\ORM\Entity;
+use Generator;
 use IteratorAggregate;
 use Lampager\Cake\PaginationResult;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -19,7 +22,7 @@ class PaginationResultTest extends TestCase
      * @dataProvider arrayProvider
      * @dataProvider iteratorAggregateProvider
      */
-    public function testIteratorCurrent(array $entities, $records, array $meta)
+    public function testIteratorCurrent(array $entities, $records, array $meta): void
     {
         $actual = new PaginationResult($records, $meta);
 
@@ -51,7 +54,7 @@ class PaginationResultTest extends TestCase
      * @dataProvider arrayProvider
      * @dataProvider iteratorAggregateProvider
      */
-    public function testIteratorKey(array $entities, $records, array $meta)
+    public function testIteratorKey(array $entities, $records, array $meta): void
     {
         $actual = new PaginationResult($records, $meta);
 
@@ -83,7 +86,7 @@ class PaginationResultTest extends TestCase
      * @dataProvider arrayProvider
      * @dataProvider iteratorAggregateProvider
      */
-    public function testIteratorNext(array $entities, $records, array $meta)
+    public function testIteratorNext(array $entities, $records, array $meta): void
     {
         $actual = new PaginationResult($records, $meta);
 
@@ -113,7 +116,7 @@ class PaginationResultTest extends TestCase
      * @dataProvider arrayProvider
      * @dataProvider iteratorAggregateProvider
      */
-    public function testIteratorValid(array $entities, $records, array $meta)
+    public function testIteratorValid(array $entities, $records, array $meta): void
     {
         $actual = new PaginationResult($records, $meta);
 
@@ -144,11 +147,10 @@ class PaginationResultTest extends TestCase
      * @param Entity[]                     $entities
      * @param Entity[]|Traversable<Entity> $records
      * @param mixed[]                      $meta
-     * @param string                       $expected
      * @dataProvider arrayProvider
      * @dataProvider iteratorAggregateProvider
      */
-    public function testJsonSerialize(array $entities, $records, array $meta, $expected)
+    public function testJsonSerialize(array $entities, $records, array $meta, string $expected): void
     {
         $actual = json_encode(new PaginationResult($records, $meta));
         $this->assertJsonStringEqualsJsonString($expected, $actual);
@@ -161,7 +163,7 @@ class PaginationResultTest extends TestCase
      * @dataProvider arrayProvider
      * @dataProvider iteratorAggregateProvider
      */
-    public function testSerializeAndUnserialize(array $entities, $records, array $meta)
+    public function testSerializeAndUnserialize(array $entities, $records, array $meta): void
     {
         $actual = unserialize(serialize(new PaginationResult($records, $meta)));
         $expected = new PaginationResult($records, $meta);
@@ -175,7 +177,7 @@ class PaginationResultTest extends TestCase
      * @dataProvider arrayProvider
      * @dataProvider iteratorAggregateProvider
      */
-    public function testDebugInfo(array $entities, $records, array $meta)
+    public function testDebugInfo(array $entities, $records, array $meta): void
     {
         $actual = (new PaginationResult($records, $meta))->__debugInfo();
 
@@ -189,7 +191,7 @@ class PaginationResultTest extends TestCase
         ], $actual);
     }
 
-    public function arrayProvider()
+    public function arrayProvider(): Generator
     {
         yield 'Array iteration' => [
             [
@@ -318,7 +320,7 @@ class PaginationResultTest extends TestCase
         ];
     }
 
-    public function iteratorAggregateProvider()
+    public function iteratorAggregateProvider(): Generator
     {
         /** @var IteratorAggregate&MockObject $iteratorAggregate */
         $iteratorAggregate = $this->getMockForAbstractClass(IteratorAggregate::class);

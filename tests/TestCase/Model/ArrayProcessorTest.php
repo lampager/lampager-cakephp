@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lampager\Cake\Test\TestCase\Model;
 
 use Cake\I18n\Time;
 use Cake\ORM\Entity;
 use Cake\ORM\Table;
+use Generator;
 use Lampager\Cake\ArrayProcessor;
 use Lampager\Cake\ORM\Query;
 use Lampager\Cake\PaginationResult;
@@ -20,7 +23,7 @@ class ArrayProcessorTest extends TestCase
      * @param Entity[] $rows
      * @dataProvider processProvider
      */
-    public function testProcess(array $options, $cursor, array $rows, PaginationResult $expected)
+    public function testProcess(array $options, ?array $cursor, array $rows, PaginationResult $expected): void
     {
         /** @var MockObject&Table $repository */
         $repository = $this->createMock(Table::class);
@@ -39,7 +42,7 @@ class ArrayProcessorTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function processProvider()
+    public function processProvider(): Generator
     {
         yield 'Option has prefix but entity does not have prefix' => [
             [

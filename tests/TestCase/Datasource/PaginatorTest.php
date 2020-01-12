@@ -1,17 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lampager\Cake\Test\TestCase\Datasource;
 
 use Cake\Controller\Controller;
 use Cake\Database\Expression\OrderClauseExpression;
+use Cake\Datasource\QueryInterface;
 use Cake\I18n\Time;
 use Cake\ORM\Entity;
 use Cake\ORM\Table;
+use Exception;
+use Generator;
 use Lampager\Cake\Datasource\Paginator;
 use Lampager\Cake\Model\Behavior\LampagerBehavior;
 use Lampager\Cake\PaginationResult;
 use Lampager\Cake\Test\TestCase\TestCase;
 use Lampager\Exceptions\InvalidArgumentException;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class PaginatorTest extends TestCase
 {
@@ -23,7 +29,7 @@ class PaginatorTest extends TestCase
      * @dataProvider valueProvider
      * @dataProvider queryExpressionProvider
      */
-    public function testPaginateTable(callable $factory, PaginationResult $expected)
+    public function testPaginateTable(callable $factory, PaginationResult $expected): void
     {
         $controller = new Controller();
         $controller->loadComponent('Paginator');
@@ -42,7 +48,7 @@ class PaginatorTest extends TestCase
      * @dataProvider valueProvider
      * @dataProvider queryExpressionProvider
      */
-    public function testPaginateCakeQuery(callable $factory, PaginationResult $expected)
+    public function testPaginateCakeQuery(callable $factory, PaginationResult $expected): void
     {
         $controller = new Controller();
         $controller->loadComponent('Paginator');
@@ -61,7 +67,7 @@ class PaginatorTest extends TestCase
      * @dataProvider valueProvider
      * @dataProvider queryExpressionProvider
      */
-    public function testPaginateLampagerCakeQuery(callable $factory)
+    public function testPaginateLampagerCakeQuery(callable $factory): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Lampager\Cake\ORM\Query cannot be paginated by Lampager\Cake\Datasource\Paginator::paginate()');
@@ -80,7 +86,23 @@ class PaginatorTest extends TestCase
         $controller->paginate($query);
     }
 
-    public function valueProvider()
+    public function testPaginateInvalidQuery(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('No repository set for query.');
+
+        $controller = new Controller();
+        $controller->loadComponent('Paginator');
+        $controller->Paginator->setPaginator(new Paginator());
+
+        /** @var MockObject&QueryInterface $query */
+        $query = $this->getMockBuilder(QueryInterface::class)->getMock();
+        $query->method('getRepository')->willReturn(null);
+
+        $controller->paginate($query);
+    }
+
+    public function valueProvider(): Generator
     {
         yield 'Ascending forward start inclusive' => [
             function () {
@@ -729,7 +751,7 @@ class PaginatorTest extends TestCase
         ];
     }
 
-    public function queryExpressionProvider()
+    public function queryExpressionProvider(): Generator
     {
         yield 'Ascending forward start inclusive with QueryExpression' => [
             function () {

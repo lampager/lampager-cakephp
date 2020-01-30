@@ -35,7 +35,7 @@ Cache::setConfig([
 ]);
 
 if (!getenv('DB_DSN')) {
-    putenv('DB_DSN=sqlite:///:memory:?className=' . Connection::class . '&driver=' . Sqlite::class);
+    putenv('DB_DSN=sqlite:///:memory:?className=' . Connection::class . '&driver=' . Sqlite::class . '&quoteIdentifiers=true');
 }
 
 ConnectionManager::setConfig('test', [

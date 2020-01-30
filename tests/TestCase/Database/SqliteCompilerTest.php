@@ -26,11 +26,11 @@ class SqliteCompilerTest extends TestCase
 
         $expected = '
             SELECT
-                Posts.* AS "Posts__*"
+                "Posts".* AS "Posts__*"
             FROM
-                posts Posts
+                "posts" "Posts"
             ORDER BY
-                modified ASC
+                "modified" ASC
         ';
 
         $actual = $posts->find()
@@ -51,14 +51,14 @@ class SqliteCompilerTest extends TestCase
             FROM
                 (
                     SELECT
-                        Posts.id AS "Posts__id",
-                        Posts.modified AS "Posts__modified"
+                        "Posts"."id" AS "Posts__id",
+                        "Posts"."modified" AS "Posts__modified"
                     FROM
-                        posts Posts
+                        "posts" "Posts"
                     WHERE
-                        id > :c0
+                        "id" > :c0
                     ORDER BY
-                        modified ASC
+                        "modified" ASC
                 )
             UNION ALL
             SELECT
@@ -66,12 +66,12 @@ class SqliteCompilerTest extends TestCase
             FROM
                 (
                     SELECT
-                        Posts.id AS "Posts__id",
-                        Posts.modified AS "Posts__modified"
+                        "Posts"."id" AS "Posts__id",
+                        "Posts"."modified" AS "Posts__modified"
                     FROM
-                        posts Posts
+                        "posts" "Posts"
                     ORDER BY
-                        modified ASC
+                        "modified" ASC
                 )
         ';
 

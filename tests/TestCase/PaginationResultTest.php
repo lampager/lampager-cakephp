@@ -191,6 +191,23 @@ class PaginationResultTest extends TestCase
         ], $actual);
     }
 
+    /**
+     * @param Entity[] $entities
+     * @param Entity[]|Traversable<Entity> $records
+     * @param mixed[] $meta
+     * @dataProvider arrayProvider
+     * @dataProvider iteratorAggregateProvider
+     */
+    public function testPublicProperties(array $entities, $records, array $meta): void
+    {
+        $paginationResult = new PaginationResult($records, $meta);
+
+        $this->assertEquals($meta['hasPrevious'], $paginationResult->hasPrevious);
+        $this->assertEquals($meta['previousCursor'], $paginationResult->previousCursor);
+        $this->assertEquals($meta['hasNext'], $paginationResult->hasNext);
+        $this->assertEquals($meta['nextCursor'], $paginationResult->nextCursor);
+    }
+
     public function arrayProvider(): Generator
     {
         yield 'Array iteration' => [

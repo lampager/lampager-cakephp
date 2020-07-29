@@ -14,6 +14,12 @@ use Lampager\PaginationResult as LampagerPaginationResult;
  * This class intentionally does not extend \Lampager\PaginationResult
  * but has the same signature because \Cake\Datasource\ResultSetInterface
  * already implements \Iterator which conflicts with \IteratorAggregate.
+ *
+ * @property-read mixed      $records
+ * @property-read null|bool  $hasPrevious
+ * @property-read null|mixed $previousCursor
+ * @property-read null|bool  $hasNext
+ * @property-read null|mixed $nextCursor
  */
 class PaginationResult implements ResultSetInterface
 {
@@ -144,8 +150,6 @@ class PaginationResult implements ResultSetInterface
 
     /**
      * @param string $name The name of the parameter to fetch
-     *
-     * @return mixed
      */
     public function __get($name)
     {
@@ -158,10 +162,8 @@ class PaginationResult implements ResultSetInterface
             'Undefined property via __get(): ' . $name . ' in ' . $trace[0]['file'] . ' on line ' . $trace[0]['line'],
             E_USER_NOTICE
         );
+    }
 
-        return null;
-    }    
-    
     /**
      * Returns an array that can be used to describe the internal state of this
      * object.

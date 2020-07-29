@@ -148,7 +148,7 @@ class PaginationResult implements ResultSetInterface
      *
      * @return mixed
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         if (property_exists($this->result, $name)) {
             return $this->result->{$name};

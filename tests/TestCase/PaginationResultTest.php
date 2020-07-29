@@ -10,6 +10,7 @@ use Cake\ORM\Entity;
 use Generator;
 use IteratorAggregate;
 use Lampager\Cake\PaginationResult;
+use PHPUnit\Framework\Error\Error;
 use PHPUnit\Framework\MockObject\MockObject;
 use Traversable;
 
@@ -192,9 +193,9 @@ class PaginationResultTest extends TestCase
     }
 
     /**
-     * @param Entity[] $entities
+     * @param Entity[]                     $entities
      * @param Entity[]|Traversable<Entity> $records
-     * @param mixed[] $meta
+     * @param mixed[]                      $meta
      * @dataProvider arrayProvider
      * @dataProvider iteratorAggregateProvider
      */
@@ -206,6 +207,22 @@ class PaginationResultTest extends TestCase
         $this->assertEquals($meta['previousCursor'], $paginationResult->previousCursor);
         $this->assertEquals($meta['hasNext'], $paginationResult->hasNext);
         $this->assertEquals($meta['nextCursor'], $paginationResult->nextCursor);
+    }
+
+    /**
+     * @param Entity[]                     $entities
+     * @param Entity[]|Traversable<Entity> $records
+     * @param mixed[]                      $meta
+     * @dataProvider arrayProvider
+     * @dataProvider iteratorAggregateProvider
+     */
+    public function testUndefinedProperties(array $entities, $records, array $meta): void
+    {
+        $this->expectException(Error::class);
+        $this->expectExceptionMessageMatches('/^Undefined property via __get\(\): undefinedProperty/');
+
+        $paginationResult = new PaginationResult($records, $meta);
+        $paginationResult->undefinedProperty;
     }
 
     public function arrayProvider(): Generator

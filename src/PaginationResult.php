@@ -143,6 +143,26 @@ class PaginationResult implements ResultSetInterface
     }
 
     /**
+     * @param string $name The name of the parameter to fetch
+     *
+     * @return mixed
+     */
+    public function __get($name)
+    {
+        if (property_exists($this->result, $name)) {
+            return $this->result->{$name};
+        }
+
+        $trace = debug_backtrace();
+        trigger_error(
+            'Undefined property via __get(): ' . $name . ' in ' . $trace[0]['file'] . ' on line ' . $trace[0]['line'],
+            E_USER_NOTICE
+        );
+
+        return null;
+    }    
+    
+    /**
      * Returns an array that can be used to describe the internal state of this
      * object.
      *

@@ -14,6 +14,12 @@ use Lampager\PaginationResult as LampagerPaginationResult;
  * This class intentionally does not extend \Lampager\PaginationResult
  * but has the same signature because \Cake\Datasource\ResultSetInterface
  * already implements \Iterator which conflicts with \IteratorAggregate.
+ *
+ * @property-read mixed      $records
+ * @property-read null|bool  $hasPrevious
+ * @property-read null|mixed $previousCursor
+ * @property-read null|bool  $hasNext
+ * @property-read null|mixed $nextCursor
  */
 class PaginationResult implements ResultSetInterface
 {
@@ -140,6 +146,22 @@ class PaginationResult implements ResultSetInterface
         }
 
         return $iterator;
+    }
+
+    /**
+     * @param string $name The name of the parameter to fetch
+     */
+    public function __get($name)
+    {
+        if (property_exists($this->result, $name)) {
+            return $this->result->{$name};
+        }
+
+        $trace = debug_backtrace();
+        trigger_error(
+            'Undefined property via __get(): ' . $name . ' in ' . $trace[0]['file'] . ' on line ' . $trace[0]['line'],
+            E_USER_NOTICE
+        );
     }
 
     /**

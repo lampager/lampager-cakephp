@@ -10,7 +10,6 @@ use Cake\ORM\Entity;
 use Generator;
 use IteratorAggregate;
 use Lampager\Cake\PaginationResult;
-use PHPUnit\Framework\Error\Error;
 use PHPUnit\Framework\MockObject\MockObject;
 use Traversable;
 
@@ -218,8 +217,8 @@ class PaginationResultTest extends TestCase
      */
     public function testUndefinedProperties(array $entities, $records, array $meta): void
     {
-        $this->expectException(Error::class);
-        $this->expectExceptionMessageMatches('/^Undefined property via __get\(\): undefinedProperty/');
+        $this->expectError();
+        $this->expectErrorMessageMatches('/^Undefined property via __get\(\): undefinedProperty/');
 
         $paginationResult = new PaginationResult($records, $meta);
         $paginationResult->undefinedProperty;

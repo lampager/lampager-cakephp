@@ -23,6 +23,10 @@
         <include>
             <directory suffix=".php">src/</directory>
         </include>
+        <report>
+            <clover outputFile="build/logs/clover.xml" />
+            <html outputDirectory="build/coverage" />
+        </report>
     </coverage>
 
     <php>

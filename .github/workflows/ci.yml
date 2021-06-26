@@ -1,0 +1,76 @@
+name: CI Workflow
+on:
+  - push
+
+jobs:
+  build:
+    name: Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php:
+          - 5.6
+          - 7.2
+          - 7.3
+          - 7.4
+        dsn:
+          - ''
+          - mysql://lampager_test:lampager_test@127.0.0.1/lampager_test
+          - postgres://lampager_test:lampager_test@localhost/lampager_test
+    services:
+      mysql:
+        image: mysql:5.7
+        ports:
+          - '3306:3306'
+        env:
+          MYSQL_DATABASE: lampager_test
+          MYSQL_USER: lampager_test
+          MYSQL_PASSWORD: lampager_test
+          MYSQL_ROOT_PASSWORD: lampager_test
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=30s
+          --health-retries=5
+      postgres:
+        image: postgres:13.3
+        ports:
+          - '5432:5432'
+        env:
+          POSTGRES_DB: lampager_test
+          POSTGRES_USER: lampager_test
+          POSTGRES_PASSWORD: lampager_test
+        options: >-
+          --health-cmd=pg_isready
+          --health-interval=10s
+          --health-timeout=30s
+          --health-retries=5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Cache composer
+        uses: actions/cache@v2
+        with:
+          path: .composer/cache
+          key: buildx-${{ github.sha }}
+          restore-keys: composer-
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: xdebug
+      - name: Install dependencies
+        run: |
+          composer install
+          mkdir -p build/logs
+      - name: Test
+        env:
+          DB_DSN: ${{ matrix.dsn }}
+        run: |
+          vendor/bin/phpunit
+      - name: Coverage
+        if: ${{ matrix.php == 7.4 }}
+        env:
+          COVERALLS_REPO_TOKEN: ${{ github.token }}
+        run: |
+          vendor/bin/php-coveralls --verbose

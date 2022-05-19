@@ -111,7 +111,8 @@ class Paginator extends BasePaginator
             ->where($this->builder->clause('where'))
             ->modifier($this->builder->clause('modifier'))
             ->join($this->builder->clause('join'))
-            ->epilog($this->builder->clause('epilog'));
+            ->epilog($this->builder->clause('epilog'))
+            ->setEagerLoader($this->builder->getEagerLoader());
 
         $this
             ->compileWhere($builder, $select)
@@ -152,8 +153,14 @@ class Paginator extends BasePaginator
      */
     protected function compileOrderBy(Query $builder, Select $select)
     {
+        $alias = $builder->getRepository()->getAlias();
+
         foreach ($select->orders() as $i => $order) {
-            $builder->order([$order->column() => $order->order()], $i === 0);
+            $column = $order->column();
+            if (strpos($column, '.') === false) {
+                $column = $alias . '.' . $column;
+            }
+            $builder->order([$column => $order->order()], $i === 0);
         }
         return $this;
     }

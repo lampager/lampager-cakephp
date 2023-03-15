@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Lampager\Cake\Test\TestCase\ORM;
 
 use Cake\Database\Expression\OrderClauseExpression;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
@@ -86,7 +86,7 @@ class QueryTest extends TestCase
             [
                 new Entity([
                     'id' => 1,
-                    'modified' => new Time('2017-01-01 10:00:00'),
+                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
                 ]),
             ],
             [
@@ -95,7 +95,7 @@ class QueryTest extends TestCase
                 'hasNext' => true,
                 'nextCursor' => [
                     'id' => 3,
-                    'modified' => new Time('2017-01-01 10:00:00'),
+                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
                 ],
             ]
         );
@@ -119,7 +119,7 @@ class QueryTest extends TestCase
             [
                 new Entity([
                     'id' => 1,
-                    'modified' => new Time('2017-01-01 10:00:00'),
+                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
                 ]),
             ],
             [
@@ -128,7 +128,7 @@ class QueryTest extends TestCase
                 'hasNext' => true,
                 'nextCursor' => [
                     'id' => 3,
-                    'modified' => new Time('2017-01-01 10:00:00'),
+                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
                 ],
             ]
         );
@@ -167,7 +167,7 @@ class QueryTest extends TestCase
             [
                 new Entity([
                     'id' => 3,
-                    'modified' => new Time('2017-01-01 10:00:00'),
+                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
                 ]),
             ],
             [
@@ -176,7 +176,7 @@ class QueryTest extends TestCase
                 'hasNext' => true,
                 'nextCursor' => [
                     'id' => 5,
-                    'modified' => new Time('2017-01-01 10:00:00'),
+                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
                 ],
             ]
         );
@@ -229,12 +229,13 @@ class QueryTest extends TestCase
 
         $actual = $posts->lampager()
             ->orderAsc('id')
+            ->all()
             ->take();
 
         $expected = [
             new Entity([
                 'id' => 1,
-                'modified' => new Time('2017-01-01 10:00:00'),
+                'modified' => new FrozenTime('2017-01-01 10:00:00'),
             ]),
         ];
 
@@ -329,15 +330,15 @@ class QueryTest extends TestCase
                 [
                     new Entity([
                         'id' => 1,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -346,7 +347,7 @@ class QueryTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 2,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ],
                 ]
             ),
@@ -368,15 +369,15 @@ class QueryTest extends TestCase
                 [
                     new Entity([
                         'id' => 4,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -385,7 +386,7 @@ class QueryTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
@@ -434,7 +435,7 @@ class QueryTest extends TestCase
                     ->orderAsc('id')
                     ->cursor([
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ])
                     ->count();
             },
@@ -453,7 +454,7 @@ class QueryTest extends TestCase
                     ->orderAsc('id')
                     ->cursor([
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ])
                     ->count();
             },
@@ -500,7 +501,7 @@ class QueryTest extends TestCase
                     ->orderAsc('id')
                     ->cursor([
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ])
                     ->count();
             },
@@ -519,7 +520,7 @@ class QueryTest extends TestCase
                     ->orderAsc('id')
                     ->cursor([
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ])
                     ->count();
             },
@@ -566,7 +567,7 @@ class QueryTest extends TestCase
                     ->orderDesc('id')
                     ->cursor([
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ])
                     ->count();
             },
@@ -585,7 +586,7 @@ class QueryTest extends TestCase
                     ->orderDesc('id')
                     ->cursor([
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ])
                     ->count();
             },
@@ -632,7 +633,7 @@ class QueryTest extends TestCase
                     ->orderDesc('id')
                     ->cursor([
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ])
                     ->count();
             },
@@ -651,7 +652,7 @@ class QueryTest extends TestCase
                     ->orderDesc('id')
                     ->cursor([
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ])
                     ->count();
             },

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Lampager\Cake\Datasource;
 
-use Cake\Datasource\Paginator as CakePaginator;
+use Cake\Datasource\Paging\NumericPaginator as CakePaginator;
 use Cake\Datasource\QueryInterface;
 use Cake\Datasource\ResultSetInterface;
 use Exception;

@@ -18,9 +18,11 @@ class PaginationResultTest extends TestCase
 {
     public function setUp(): void
     {
+        parent::setUp();
+        
         set_error_handler(
             static function ($errno, $errstr) {
-                throw new \Exception($errstr, $errno);
+                throw new \ErrorException($errstr, $errno);
             },
             E_ALL
         );
@@ -29,6 +31,8 @@ class PaginationResultTest extends TestCase
     public function tearDown(): void
     {
         restore_error_handler();
+
+        parent::tearDown();
     }
 
     /**
@@ -233,7 +237,7 @@ class PaginationResultTest extends TestCase
      */
     public function testUndefinedProperties(array $entities, $records, array $meta): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\ErrorException::class);
         $this->expectExceptionMessageMatches('/^Undefined property via __get\(\): undefinedProperty/');
 
         $paginationResult = new PaginationResult($records, $meta);

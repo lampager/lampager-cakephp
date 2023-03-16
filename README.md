@@ -414,5 +414,5 @@ return [
 [lampager/lampager]:              https://github.com/lampager/lampager
 [lampager/lampager-cakephp v1.x]: https://github.com/lampager/lampager-cakephp/tree/v1.x
 [lampager/lampager-cakephp2]:     https://github.com/lampager/lampager-cakephp2
-[Pagination]:                     https://book.cakephp.org/4/en/controllers/components/pagination.html
+[Pagination]:                     https://book.cakephp.org/4/en/controllers/pagination.html
 [Working with Result Sets]:       https://book.cakephp.org/4/en/orm/retrieving-data-and-resultsets.html#working-with-result-sets

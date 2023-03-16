@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace Lampager\Cake\Test\TestCase;
 
 use ArrayIterator;
-use Cake\Datasource\ConnectionManager;
 use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
 use Generator;
 use IteratorAggregate;
 use Lampager\Cake\PaginationResult;
-use PHPUnit\Framework\MockObject\MockObject;
 use Traversable;
 
 class PaginationResultTest extends TestCase
@@ -19,7 +17,7 @@ class PaginationResultTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        
+
         set_error_handler(
             static function ($errno, $errstr, $errfile, $errline) {
                 throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
@@ -375,23 +373,6 @@ class PaginationResultTest extends TestCase
 
     public function iteratorAggregateProvider(): Generator
     {
-        /** @var IteratorAggregate&MockObject $iteratorAggregate */
-        $iteratorAggregate = $this->getMockForAbstractClass(IteratorAggregate::class);
-        $iteratorAggregate->method('getIterator')->willReturn(new ArrayIterator([
-            new Entity([
-                'id' => 1,
-                'modified' => new FrozenTime('2017-01-01 10:00:00'),
-            ]),
-            new Entity([
-                'id' => 3,
-                'modified' => new FrozenTime('2017-01-01 10:00:00'),
-            ]),
-            new Entity([
-                'id' => 5,
-                'modified' => new FrozenTime('2017-01-01 10:00:00'),
-            ]),
-        ]));
-
         yield 'IteratorAggregate iteration' => [
             [
                 new Entity([
@@ -407,7 +388,25 @@ class PaginationResultTest extends TestCase
                     'modified' => new FrozenTime('2017-01-01 10:00:00'),
                 ]),
             ],
-            $iteratorAggregate,
+            new class implements IteratorAggregate {
+                public function getIterator(): Traversable
+                {
+                    return new ArrayIterator([
+                        new Entity([
+                            'id' => 1,
+                            'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        ]),
+                        new Entity([
+                            'id' => 3,
+                            'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        ]),
+                        new Entity([
+                            'id' => 5,
+                            'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        ]),
+                    ]);
+                }
+            },
             [
                 'hasPrevious' => null,
                 'previousCursor' => null,

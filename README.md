@@ -14,7 +14,7 @@ Rapid pagination without using OFFSET
 ## Requirements
 
 - PHP: ^7.4 || ^8.0
-- CakePHP: ^4.0
+- CakePHP: ^4.4
 - [lampager/lampager][]: ^0.4
 
 ### Note
@@ -41,9 +41,8 @@ methods:
 
 ### Use in Controller
 
-At first, load the default Paginator component with the
-`\Lampager\Cake\Datasource\Paginator` in your Controller class (`AppController`
-is preferable).
+At first, configure `$paginate` to use `\Lampager\Cake\Datasource\Paginator` in
+your Controller class.
 
 ```php
 namespace App\Controller;
@@ -53,14 +52,9 @@ use Lampager\Cake\Datasource\Paginator;
 
 class AppController extends Controller
 {
-    public function initialize(): void
-    {
-        parent::initialize();
-
-        $this->loadComponent('Paginator', [
-            'paginator' => new Paginator(),
-        ]);
-    }
+    public $paginate = [
+        'className' => Paginator::class,
+    ];
 }
 ```
 

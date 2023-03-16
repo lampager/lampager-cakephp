@@ -17,16 +17,4 @@ class LampagerBehavior extends Behavior
 
         return $query;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function table(): Table
-    {
-        if (is_callable('parent::' . __FUNCTION__)) {
-            return parent::table();
-        }
-
-        return $this->getTable();
-    }
 }

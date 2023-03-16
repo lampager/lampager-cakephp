@@ -1,6 +1,6 @@
 {
     "name": "lampager/lampager-cakephp",
-    "description": "Rapid pagination for CakePHP 3",
+    "description": "Rapid pagination for CakePHP 4",
     "type": "cakephp-plugin",
     "license": "MIT",
     "authors": [

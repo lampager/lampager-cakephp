@@ -19,8 +19,8 @@ class PaginationResultTest extends TestCase
     public function setUp(): void
     {
         set_error_handler(
-            static function ( $errno, $errstr ) {
-                throw new \Exception( $errstr, $errno );
+            static function ($errno, $errstr) {
+                throw new \Exception($errstr, $errno);
             },
             E_ALL
         );

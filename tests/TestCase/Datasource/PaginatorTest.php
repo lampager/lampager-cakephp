@@ -36,7 +36,6 @@ class PaginatorTest extends TestCase
             'className' => Paginator::class,
         ];
 
-        /** @var Table $posts */
         $posts = $controller->fetchTable('Posts');
 
         /** @var mixed[] $options */
@@ -56,7 +55,6 @@ class PaginatorTest extends TestCase
             'className' => Paginator::class,
         ];
 
-        /** @var Table $posts */
         $posts = $controller->fetchTable('Posts');
 
         /** @var mixed[] $options */

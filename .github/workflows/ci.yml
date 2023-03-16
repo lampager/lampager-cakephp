@@ -80,7 +80,7 @@ jobs:
         run: |
           vendor/bin/phpunit
       - name: Coverage
-        if: ${{ matrix.php == 8.2 }}
+        if: ${{ matrix.php == 8.2 && matrix.dsn == '' }}
         env:
           COVERALLS_REPO_TOKEN: ${{ github.token }}
         run: |

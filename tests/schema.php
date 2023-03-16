@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 return [
-[
-    'table' => 'posts',
+    [
+        'table' => 'posts',
         'columns' => [
             'id' => ['type' => 'integer'],
             'modified' => ['type' => 'datetime'],

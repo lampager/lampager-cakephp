@@ -27,6 +27,6 @@
 
     <php>
         <ini name="date.timezone" value="UTC" />
-        <env name="FIXTURE_SCHEMA_METADATA" value="./tests/schema.php"/>
+        <env name="FIXTURE_SCHEMA_METADATA" value="./tests/schema.php" />
     </php>
 </phpunit>

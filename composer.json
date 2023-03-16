@@ -17,8 +17,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Lampager\\Cake\\Test\\": "tests/",
-            "Lampager\\Cake\\TestApp\\": "tests/test_app/"
+            "Lampager\\Cake\\Test\\": "tests/"
         }
     },
     "require": {

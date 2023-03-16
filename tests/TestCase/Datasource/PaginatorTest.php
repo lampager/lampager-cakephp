@@ -7,7 +7,7 @@ namespace Lampager\Cake\Test\TestCase\Datasource;
 use Cake\Controller\Controller;
 use Cake\Database\Expression\OrderClauseExpression;
 use Cake\Datasource\QueryInterface;
-use Cake\I18n\Time;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Exception;
@@ -32,8 +32,9 @@ class PaginatorTest extends TestCase
     public function testPaginateTable(callable $factory, PaginationResult $expected): void
     {
         $controller = new Controller();
-        $controller->loadComponent('Paginator');
-        $controller->Paginator->setPaginator(new Paginator());
+        $controller->paginate = [
+            'className' => Paginator::class,
+        ];
 
         /** @var Table $posts */
         $posts = $controller->loadModel('Posts');
@@ -51,8 +52,9 @@ class PaginatorTest extends TestCase
     public function testPaginateCakeQuery(callable $factory, PaginationResult $expected): void
     {
         $controller = new Controller();
-        $controller->loadComponent('Paginator');
-        $controller->Paginator->setPaginator(new Paginator());
+        $controller->paginate = [
+            'className' => Paginator::class,
+        ];
 
         /** @var Table $posts */
         $posts = $controller->loadModel('Posts');
@@ -73,8 +75,9 @@ class PaginatorTest extends TestCase
         $this->expectExceptionMessage('Lampager\Cake\ORM\Query cannot be paginated by Lampager\Cake\Datasource\Paginator::paginate()');
 
         $controller = new Controller();
-        $controller->loadComponent('Paginator');
-        $controller->Paginator->setPaginator(new Paginator());
+        $controller->paginate = [
+            'className' => Paginator::class,
+        ];
 
         /** @var LampagerBehavior&Table $posts */
         $posts = $controller->loadModel('Posts');
@@ -92,8 +95,9 @@ class PaginatorTest extends TestCase
         $this->expectExceptionMessage('No repository set for query.');
 
         $controller = new Controller();
-        $controller->loadComponent('Paginator');
-        $controller->Paginator->setPaginator(new Paginator());
+        $controller->paginate = [
+            'className' => Paginator::class,
+        ];
 
         /** @var MockObject&QueryInterface $query */
         $query = $this->getMockBuilder(QueryInterface::class)->getMock();
@@ -120,15 +124,15 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 1,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -137,7 +141,7 @@ class PaginatorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'Posts.id' => 2,
-                        'Posts.modified' => new Time('2017-01-01 11:00:00'),
+                        'Posts.modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ],
                 ]
             ),
@@ -160,15 +164,15 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 1,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -177,7 +181,7 @@ class PaginatorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'Posts.id' => 5,
-                        'Posts.modified' => new Time('2017-01-01 10:00:00'),
+                        'Posts.modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
@@ -195,7 +199,7 @@ class PaginatorTest extends TestCase
                     ],
                     'cursor' => [
                         'Posts.id' => 3,
-                        'Posts.modified' => new Time('2017-01-01 10:00:00'),
+                        'Posts.modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ];
             },
@@ -203,27 +207,27 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'Posts.id' => 1,
-                        'Posts.modified' => new Time('2017-01-01 10:00:00'),
+                        'Posts.modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => true,
                     'nextCursor' => [
                         'Posts.id' => 4,
-                        'Posts.modified' => new Time('2017-01-01 11:00:00'),
+                        'Posts.modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ],
                 ]
             ),
@@ -242,7 +246,7 @@ class PaginatorTest extends TestCase
                     ],
                     'cursor' => [
                         'Posts.id' => 3,
-                        'Posts.modified' => new Time('2017-01-01 10:00:00'),
+                        'Posts.modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ];
             },
@@ -250,22 +254,22 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 4,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'Posts.id' => 5,
-                        'Posts.modified' => new Time('2017-01-01 10:00:00'),
+                        'Posts.modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => false,
                     'nextCursor' => null,
@@ -289,22 +293,22 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 4,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'Posts.id' => 3,
-                        'Posts.modified' => new Time('2017-01-01 10:00:00'),
+                        'Posts.modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => null,
                     'nextCursor' => null,
@@ -329,22 +333,22 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 4,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'Posts.id' => 5,
-                        'Posts.modified' => new Time('2017-01-01 10:00:00'),
+                        'Posts.modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => null,
                     'nextCursor' => null,
@@ -364,7 +368,7 @@ class PaginatorTest extends TestCase
                     ],
                     'cursor' => [
                         'Posts.id' => 3,
-                        'Posts.modified' => new Time('2017-01-01 10:00:00'),
+                        'Posts.modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ];
             },
@@ -372,11 +376,11 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 1,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -385,7 +389,7 @@ class PaginatorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'Posts.id' => 5,
-                        'Posts.modified' => new Time('2017-01-01 10:00:00'),
+                        'Posts.modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
@@ -404,7 +408,7 @@ class PaginatorTest extends TestCase
                     ],
                     'cursor' => [
                         'Posts.id' => 3,
-                        'Posts.modified' => new Time('2017-01-01 10:00:00'),
+                        'Posts.modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ];
             },
@@ -412,7 +416,7 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 1,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -421,7 +425,7 @@ class PaginatorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'Posts.id' => 1,
-                        'Posts.modified' => new Time('2017-01-01 10:00:00'),
+                        'Posts.modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
@@ -443,15 +447,15 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 4,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -460,7 +464,7 @@ class PaginatorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'Posts.id' => 3,
-                        'Posts.modified' => new Time('2017-01-01 10:00:00'),
+                        'Posts.modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
@@ -483,15 +487,15 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 4,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -500,7 +504,7 @@ class PaginatorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'Posts.id' => 5,
-                        'Posts.modified' => new Time('2017-01-01 10:00:00'),
+                        'Posts.modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
@@ -518,7 +522,7 @@ class PaginatorTest extends TestCase
                     ],
                     'cursor' => [
                         'Posts.id' => 3,
-                        'Posts.modified' => new Time('2017-01-01 10:00:00'),
+                        'Posts.modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ];
             },
@@ -526,18 +530,18 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 1,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'Posts.id' => 5,
-                        'Posts.modified' => new Time('2017-01-01 10:00:00'),
+                        'Posts.modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => false,
                     'nextCursor' => null,
@@ -558,7 +562,7 @@ class PaginatorTest extends TestCase
                     ],
                     'cursor' => [
                         'Posts.id' => 3,
-                        'Posts.modified' => new Time('2017-01-01 10:00:00'),
+                        'Posts.modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ];
             },
@@ -566,14 +570,14 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 1,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'Posts.id' => 1,
-                        'Posts.modified' => new Time('2017-01-01 10:00:00'),
+                        'Posts.modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => false,
                     'nextCursor' => null,
@@ -597,22 +601,22 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 1,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'Posts.id' => 2,
-                        'Posts.modified' => new Time('2017-01-01 11:00:00'),
+                        'Posts.modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ],
                     'hasNext' => null,
                     'nextCursor' => null,
@@ -637,22 +641,22 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 1,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'Posts.id' => 5,
-                        'Posts.modified' => new Time('2017-01-01 10:00:00'),
+                        'Posts.modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => null,
                     'nextCursor' => null,
@@ -672,7 +676,7 @@ class PaginatorTest extends TestCase
                     ],
                     'cursor' => [
                         'Posts.id' => 3,
-                        'Posts.modified' => new Time('2017-01-01 10:00:00'),
+                        'Posts.modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ];
             },
@@ -680,27 +684,27 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 2,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'Posts.id' => 4,
-                        'Posts.modified' => new Time('2017-01-01 11:00:00'),
+                        'Posts.modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ],
                     'hasNext' => true,
                     'nextCursor' => [
                         'Posts.id' => 1,
-                        'Posts.modified' => new Time('2017-01-01 10:00:00'),
+                        'Posts.modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
@@ -719,7 +723,7 @@ class PaginatorTest extends TestCase
                     ],
                     'cursor' => [
                         'Posts.id' => 3,
-                        'Posts.modified' => new Time('2017-01-01 10:00:00'),
+                        'Posts.modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ];
             },
@@ -727,15 +731,15 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 4,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -744,7 +748,7 @@ class PaginatorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'Posts.id' => 5,
-                        'Posts.modified' => new Time('2017-01-01 10:00:00'),
+                        'Posts.modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
@@ -769,15 +773,15 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 1,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -786,7 +790,7 @@ class PaginatorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 2,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ],
                 ]
             ),
@@ -809,15 +813,15 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 1,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -826,7 +830,7 @@ class PaginatorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
@@ -844,7 +848,7 @@ class PaginatorTest extends TestCase
                     ],
                     'cursor' => [
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ];
             },
@@ -852,27 +856,27 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 1,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 4,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ],
                 ]
             ),
@@ -891,7 +895,7 @@ class PaginatorTest extends TestCase
                     ],
                     'cursor' => [
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ];
             },
@@ -899,22 +903,22 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 4,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => false,
                     'nextCursor' => null,
@@ -938,22 +942,22 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 4,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => null,
                     'nextCursor' => null,
@@ -978,22 +982,22 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 4,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => null,
                     'nextCursor' => null,
@@ -1013,7 +1017,7 @@ class PaginatorTest extends TestCase
                     ],
                     'cursor' => [
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ];
             },
@@ -1021,11 +1025,11 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 1,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -1034,7 +1038,7 @@ class PaginatorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
@@ -1053,7 +1057,7 @@ class PaginatorTest extends TestCase
                     ],
                     'cursor' => [
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ];
             },
@@ -1061,7 +1065,7 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 1,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -1070,7 +1074,7 @@ class PaginatorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 1,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
@@ -1092,15 +1096,15 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 4,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -1109,7 +1113,7 @@ class PaginatorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
@@ -1132,15 +1136,15 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 4,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -1149,7 +1153,7 @@ class PaginatorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
@@ -1167,7 +1171,7 @@ class PaginatorTest extends TestCase
                     ],
                     'cursor' => [
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ];
             },
@@ -1175,18 +1179,18 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 1,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => false,
                     'nextCursor' => null,
@@ -1207,7 +1211,7 @@ class PaginatorTest extends TestCase
                     ],
                     'cursor' => [
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ];
             },
@@ -1215,14 +1219,14 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 1,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 1,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => false,
                     'nextCursor' => null,
@@ -1246,22 +1250,22 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 1,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 2,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ],
                     'hasNext' => null,
                     'nextCursor' => null,
@@ -1286,22 +1290,22 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 1,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => null,
                     'nextCursor' => null,
@@ -1321,7 +1325,7 @@ class PaginatorTest extends TestCase
                     ],
                     'cursor' => [
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ];
             },
@@ -1329,27 +1333,27 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 2,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 4,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ],
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 1,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
@@ -1368,7 +1372,7 @@ class PaginatorTest extends TestCase
                     ],
                     'cursor' => [
                         'id' => 3,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ];
             },
@@ -1376,15 +1380,15 @@ class PaginatorTest extends TestCase
                 [
                     new Entity([
                         'id' => 4,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new Time('2017-01-01 11:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -1393,7 +1397,7 @@ class PaginatorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 5,
-                        'modified' => new Time('2017-01-01 10:00:00'),
+                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),

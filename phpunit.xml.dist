@@ -11,13 +11,9 @@
         </testsuite>
     </testsuites>
 
-    <listeners>
-        <listener class="\Cake\TestSuite\Fixture\FixtureInjector">
-            <arguments>
-                <object class="\Cake\TestSuite\Fixture\FixtureManager" />
-            </arguments>
-        </listener>
-    </listeners>
+    <extensions>
+        <extension class="\Cake\TestSuite\Fixture\PHPUnitExtension" />
+    </extensions>
 
     <coverage>
         <include>
@@ -31,5 +27,6 @@
 
     <php>
         <ini name="date.timezone" value="UTC" />
+        <env name="FIXTURE_SCHEMA_METADATA" value="./tests/schema.php" />
     </php>
 </phpunit>

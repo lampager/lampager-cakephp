@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Lampager\Cake\Test\TestCase;
 
 use ArrayIterator;
-use Cake\I18n\Time;
+use Cake\Datasource\ConnectionManager;
+use Cake\I18n\FrozenTime;
 use Cake\ORM\Entity;
 use Generator;
 use IteratorAggregate;
@@ -15,6 +16,25 @@ use Traversable;
 
 class PaginationResultTest extends TestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+        
+        set_error_handler(
+            static function ($errno, $errstr, $errfile, $errline) {
+                throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
+            },
+            E_ALL
+        );
+    }
+
+    public function tearDown(): void
+    {
+        restore_error_handler();
+
+        parent::tearDown();
+    }
+
     /**
      * @param Entity[]                     $entities
      * @param Entity[]|Traversable<Entity> $records
@@ -217,8 +237,8 @@ class PaginationResultTest extends TestCase
      */
     public function testUndefinedProperties(array $entities, $records, array $meta): void
     {
-        $this->expectError();
-        $this->expectErrorMessageMatches('/^Undefined property via __get\(\): undefinedProperty/');
+        $this->expectException(\ErrorException::class);
+        $this->expectExceptionMessageMatches('/^Undefined property via __get\(\): undefinedProperty/');
 
         $paginationResult = new PaginationResult($records, $meta);
         $paginationResult->undefinedProperty;
@@ -230,29 +250,29 @@ class PaginationResultTest extends TestCase
             [
                 new Entity([
                     'id' => 1,
-                    'modified' => new Time('2017-01-01 10:00:00'),
+                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 3,
-                    'modified' => new Time('2017-01-01 10:00:00'),
+                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 5,
-                    'modified' => new Time('2017-01-01 10:00:00'),
+                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
                 ]),
             ],
             [
                 new Entity([
                     'id' => 1,
-                    'modified' => new Time('2017-01-01 10:00:00'),
+                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 3,
-                    'modified' => new Time('2017-01-01 10:00:00'),
+                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 5,
-                    'modified' => new Time('2017-01-01 10:00:00'),
+                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
                 ]),
             ],
             [
@@ -261,7 +281,7 @@ class PaginationResultTest extends TestCase
                 'hasNext' => true,
                 'nextCursor' => [
                     'Posts.id' => 2,
-                    'Posts.modified' => new Time('2017-01-01 11:00:00'),
+                    'Posts.modified' => new FrozenTime('2017-01-01 11:00:00'),
                 ],
             ],
             '{
@@ -293,29 +313,29 @@ class PaginationResultTest extends TestCase
             [
                 new Entity([
                     'id' => 1,
-                    'modified' => new Time('2017-01-01 10:00:00'),
+                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 3,
-                    'modified' => new Time('2017-01-01 10:00:00'),
+                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 5,
-                    'modified' => new Time('2017-01-01 10:00:00'),
+                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
                 ]),
             ],
             new ArrayIterator([
                 new Entity([
                     'id' => 1,
-                    'modified' => new Time('2017-01-01 10:00:00'),
+                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 3,
-                    'modified' => new Time('2017-01-01 10:00:00'),
+                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 5,
-                    'modified' => new Time('2017-01-01 10:00:00'),
+                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
                 ]),
             ]),
             [
@@ -324,7 +344,7 @@ class PaginationResultTest extends TestCase
                 'hasNext' => true,
                 'nextCursor' => [
                     'Posts.id' => 2,
-                    'Posts.modified' => new Time('2017-01-01 11:00:00'),
+                    'Posts.modified' => new FrozenTime('2017-01-01 11:00:00'),
                 ],
             ],
             '{
@@ -360,15 +380,15 @@ class PaginationResultTest extends TestCase
         $iteratorAggregate->method('getIterator')->willReturn(new ArrayIterator([
             new Entity([
                 'id' => 1,
-                'modified' => new Time('2017-01-01 10:00:00'),
+                'modified' => new FrozenTime('2017-01-01 10:00:00'),
             ]),
             new Entity([
                 'id' => 3,
-                'modified' => new Time('2017-01-01 10:00:00'),
+                'modified' => new FrozenTime('2017-01-01 10:00:00'),
             ]),
             new Entity([
                 'id' => 5,
-                'modified' => new Time('2017-01-01 10:00:00'),
+                'modified' => new FrozenTime('2017-01-01 10:00:00'),
             ]),
         ]));
 
@@ -376,15 +396,15 @@ class PaginationResultTest extends TestCase
             [
                 new Entity([
                     'id' => 1,
-                    'modified' => new Time('2017-01-01 10:00:00'),
+                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 3,
-                    'modified' => new Time('2017-01-01 10:00:00'),
+                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 5,
-                    'modified' => new Time('2017-01-01 10:00:00'),
+                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
                 ]),
             ],
             $iteratorAggregate,
@@ -394,7 +414,7 @@ class PaginationResultTest extends TestCase
                 'hasNext' => true,
                 'nextCursor' => [
                     'Posts.id' => 2,
-                    'Posts.modified' => new Time('2017-01-01 11:00:00'),
+                    'Posts.modified' => new FrozenTime('2017-01-01 11:00:00'),
                 ],
             ],
             '{

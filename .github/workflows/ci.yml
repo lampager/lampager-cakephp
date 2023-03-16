@@ -13,11 +13,10 @@ jobs:
     strategy:
       matrix:
         php:
-          - 7.2
-          - 7.3
           - 7.4
           - 8.0
           - 8.1
+          - 8.2
         dsn:
           - ''
           - mysql://lampager_test:lampager_test@127.0.0.1/lampager_test
@@ -82,7 +81,7 @@ jobs:
         run: |
           vendor/bin/phpunit
       - name: Coverage
-        if: ${{ matrix.php == 8.1 }}
+        if: ${{ matrix.php == 8.2 }}
         env:
           COVERALLS_REPO_TOKEN: ${{ github.token }}
         run: |

@@ -13,4 +13,4 @@ build:
         override:
           - php-scrutinizer-run
   environment:
-    php: '7.4'
+    php: '8.2'

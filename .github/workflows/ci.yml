@@ -1,6 +1,9 @@
 name: CI Workflow
 on:
-  - push
+  pull_request:
+  push:
+    branches:
+      - v1.x
 
 jobs:
   build:

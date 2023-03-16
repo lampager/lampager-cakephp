@@ -661,8 +661,8 @@ class LampagerBehaviorTest extends TestCase
                     ->forward()
                     ->seekable()
                     ->limit(3)
-                    ->orderAsc($posts->query()->newExpr('modified'))
-                    ->orderAsc($posts->query()->newExpr('id'));
+                    ->orderAsc($posts->query()->expr('modified'))
+                    ->orderAsc($posts->query()->expr('id'));
             },
             new PaginationResult(
                 [
@@ -698,8 +698,8 @@ class LampagerBehaviorTest extends TestCase
                     ->forward()
                     ->seekable()
                     ->limit(3)
-                    ->orderAsc($posts->query()->newExpr('modified'))
-                    ->orderAsc($posts->query()->newExpr('id'))
+                    ->orderAsc($posts->query()->expr('modified'))
+                    ->orderAsc($posts->query()->expr('id'))
                     ->cursor([
                         'id' => 3,
                         'modified' => new FrozenTime('2017-01-01 10:00:00'),
@@ -743,8 +743,8 @@ class LampagerBehaviorTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderAsc($posts->query()->newExpr('modified'))
-                    ->orderAsc($posts->query()->newExpr('id'))
+                    ->orderAsc($posts->query()->expr('modified'))
+                    ->orderAsc($posts->query()->expr('id'))
                     ->cursor([
                         'id' => 3,
                         'modified' => new FrozenTime('2017-01-01 10:00:00'),
@@ -784,8 +784,8 @@ class LampagerBehaviorTest extends TestCase
                     ->backward()
                     ->seekable()
                     ->limit(3)
-                    ->orderAsc($posts->query()->newExpr('modified'))
-                    ->orderAsc($posts->query()->newExpr('id'));
+                    ->orderAsc($posts->query()->expr('modified'))
+                    ->orderAsc($posts->query()->expr('id'));
             },
             new PaginationResult(
                 [
@@ -822,8 +822,8 @@ class LampagerBehaviorTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderAsc($posts->query()->newExpr('modified'))
-                    ->orderAsc($posts->query()->newExpr('id'));
+                    ->orderAsc($posts->query()->expr('modified'))
+                    ->orderAsc($posts->query()->expr('id'));
             },
             new PaginationResult(
                 [
@@ -859,8 +859,8 @@ class LampagerBehaviorTest extends TestCase
                     ->backward()
                     ->seekable()
                     ->limit(3)
-                    ->orderAsc($posts->query()->newExpr('modified'))
-                    ->orderAsc($posts->query()->newExpr('id'))
+                    ->orderAsc($posts->query()->expr('modified'))
+                    ->orderAsc($posts->query()->expr('id'))
                     ->cursor([
                         'id' => 3,
                         'modified' => new FrozenTime('2017-01-01 10:00:00'),
@@ -897,8 +897,8 @@ class LampagerBehaviorTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderAsc($posts->query()->newExpr('modified'))
-                    ->orderAsc($posts->query()->newExpr('id'))
+                    ->orderAsc($posts->query()->expr('modified'))
+                    ->orderAsc($posts->query()->expr('id'))
                     ->cursor([
                         'id' => 3,
                         'modified' => new FrozenTime('2017-01-01 10:00:00'),
@@ -930,8 +930,8 @@ class LampagerBehaviorTest extends TestCase
                     ->forward()
                     ->seekable()
                     ->limit(3)
-                    ->orderDesc($posts->query()->newExpr('modified'))
-                    ->orderDesc($posts->query()->newExpr('id'));
+                    ->orderDesc($posts->query()->expr('modified'))
+                    ->orderDesc($posts->query()->expr('id'));
             },
             new PaginationResult(
                 [
@@ -968,8 +968,8 @@ class LampagerBehaviorTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderDesc($posts->query()->newExpr('modified'))
-                    ->orderDesc($posts->query()->newExpr('id'));
+                    ->orderDesc($posts->query()->expr('modified'))
+                    ->orderDesc($posts->query()->expr('id'));
             },
             new PaginationResult(
                 [
@@ -1005,8 +1005,8 @@ class LampagerBehaviorTest extends TestCase
                     ->forward()
                     ->seekable()
                     ->limit(3)
-                    ->orderDesc($posts->query()->newExpr('modified'))
-                    ->orderDesc($posts->query()->newExpr('id'))
+                    ->orderDesc($posts->query()->expr('modified'))
+                    ->orderDesc($posts->query()->expr('id'))
                     ->cursor([
                         'id' => 3,
                         'modified' => new FrozenTime('2017-01-01 10:00:00'),
@@ -1043,8 +1043,8 @@ class LampagerBehaviorTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderDesc($posts->query()->newExpr('modified'))
-                    ->orderDesc($posts->query()->newExpr('id'))
+                    ->orderDesc($posts->query()->expr('modified'))
+                    ->orderDesc($posts->query()->expr('id'))
                     ->cursor([
                         'id' => 3,
                         'modified' => new FrozenTime('2017-01-01 10:00:00'),
@@ -1076,8 +1076,8 @@ class LampagerBehaviorTest extends TestCase
                     ->backward()
                     ->seekable()
                     ->limit(3)
-                    ->orderDesc($posts->query()->newExpr('modified'))
-                    ->orderDesc($posts->query()->newExpr('id'));
+                    ->orderDesc($posts->query()->expr('modified'))
+                    ->orderDesc($posts->query()->expr('id'));
             },
             new PaginationResult(
                 [
@@ -1114,8 +1114,8 @@ class LampagerBehaviorTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderDesc($posts->query()->newExpr('modified'))
-                    ->orderDesc($posts->query()->newExpr('id'));
+                    ->orderDesc($posts->query()->expr('modified'))
+                    ->orderDesc($posts->query()->expr('id'));
             },
             new PaginationResult(
                 [
@@ -1151,8 +1151,8 @@ class LampagerBehaviorTest extends TestCase
                     ->backward()
                     ->seekable()
                     ->limit(3)
-                    ->orderDesc($posts->query()->newExpr('modified'))
-                    ->orderDesc($posts->query()->newExpr('id'))
+                    ->orderDesc($posts->query()->expr('modified'))
+                    ->orderDesc($posts->query()->expr('id'))
                     ->cursor([
                         'id' => 3,
                         'modified' => new FrozenTime('2017-01-01 10:00:00'),
@@ -1196,8 +1196,8 @@ class LampagerBehaviorTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderDesc($posts->query()->newExpr('modified'))
-                    ->orderDesc($posts->query()->newExpr('id'))
+                    ->orderDesc($posts->query()->expr('modified'))
+                    ->orderDesc($posts->query()->expr('id'))
                     ->cursor([
                         'id' => 3,
                         'modified' => new FrozenTime('2017-01-01 10:00:00'),

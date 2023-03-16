@@ -36,8 +36,7 @@ class PaginatorTest extends TestCase
             'className' => Paginator::class,
         ];
 
-        /** @var Table $posts */
-        $posts = $controller->loadModel('Posts');
+        $posts = $controller->fetchTable('Posts');
 
         /** @var mixed[] $options */
         $options = $factory($posts);
@@ -56,8 +55,7 @@ class PaginatorTest extends TestCase
             'className' => Paginator::class,
         ];
 
-        /** @var Table $posts */
-        $posts = $controller->loadModel('Posts');
+        $posts = $controller->fetchTable('Posts');
 
         /** @var mixed[] $options */
         $options = $factory($posts);
@@ -80,7 +78,7 @@ class PaginatorTest extends TestCase
         ];
 
         /** @var LampagerBehavior&Table $posts */
-        $posts = $controller->loadModel('Posts');
+        $posts = $controller->fetchTable('Posts');
         $posts->addBehavior(LampagerBehavior::class);
 
         /** @var mixed[] $options */

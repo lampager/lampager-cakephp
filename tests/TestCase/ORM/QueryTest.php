@@ -27,6 +27,25 @@ class QueryTest extends TestCase
         'plugin.Lampager\\Cake.Posts',
     ];
 
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        set_error_handler(
+            static function ($errno, $errstr, $errfile, $errline) {
+                throw new \ErrorException($errstr, 0, $errno, $errfile, $errline);
+            },
+            E_ALL
+        );
+    }
+
+    public function tearDown(): void
+    {
+        restore_error_handler();
+
+        parent::tearDown();
+    }
+
     /**
      * @dataProvider orderProvider
      */
@@ -223,23 +242,15 @@ class QueryTest extends TestCase
 
     public function testCall(): void
     {
+        $this->expectException(\ErrorException::class);
+        $this->expectExceptionMessage('You must call `all()` first');
+
         /** @var LampagerBehavior&Table $posts */
         $posts = TableRegistry::getTableLocator()->get('Posts');
         $posts->addBehavior(LampagerBehavior::class);
-
-        $actual = $posts->lampager()
+        $posts->lampager()
             ->orderAsc('id')
-            ->all()
             ->take();
-
-        $expected = [
-            new Entity([
-                'id' => 1,
-                'modified' => new FrozenTime('2017-01-01 10:00:00'),
-            ]),
-        ];
-
-        $this->assertJsonEquals($expected, $actual);
     }
 
     public function testDebugInfo(): void

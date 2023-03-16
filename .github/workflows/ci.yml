@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - v1.x
 
 jobs:
   build:
@@ -37,7 +36,7 @@ jobs:
           --health-timeout=30s
           --health-retries=5
       postgres:
-        image: postgres:13.3
+        image: postgres:15.2
         ports:
           - '5432:5432'
         env:

@@ -11,7 +11,7 @@ require_once __DIR__ . '/../vendor/cakephp/cakephp/src/basics.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
 ConnectionManager::setConfig('test', [
-    'url' => env('DB_DSN', 'sqlite:///:memory:?className=' . Connection::class . '&driver=' . Sqlite::class . '&quoteIdentifiers=true'),
+    'url' => env('DB_DSN') ?: 'sqlite:///:memory:?className=' . Connection::class . '&driver=' . Sqlite::class . '&quoteIdentifiers=true',
 ]);
 
 // Create test database schema

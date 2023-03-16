@@ -50,9 +50,9 @@ jobs:
           --health-retries=5
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Cache composer
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: .composer/cache
           key: buildx-${{ github.sha }}
@@ -72,7 +72,7 @@ jobs:
         run: |
           vendor/bin/phpunit
       - name: Coverage
-        if: ${{ matrix.php == 7.4 }}
+        if: ${{ matrix.php == 7.4 && matrix.dsn == '' }}
         env:
           COVERALLS_REPO_TOKEN: ${{ github.token }}
         run: |

@@ -32,6 +32,7 @@ class PaginatorTest extends TestCase
     public function testPaginateTable(callable $factory, PaginationResult $expected): void
     {
         $controller = new Controller();
+        $controller->Posts = null;
         $controller->paginate = [
             'className' => Paginator::class,
         ];
@@ -51,6 +52,7 @@ class PaginatorTest extends TestCase
     public function testPaginateCakeQuery(callable $factory, PaginationResult $expected): void
     {
         $controller = new Controller();
+        $controller->Posts = null;
         $controller->paginate = [
             'className' => Paginator::class,
         ];
@@ -73,6 +75,7 @@ class PaginatorTest extends TestCase
         $this->expectExceptionMessage('Lampager\Cake\ORM\Query cannot be paginated by Lampager\Cake\Datasource\Paginator::paginate()');
 
         $controller = new Controller();
+        $controller->Posts = null;
         $controller->paginate = [
             'className' => Paginator::class,
         ];
@@ -93,6 +96,7 @@ class PaginatorTest extends TestCase
         $this->expectExceptionMessage('No repository set for query.');
 
         $controller = new Controller();
+        $controller->Posts = null;
         $controller->paginate = [
             'className' => Paginator::class,
         ];

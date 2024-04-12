@@ -14,7 +14,7 @@ Rapid pagination without using OFFSET
 ## Requirements
 
 - PHP: ^7.4 || ^8.0
-- CakePHP: ^4.4
+- CakePHP: ^4.5
 - [lampager/lampager][]: ^0.4
 
 ### Note
@@ -144,9 +144,9 @@ $drafts = $this->lampager()
     ->seekable()
     ->cursor($cursor)
     ->limit(10)
-    ->orderDesc($this->query()->newExpr('modified'))
-    ->orderDesc($this->query()->newExpr('created'))
-    ->orderDesc($this->query()->newExpr('id'));
+    ->orderDesc($this->selectQuery()->newExpr('modified'))
+    ->orderDesc($this->selectQuery()->newExpr('created'))
+    ->orderDesc($this->selectQuery()->newExpr('id'));
 
 /** @var \Cake\ORM\Entity $sample */
 $sample = $drafts->sample();
@@ -288,6 +288,8 @@ namespace App\Controller;
 
 class PostsController extends AppController
 {
+    public $Posts = null;
+
     /**
      * This method shows how to pass options by a query and array.
      */

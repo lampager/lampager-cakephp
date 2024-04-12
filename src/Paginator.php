@@ -101,7 +101,7 @@ class Paginator extends BasePaginator
         $repository = $this->builder->getRepository();
 
         /** @var Query $builder */
-        $builder = $repository->query()
+        $builder = $repository->selectQuery()
             ->where($this->builder->clause('where'))
             ->modifier($this->builder->clause('modifier'))
             ->join($this->builder->clause('join'))

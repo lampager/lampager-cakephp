@@ -120,8 +120,8 @@ class QueryTest extends TestCase
         );
 
         $actual = $posts->lampager()
-            ->order([$posts->query()->expr('modified')])
-            ->order([$posts->query()->expr('id')])
+            ->order([$posts->selectQuery()->expr('modified')])
+            ->order([$posts->selectQuery()->expr('id')])
             ->limit(1)
             ->all();
 
@@ -155,7 +155,7 @@ class QueryTest extends TestCase
         $actual = $posts->lampager()
             ->orderAsc('modified')
             ->orderAsc('id')
-            ->limit($posts->query()->expr('1'))
+            ->limit($posts->selectQuery()->expr('1'))
             ->all();
 
         $this->assertJsonEquals($expected, $actual);
@@ -172,7 +172,7 @@ class QueryTest extends TestCase
         $posts->lampager()
             ->orderAsc('modified')
             ->orderAsc('id')
-            ->limit($posts->query()->expr('1 + 1'))
+            ->limit($posts->selectQuery()->expr('1 + 1'))
             ->all();
     }
 
@@ -236,14 +236,14 @@ class QueryTest extends TestCase
         $posts->lampager()
             ->orderAsc('modified')
             ->orderAsc('id')
-            ->union($posts->query()->select())
+            ->union($posts->selectQuery()->select())
             ->all();
     }
 
     public function testCall(): void
     {
         $this->expectException(\ErrorException::class);
-        $this->expectExceptionMessage('You must call `all()` first');
+        $this->expectExceptionMessage('Instead call `$query->all()->take(...)` instead.');
 
         /** @var LampagerBehavior&Table $posts */
         $posts = TableRegistry::getTableLocator()->get('Posts');

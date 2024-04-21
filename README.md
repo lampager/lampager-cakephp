@@ -2,9 +2,9 @@
 <img width="320" alt="lampager-cakephp" src="https://user-images.githubusercontent.com/1351893/31820647-42c45c7a-b5dd-11e7-9ac8-f1000e961662.png">
 </p>
 <p align="center">
-<a href="https://github.com/lampager/lampager-cakephp/actions/workflows/ci.yml?query=branch:master"><img src="https://github.com/lampager/lampager-cakephp/actions/workflows/ci.yml/badge.svg?branch=master" alt="CI Workflow"></a>
-<a href="https://coveralls.io/github/lampager/lampager-cakephp?branch=master"><img src="https://coveralls.io/repos/github/lampager/lampager-cakephp/badge.svg?branch=master" alt="Coverage Status"></a>
-<a href="https://scrutinizer-ci.com/g/lampager/lampager-cakephp/?branch=master"><img src="https://scrutinizer-ci.com/g/lampager/lampager-cakephp/badges/quality-score.png?b=master" alt="Scrutinizer Code Quality"></a>
+<a href="https://github.com/lampager/lampager-cakephp/actions/workflows/ci.yml?query=branch:v2.x"><img src="https://github.com/lampager/lampager-cakephp/actions/workflows/ci.yml/badge.svg?branch=v2.x" alt="CI Workflow"></a>
+<a href="https://coveralls.io/github/lampager/lampager-cakephp?branch=v2.x"><img src="https://coveralls.io/repos/github/lampager/lampager-cakephp/badge.svg?branch=v2.x" alt="Coverage Status"></a>
+<a href="https://scrutinizer-ci.com/g/lampager/lampager-cakephp/?branch=v2.x"><img src="https://scrutinizer-ci.com/g/lampager/lampager-cakephp/badges/quality-score.png?b=v2.x" alt="Scrutinizer Code Quality"></a>
 </p>
 
 # Lampager for CakePHP
@@ -22,6 +22,7 @@ Rapid pagination without using OFFSET
 - For CakePHP 2.x, use [lampager/lampager-cakephp2][].
 - For CakePHP 3.x, use [lampager/lampager-cakephp v1.x][].
 - For CakePHP 4.x, use lampager/lampager-cakephp v2.x (this version).
+- For CakePHP 5.x, use [lampager/lampager-cakephp v3.x][].
 
 ## Installing
 
@@ -415,6 +416,7 @@ return [
 
 [lampager/lampager]:              https://github.com/lampager/lampager
 [lampager/lampager-cakephp v1.x]: https://github.com/lampager/lampager-cakephp/tree/v1.x
+[lampager/lampager-cakephp v3.x]: https://github.com/lampager/lampager-cakephp
 [lampager/lampager-cakephp2]:     https://github.com/lampager/lampager-cakephp2
 [Pagination]:                     https://book.cakephp.org/4/en/controllers/pagination.html
 [Working with Result Sets]:       https://book.cakephp.org/4/en/orm/retrieving-data-and-resultsets.html#working-with-result-sets

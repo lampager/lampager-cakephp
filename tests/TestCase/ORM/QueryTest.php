@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Lampager\Cake\Test\TestCase\ORM;
 
 use Cake\Database\Expression\OrderClauseExpression;
-use Cake\I18n\FrozenTime;
+use Cake\I18n\DateTime;
 use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
@@ -23,7 +23,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 class QueryTest extends TestCase
 {
-    public $fixtures = [
+    public array $fixtures = [
         'plugin.Lampager\\Cake.Posts',
     ];
 
@@ -49,7 +49,7 @@ class QueryTest extends TestCase
     /**
      * @dataProvider orderProvider
      */
-    public function testOrder(callable $factory, PaginationResult $expected): void
+    public function testorderBy(callable $factory, PaginationResult $expected): void
     {
         /** @var LampagerBehavior&Table $posts */
         $posts = TableRegistry::getTableLocator()->get('Posts');
@@ -57,7 +57,7 @@ class QueryTest extends TestCase
 
         /** @var Query $query */
         $query = $factory($posts);
-        $this->assertJsonEquals($expected, $query->all());
+        $this->assertJsonEquals($expected, $query->paginate());
     }
 
     /**
@@ -74,8 +74,8 @@ class QueryTest extends TestCase
 
         /** @var Query $query */
         $query = $factory($posts);
-        $query->order([], true);
-        $query->all();
+        $query->orderBy([], true);
+        $query->paginate();
     }
 
     public function testOrderIllegal(): void
@@ -91,8 +91,8 @@ class QueryTest extends TestCase
         $posts = TableRegistry::getTableLocator()->get('Posts');
         $posts->addBehavior(LampagerBehavior::class);
         $posts->lampager()
-            ->order([$expression])
-            ->all();
+            ->orderBy([$expression])
+            ->paginate();
     }
 
     public function testOrderQueryExpression(): void
@@ -105,7 +105,7 @@ class QueryTest extends TestCase
             [
                 new Entity([
                     'id' => 1,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
             ],
             [
@@ -114,16 +114,16 @@ class QueryTest extends TestCase
                 'hasNext' => true,
                 'nextCursor' => [
                     'id' => 3,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ],
             ]
         );
 
         $actual = $posts->lampager()
-            ->order([$posts->selectQuery()->expr('modified')])
-            ->order([$posts->selectQuery()->expr('id')])
+            ->orderBy([$posts->selectQuery()->expr('modified')])
+            ->orderBy([$posts->selectQuery()->expr('id')])
             ->limit(1)
-            ->all();
+            ->paginate();
 
         $this->assertJsonEquals($expected, $actual);
     }
@@ -138,7 +138,7 @@ class QueryTest extends TestCase
             [
                 new Entity([
                     'id' => 1,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
             ],
             [
@@ -147,16 +147,16 @@ class QueryTest extends TestCase
                 'hasNext' => true,
                 'nextCursor' => [
                     'id' => 3,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ],
             ]
         );
 
         $actual = $posts->lampager()
-            ->orderAsc('modified')
-            ->orderAsc('id')
+            ->orderByAsc('modified')
+            ->orderByAsc('id')
             ->limit($posts->selectQuery()->expr('1'))
-            ->all();
+            ->paginate();
 
         $this->assertJsonEquals($expected, $actual);
     }
@@ -170,10 +170,10 @@ class QueryTest extends TestCase
         $posts = TableRegistry::getTableLocator()->get('Posts');
         $posts->addBehavior(LampagerBehavior::class);
         $posts->lampager()
-            ->orderAsc('modified')
-            ->orderAsc('id')
+            ->orderByAsc('modified')
+            ->orderByAsc('id')
             ->limit($posts->selectQuery()->expr('1 + 1'))
-            ->all();
+            ->paginate();
     }
 
     public function testWhere(): void
@@ -186,7 +186,7 @@ class QueryTest extends TestCase
             [
                 new Entity([
                     'id' => 3,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
             ],
             [
@@ -195,17 +195,17 @@ class QueryTest extends TestCase
                 'hasNext' => true,
                 'nextCursor' => [
                     'id' => 5,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ],
             ]
         );
 
         $actual = $posts->lampager()
             ->where(['id >' => 1])
-            ->orderAsc('modified')
-            ->orderAsc('id')
+            ->orderByAsc('modified')
+            ->orderByAsc('id')
             ->limit(1)
-            ->all();
+            ->paginate();
 
         $this->assertJsonEquals($expected, $actual);
     }
@@ -219,10 +219,10 @@ class QueryTest extends TestCase
         $posts = TableRegistry::getTableLocator()->get('Posts');
         $posts->addBehavior(LampagerBehavior::class);
         $posts->lampager()
-            ->orderAsc('modified')
-            ->orderAsc('id')
-            ->group('modified')
-            ->all();
+            ->orderByAsc('modified')
+            ->orderByAsc('id')
+            ->groupBy('modified')
+            ->paginate();
     }
 
     public function testUnion(): void
@@ -234,22 +234,22 @@ class QueryTest extends TestCase
         $posts = TableRegistry::getTableLocator()->get('Posts');
         $posts->addBehavior(LampagerBehavior::class);
         $posts->lampager()
-            ->orderAsc('modified')
-            ->orderAsc('id')
+            ->orderByAsc('modified')
+            ->orderByAsc('id')
             ->union($posts->selectQuery()->select())
-            ->all();
+            ->paginate();
     }
 
     public function testCall(): void
     {
-        $this->expectException(\ErrorException::class);
-        $this->expectExceptionMessage('Instead call `$query->all()->take(...)` instead.');
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('Method Lampager\Cake\ORM\Query::take does not exist');
 
         /** @var LampagerBehavior&Table $posts */
         $posts = TableRegistry::getTableLocator()->get('Posts');
         $posts->addBehavior(LampagerBehavior::class);
         $posts->lampager()
-            ->orderAsc('id')
+            ->orderByAsc('id')
             ->take();
     }
 
@@ -260,8 +260,8 @@ class QueryTest extends TestCase
         $posts->addBehavior(LampagerBehavior::class);
 
         $actual = $posts->lampager()
-            ->orderAsc('modified')
-            ->orderAsc('id')
+            ->orderByAsc('modified')
+            ->orderByAsc('id')
             ->limit(3)
             ->__debugInfo();
 
@@ -275,7 +275,6 @@ class QueryTest extends TestCase
         $this->assertArrayHasKey('decorators', $actual);
         $this->assertArrayHasKey('executed', $actual);
         $this->assertArrayHasKey('hydrate', $actual);
-        $this->assertArrayHasKey('buffered', $actual);
         $this->assertArrayHasKey('formatters', $actual);
         $this->assertArrayHasKey('mapReducers', $actual);
         $this->assertArrayHasKey('contain', $actual);
@@ -303,7 +302,6 @@ class QueryTest extends TestCase
         $this->assertArrayHasKey('decorators', $actual);
         $this->assertArrayHasKey('executed', $actual);
         $this->assertArrayHasKey('hydrate', $actual);
-        $this->assertArrayHasKey('buffered', $actual);
         $this->assertArrayHasKey('formatters', $actual);
         $this->assertArrayHasKey('mapReducers', $actual);
         $this->assertArrayHasKey('contain', $actual);
@@ -323,7 +321,7 @@ class QueryTest extends TestCase
         $this->assertSame($expected, $factory($posts));
     }
 
-    public function orderProvider(): Generator
+    public static function orderProvider(): Generator
     {
         yield 'Ascending and ascending' => [
             function (Table $posts) {
@@ -332,7 +330,7 @@ class QueryTest extends TestCase
                     ->forward()
                     ->seekable()
                     ->limit(3)
-                    ->order([
+                    ->orderBy([
                         'modified' => 'asc',
                         'id' => 'asc',
                     ]);
@@ -341,15 +339,15 @@ class QueryTest extends TestCase
                 [
                     new Entity([
                         'id' => 1,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -358,7 +356,7 @@ class QueryTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 2,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ],
                 ]
             ),
@@ -371,7 +369,7 @@ class QueryTest extends TestCase
                     ->forward()
                     ->seekable()
                     ->limit(3)
-                    ->order([
+                    ->orderBy([
                         'modified' => 'desc',
                         'id' => 'desc',
                     ]);
@@ -380,15 +378,15 @@ class QueryTest extends TestCase
                 [
                     new Entity([
                         'id' => 4,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -397,14 +395,14 @@ class QueryTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
         ];
     }
 
-    public function countProvider(): Generator
+    public static function countProvider(): Generator
     {
         yield 'Ascending forward start inclusive' => [
             function (Table $posts) {
@@ -413,8 +411,8 @@ class QueryTest extends TestCase
                     ->forward()
                     ->seekable()
                     ->limit(3)
-                    ->orderAsc('modified')
-                    ->orderAsc('id')
+                    ->orderByAsc('modified')
+                    ->orderByAsc('id')
                     ->count();
             },
             3,
@@ -428,8 +426,8 @@ class QueryTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderAsc('modified')
-                    ->orderAsc('id')
+                    ->orderByAsc('modified')
+                    ->orderByAsc('id')
                     ->count();
             },
             3,
@@ -442,11 +440,11 @@ class QueryTest extends TestCase
                     ->forward()
                     ->seekable()
                     ->limit(3)
-                    ->orderAsc('modified')
-                    ->orderAsc('id')
+                    ->orderByAsc('modified')
+                    ->orderByAsc('id')
                     ->cursor([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ])
                     ->count();
             },
@@ -461,11 +459,11 @@ class QueryTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderAsc('modified')
-                    ->orderAsc('id')
+                    ->orderByAsc('modified')
+                    ->orderByAsc('id')
                     ->cursor([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ])
                     ->count();
             },
@@ -479,8 +477,8 @@ class QueryTest extends TestCase
                     ->backward()
                     ->seekable()
                     ->limit(3)
-                    ->orderAsc('modified')
-                    ->orderAsc('id')
+                    ->orderByAsc('modified')
+                    ->orderByAsc('id')
                     ->count();
             },
             3,
@@ -494,8 +492,8 @@ class QueryTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderAsc('modified')
-                    ->orderAsc('id')
+                    ->orderByAsc('modified')
+                    ->orderByAsc('id')
                     ->count();
             },
             3,
@@ -508,11 +506,11 @@ class QueryTest extends TestCase
                     ->backward()
                     ->seekable()
                     ->limit(3)
-                    ->orderAsc('modified')
-                    ->orderAsc('id')
+                    ->orderByAsc('modified')
+                    ->orderByAsc('id')
                     ->cursor([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ])
                     ->count();
             },
@@ -527,11 +525,11 @@ class QueryTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderAsc('modified')
-                    ->orderAsc('id')
+                    ->orderByAsc('modified')
+                    ->orderByAsc('id')
                     ->cursor([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ])
                     ->count();
             },
@@ -545,8 +543,8 @@ class QueryTest extends TestCase
                     ->forward()
                     ->seekable()
                     ->limit(3)
-                    ->orderDesc('modified')
-                    ->orderDesc('id')
+                    ->orderByDesc('modified')
+                    ->orderByDesc('id')
                     ->count();
             },
             3,
@@ -560,8 +558,8 @@ class QueryTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderDesc('modified')
-                    ->orderDesc('id')
+                    ->orderByDesc('modified')
+                    ->orderByDesc('id')
                     ->count();
             },
             3,
@@ -574,11 +572,11 @@ class QueryTest extends TestCase
                     ->forward()
                     ->seekable()
                     ->limit(3)
-                    ->orderDesc('modified')
-                    ->orderDesc('id')
+                    ->orderByDesc('modified')
+                    ->orderByDesc('id')
                     ->cursor([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ])
                     ->count();
             },
@@ -593,11 +591,11 @@ class QueryTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderDesc('modified')
-                    ->orderDesc('id')
+                    ->orderByDesc('modified')
+                    ->orderByDesc('id')
                     ->cursor([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ])
                     ->count();
             },
@@ -611,8 +609,8 @@ class QueryTest extends TestCase
                     ->backward()
                     ->seekable()
                     ->limit(3)
-                    ->orderDesc('modified')
-                    ->orderDesc('id')
+                    ->orderByDesc('modified')
+                    ->orderByDesc('id')
                     ->count();
             },
             3,
@@ -626,8 +624,8 @@ class QueryTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderDesc('modified')
-                    ->orderDesc('id')
+                    ->orderByDesc('modified')
+                    ->orderByDesc('id')
                     ->count();
             },
             3,
@@ -640,11 +638,11 @@ class QueryTest extends TestCase
                     ->backward()
                     ->seekable()
                     ->limit(3)
-                    ->orderDesc('modified')
-                    ->orderDesc('id')
+                    ->orderByDesc('modified')
+                    ->orderByDesc('id')
                     ->cursor([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ])
                     ->count();
             },
@@ -659,11 +657,11 @@ class QueryTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderDesc('modified')
-                    ->orderDesc('id')
+                    ->orderByDesc('modified')
+                    ->orderByDesc('id')
                     ->cursor([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ])
                     ->count();
             },

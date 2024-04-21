@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Lampager\Cake;
 
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\Table;
 use Generator;
 use Lampager\Concerns\HasProcessor;
@@ -22,7 +22,7 @@ class Paginator extends BasePaginator
 {
     use HasProcessor;
 
-    /** @var Query $builder */
+    /** @var SelectQuery $builder */
     public $builder;
 
     /**
@@ -30,7 +30,7 @@ class Paginator extends BasePaginator
      *
      * @return static
      */
-    public static function create(Query $builder)
+    public static function create(SelectQuery $builder)
     {
         return new static($builder);
     }
@@ -38,7 +38,7 @@ class Paginator extends BasePaginator
     /**
      * Construct paginator.
      */
-    public function __construct(Query $builder)
+    public function __construct(SelectQuery $builder)
     {
         $this->builder = $builder;
         $this->processor = new ArrayProcessor();
@@ -47,7 +47,7 @@ class Paginator extends BasePaginator
     /**
      * Build CakePHP Query instance from Lampager Query config.
      */
-    public function transform(LampagerQuery $query): Query
+    public function transform(LampagerQuery $query): SelectQuery
     {
         return $this->compileSelectOrUnionAll($query->selectOrUnionAll());
     }
@@ -57,7 +57,7 @@ class Paginator extends BasePaginator
      *
      * @param Cursor|int[]|string[] $cursor
      */
-    public function build($cursor = []): Query
+    public function build($cursor = []): SelectQuery
     {
         return $this->transform($this->configure($cursor));
     }
@@ -74,7 +74,7 @@ class Paginator extends BasePaginator
         return $this->process($query, $this->transform($query)->toArray());
     }
 
-    protected function compileSelectOrUnionAll(SelectOrUnionAll $selectOrUnionAll): Query
+    protected function compileSelectOrUnionAll(SelectOrUnionAll $selectOrUnionAll): SelectQuery
     {
         if ($selectOrUnionAll instanceof Select) {
             return $this->compileSelect($selectOrUnionAll);
@@ -91,7 +91,7 @@ class Paginator extends BasePaginator
         // @codeCoverageIgnoreEnd
     }
 
-    protected function compileSelect(Select $select): Query
+    protected function compileSelect(Select $select): SelectQuery
     {
         if ($this->builder->clause('group') || $this->builder->clause('union')) {
             throw new InsufficientConstraintsException('group()/union() are not supported');
@@ -100,7 +100,7 @@ class Paginator extends BasePaginator
         /** @var Table $repository */
         $repository = $this->builder->getRepository();
 
-        /** @var Query $builder */
+        /** @var SelectQuery $builder */
         $builder = $repository->selectQuery()
             ->where($this->builder->clause('where'))
             ->modifier($this->builder->clause('modifier'))
@@ -119,7 +119,7 @@ class Paginator extends BasePaginator
     /**
      * @return $this
      */
-    protected function compileWhere(Query $builder, Select $select)
+    protected function compileWhere(SelectQuery $builder, Select $select)
     {
         $conditions = [];
         foreach ($select->where() as $group) {
@@ -145,7 +145,7 @@ class Paginator extends BasePaginator
     /**
      * @return $this
      */
-    protected function compileOrderBy(Query $builder, Select $select)
+    protected function compileOrderBy(SelectQuery $builder, Select $select)
     {
         $alias = $builder->getRepository()->getAlias();
 
@@ -154,7 +154,7 @@ class Paginator extends BasePaginator
             if (strpos($column, '.') === false) {
                 $column = $alias . '.' . $column;
             }
-            $builder->order([$column => $order->order()], $i === 0);
+            $builder->orderBy([$column => $order->order()], $i === 0);
         }
         return $this;
     }
@@ -162,7 +162,7 @@ class Paginator extends BasePaginator
     /**
      * @return $this
      */
-    protected function compileLimit(Query $builder, Select $select)
+    protected function compileLimit(SelectQuery $builder, Select $select)
     {
         $builder->limit($select->limit()->toInteger());
         return $this;

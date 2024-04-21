@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace Lampager\Cake\Datasource;
 
 use Cake\Datasource\Paging\NumericPaginator as CakePaginator;
+use Cake\Datasource\Paging\PaginatedInterface;
 use Cake\Datasource\QueryInterface;
-use Cake\Datasource\ResultSetInterface;
 use Exception;
 use Lampager\Cake\ORM\Query;
 use Lampager\Cake\PaginationResult;
 use Lampager\Exceptions\InvalidArgumentException;
+use function Cake\Core\triggerWarning;
 
 class Paginator extends CakePaginator
 {
@@ -19,13 +20,13 @@ class Paginator extends CakePaginator
      * @throws InvalidArgumentException if the \Lampager\Cake\ORM\Query is given
      * @return PaginationResult
      */
-    public function paginate(object $object, array $params = [], array $settings = []): ResultSetInterface
+    public function paginate(mixed $target, array $params = [], array $settings = []): PaginatedInterface
     {
         $query = null;
-        if ($object instanceof QueryInterface) {
-            $query = $object;
-            $object = $query->getRepository();
-            if ($object === null) {
+        if ($target instanceof QueryInterface) {
+            $query = $target;
+            $target = $query->getRepository();
+            if ($target === null) {
                 throw new Exception('No repository set for query.');
             }
         }
@@ -34,25 +35,49 @@ class Paginator extends CakePaginator
             throw new InvalidArgumentException(Query::class . ' cannot be paginated by ' . __METHOD__ . '()');
         }
 
-        $alias = $object->getAlias();
+        $alias = $target->getAlias();
         $defaults = $this->getDefaults($alias, $settings);
+
+        $validSettings = [
+            ...array_keys($this->_defaultConfig),
+            'order',
+            'forward',
+            'backward',
+            'exclusive',
+            'inclusive',
+            'seekable',
+            'unseekable',
+            'cursor',
+        ];
+        $extraSettings = array_diff_key($defaults, array_flip($validSettings));
+        if ($extraSettings) {
+            triggerWarning(
+                'Passing query options as paginator settings is no longer supported.'
+                . ' Use a custom finder through the `finder` config or pass a Query instance to paginate().'
+                . ' Extra keys found are: `' . implode('`, `', array_keys($extraSettings)) . '`.'
+            );
+        }
+
         $options = $this->mergeOptions($params, $defaults);
-        $options = $this->validateSort($object, $options);
+        $options = $this->validateSort($target, $options);
         $options = $this->checkLimit($options);
 
         $options += ['cursor' => [], 'scope' => null];
 
-        list($finder, $options) = $this->_extractFinder($options);
-
-        if (empty($query)) {
-            $query = Query::fromQuery($object->find($finder, $options));
-        } else {
-            $query = Query::fromQuery($query->applyOptions($options));
+        if ($query === null) {
+            $args = [];
+            $type = $options['finder'] ?? 'all';
+            if (is_array($type)) {
+                $args = (array)current($type);
+                $type = key($type);
+            }
+            $query = $target->find($type, ...$args);
         }
 
+        $query = Query::fromQuery($query->applyOptions($options));
         $query->fromArray($options);
         $query->cursor($options['cursor']);
 
-        return $query->all();
+        return $query->paginate();
     }
 }

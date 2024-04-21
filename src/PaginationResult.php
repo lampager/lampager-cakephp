@@ -4,92 +4,72 @@ declare(strict_types=1);
 
 namespace Lampager\Cake;
 
-use Cake\Collection\CollectionTrait;
-use Cake\Datasource\ResultSetInterface;
-use Iterator;
-use IteratorAggregate;
+use Cake\Datasource\Paging\PaginatedInterface;
+use Countable;
+use JsonSerializable;
 use Lampager\PaginationResult as LampagerPaginationResult;
-use Traversable;
 
 /**
  * Class PaginationResult
- *
- * This class intentionally does not extend \Lampager\PaginationResult
- * but has the same signature because \Cake\Datasource\ResultSetInterface
- * already implements \Iterator which conflicts with \IteratorAggregate.
- *
- * @property-read mixed      $records
- * @property-read null|bool  $hasPrevious
- * @property-read null|mixed $previousCursor
- * @property-read null|bool  $hasNext
- * @property-read null|mixed $nextCursor
  */
-class PaginationResult implements ResultSetInterface
+class PaginationResult extends LampagerPaginationResult implements JsonSerializable, PaginatedInterface
 {
-    /** @var LampagerPaginationResult */
-    protected $result;
+    protected ?iterable $iterator = null;
 
-    /** @var Iterator */
-    protected $iterator;
-
-    use CollectionTrait;
+    protected int $limit;
 
     /**
-     * PaginationResult constructor.
-     * Merge $meta entries into $this.
-     *
-     * @param mixed $rows
+     * {@inheritdoc}
      */
-    public function __construct($rows, array $meta)
+    public function currentPage(): int
     {
-        $this->result = new LampagerPaginationResult($rows, $meta);
+        return 0;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function current()
+    public function perPage(): int
     {
-        return $this->unwrap()->current();
+        return $this->limit;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function key()
+    public function totalCount(): ?int
     {
-        return $this->unwrap()->key();
+        return null;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function pageCount(): ?int
     {
-        $this->unwrap()->next();
+        return null;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function hasPrevPage(): bool
     {
-        $this->unwrap()->rewind();
+        return (bool)$this->hasPrevious;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function hasNextPage(): bool
     {
-        return $this->unwrap()->valid();
+        return (bool)$this->hasNext;
     }
 
     /**
      * {@inheritdoc}
-     * @return Iterator
      */
-    public function unwrap(): Traversable
+    public function items(): iterable
     {
         if (!$this->iterator) {
             $this->iterator = $this->getIterator();
@@ -101,12 +81,25 @@ class PaginationResult implements ResultSetInterface
     /**
      * {@inheritdoc}
      */
-    public function toArray(bool $preserveKeys = true): array
+    public function pagingParam(string $name): mixed
     {
-        $array = (array)$this->result;
-        $array['records'] = iterator_to_array($this->unwrap());
+        return $this->pagingParams()[$name] ?? null;
+    }
 
-        return $array;
+    /**
+     * {@inheritdoc}
+     */
+    public function pagingParams(): array
+    {
+        return [
+            'count' => $this->count(),
+            'totalCount' => $this->totalCount(),
+            'perPage' => $this->perPage(),
+            'pageCount' => $this->pageCount(),
+            'currentPage' => $this->currentPage(),
+            'hasPrevPage' => $this->hasPrevPage(),
+            'hasNextPage' => $this->hasNextPage(),
+        ];
     }
 
     /**
@@ -114,55 +107,22 @@ class PaginationResult implements ResultSetInterface
      */
     public function jsonSerialize(): array
     {
-        return $this->toArray();
+        $items = $this->items();
+        $array = get_object_vars($this);
+        $array['records'] = is_array($items) ? $items : iterator_to_array($items);
+        unset($array['iterator']);
+        unset($array['limit']);
+
+        return $array;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function serialize()
+    public function count(): int
     {
-        return json_encode($this->jsonSerialize());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function unserialize($serialized)
-    {
-        $obj = json_decode($serialized, true);
-        $meta = $obj;
-        unset($meta['records']);
-
-        $this->result = new LampagerPaginationResult($obj['records'], $meta);
-    }
-
-    protected function getIterator(): Iterator
-    {
-        /** @var Iterator|IteratorAggregate */
-        $iterator = $this->result->getIterator();
-
-        if ($iterator instanceof IteratorAggregate) {
-            $iterator = $iterator->getIterator();
-        }
-
-        return $iterator;
-    }
-
-    /**
-     * @param string $name The name of the parameter to fetch
-     */
-    public function __get(string $name)
-    {
-        if (property_exists($this->result, $name)) {
-            return $this->result->{$name};
-        }
-
-        $trace = debug_backtrace();
-        trigger_error(
-            'Undefined property via __get(): ' . $name . ' in ' . $trace[0]['file'] . ' on line ' . $trace[0]['line'],
-            E_USER_NOTICE
-        );
+        $items = $this->items();
+        return $items instanceof Countable ? count($items) : iterator_count($items);
     }
 
     /**

@@ -8,7 +8,7 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 class PostsFixture extends TestFixture
 {
-    public $records = [
+    public array $records = [
         ['id' => 1, 'modified' => '2017-01-01 10:00:00'],
         ['id' => 3, 'modified' => '2017-01-01 10:00:00'],
         ['id' => 5, 'modified' => '2017-01-01 10:00:00'],

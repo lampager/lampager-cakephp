@@ -10,7 +10,7 @@ use Lampager\Cake\Test\TestCase\TestCase;
 
 class SqliteCompilerTest extends TestCase
 {
-    public $fixtures = [
+    public array $fixtures = [
         'plugin.Lampager\\Cake.Posts',
     ];
 

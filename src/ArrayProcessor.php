@@ -16,7 +16,9 @@ class ArrayProcessor extends BaseArrayProcessor
      */
     protected function defaultFormat($rows, array $meta, LampagerQuery $query)
     {
-        return new PaginationResult($rows, $meta);
+        return new PaginationResult($rows, $meta + [
+            'limit' => $query->limit(),
+        ]);
     }
 
     /**

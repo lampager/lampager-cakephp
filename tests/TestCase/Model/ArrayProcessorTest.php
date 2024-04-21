@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Lampager\Cake\Test\TestCase\Model;
 
-use Cake\I18n\FrozenTime;
+use Cake\I18n\DateTime;
 use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Generator;
@@ -42,7 +42,7 @@ class ArrayProcessorTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function processProvider(): Generator
+    public static function processProvider(): Generator
     {
         yield 'Option has prefix but entity does not have prefix' => [
             [
@@ -56,55 +56,56 @@ class ArrayProcessorTest extends TestCase
             ],
             [
                 'Posts.id' => 3,
-                'Posts.modified' => new FrozenTime('2017-01-01 10:00:00'),
+                'Posts.modified' => new DateTime('2017-01-01 10:00:00'),
             ],
             [
                 new Entity([
                     'id' => 1,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 3,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 5,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 2,
-                    'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                    'modified' => new DateTime('2017-01-01 11:00:00'),
                 ]),
                 new Entity([
                     'id' => 4,
-                    'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                    'modified' => new DateTime('2017-01-01 11:00:00'),
                 ]),
             ],
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                 ], [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'Posts.id' => 1,
-                        'Posts.modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'Posts.modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => true,
                     'nextCursor' => [
                         'Posts.id' => 4,
-                        'Posts.modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'Posts.modified' => new DateTime('2017-01-01 11:00:00'),
                     ],
+                    'limit' => 3,
                 ]
             ),
         ];
@@ -121,55 +122,56 @@ class ArrayProcessorTest extends TestCase
             ],
             [
                 'id' => 3,
-                'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                'modified' => new DateTime('2017-01-01 10:00:00'),
             ],
             [
                 new Entity([
                     'id' => 1,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 3,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 5,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 2,
-                    'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                    'modified' => new DateTime('2017-01-01 11:00:00'),
                 ]),
                 new Entity([
                     'id' => 4,
-                    'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                    'modified' => new DateTime('2017-01-01 11:00:00'),
                 ]),
             ],
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                 ], [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 1,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 4,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ],
+                    'limit' => 3,
                 ]
             ),
         ];
@@ -186,55 +188,56 @@ class ArrayProcessorTest extends TestCase
             ],
             [
                 'id' => 3,
-                'Posts.modified' => new FrozenTime('2017-01-01 10:00:00'),
+                'Posts.modified' => new DateTime('2017-01-01 10:00:00'),
             ],
             [
                 new Entity([
                     'id' => 1,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 3,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 5,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 2,
-                    'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                    'modified' => new DateTime('2017-01-01 11:00:00'),
                 ]),
                 new Entity([
                     'id' => 4,
-                    'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                    'modified' => new DateTime('2017-01-01 11:00:00'),
                 ]),
             ],
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                 ], [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 1,
-                        'Posts.modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'Posts.modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 4,
-                        'Posts.modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'Posts.modified' => new DateTime('2017-01-01 11:00:00'),
                     ],
+                    'limit' => 3,
                 ]
             ),
         ];

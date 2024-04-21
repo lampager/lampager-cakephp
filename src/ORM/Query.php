@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Lampager\Cake\ORM;
 
-use Cake\Database\Connection;
 use Cake\Database\Expression\OrderByExpression;
 use Cake\Database\Expression\OrderClauseExpression;
 use Cake\Database\Expression\QueryExpression;
 use Cake\Database\ExpressionInterface;
+use Cake\Datasource\Paging\PaginatedInterface;
 use Cake\Datasource\ResultSetInterface;
-use Cake\ORM\Query as BaseQuery;
+use Cake\ORM\Query\SelectQuery;
+use Cake\ORM\ResultSet;
 use Cake\ORM\Table;
-use Lampager\Cake\PaginationResult;
 use Lampager\Cake\Paginator;
 use Lampager\Contracts\Cursor;
 use Lampager\Exceptions\Query\BadKeywordException;
@@ -28,7 +28,7 @@ use Lampager\Exceptions\Query\LimitParameterException;
  * @method $this unseekable(bool $unseekable = true) Define that the query can detect only either "has_previous" or "has_next".
  * @method $this fromArray(mixed[] $options)         Define options from an associative array.
  */
-class Query extends BaseQuery
+class Query extends SelectQuery
 {
     /** @var Paginator */
     protected $_paginator;
@@ -39,12 +39,11 @@ class Query extends BaseQuery
     /**
      * Construct query.
      *
-     * @param Connection $connection The connection object
-     * @param Table      $table      The table this query is starting on
+     * @param Table $table The table this query is starting on
      */
-    public function __construct(Connection $connection, Table $table)
+    public function __construct(Table $table)
     {
-        parent::__construct($connection, $table);
+        parent::__construct($table);
 
         $this->_paginator = Paginator::create($this);
     }
@@ -53,9 +52,9 @@ class Query extends BaseQuery
      * Create query based on the existing query. This factory copies the internal
      * state of the given query to a new instance.
      */
-    public static function fromQuery(BaseQuery $query)
+    public static function fromQuery(SelectQuery $query)
     {
-        $obj = new static($query->getConnection(), $query->getRepository());
+        $obj = new static($query->getRepository());
 
         foreach (get_object_vars($query) as $k => $v) {
             $obj->$k = $v;
@@ -80,11 +79,19 @@ class Query extends BaseQuery
     }
 
     /**
+     * Execute query and paginate them.
+     */
+    public function paginate(): PaginatedInterface
+    {
+        return $this->_paginator->paginate($this->_cursor);
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function order($fields, $overwrite = false)
+    public function orderBy(ExpressionInterface|\Closure|array|string $fields, bool $overwrite = false)
     {
-        parent::order($fields, $overwrite);
+        parent::orderBy($fields, $overwrite);
         $this->_executeOrder($this->clause('order'));
 
         return $this;
@@ -93,9 +100,9 @@ class Query extends BaseQuery
     /**
      * {@inheritdoc}
      */
-    public function orderAsc($field, $overwrite = false)
+    public function orderByAsc(ExpressionInterface|\Closure|string $field, bool $overwrite = false)
     {
-        parent::orderAsc($field, $overwrite);
+        parent::orderByAsc($field, $overwrite);
         $this->_executeOrder($this->clause('order'));
 
         return $this;
@@ -104,9 +111,9 @@ class Query extends BaseQuery
     /**
      * {@inheritdoc}
      */
-    public function orderDesc($field, $overwrite = false)
+    public function orderByDesc(ExpressionInterface|\Closure|string $field, bool $overwrite = false)
     {
-        parent::orderDesc($field, $overwrite);
+        parent::orderByDesc($field, $overwrite);
         $this->_executeOrder($this->clause('order'));
 
         return $this;
@@ -125,11 +132,11 @@ class Query extends BaseQuery
 
     /**
      * {@inheritdoc}
-     * @return PaginationResult
      */
     public function all(): ResultSetInterface
     {
-        return $this->_paginator->paginate($this->_cursor);
+        $items = $this->paginate()->items();
+        return new ResultSet(is_array($items) ? $items : iterator_to_array($items));
     }
 
     /**
@@ -236,7 +243,7 @@ class Query extends BaseQuery
             return $this;
         }
 
-        return parent::__call($method, $arguments);
+        throw new \BadMethodCallException('Method ' . __CLASS__ . '::' . $method . ' does not exist');
     }
 
     /**
@@ -252,9 +259,8 @@ class Query extends BaseQuery
                 'params' => [],
                 'defaultTypes' => $this->getDefaultTypes(),
                 'decorators' => count($this->_resultDecorators),
-                'executed' => (bool)$this->_iterator,
+                'executed' => (bool)$this->_statement,
                 'hydrate' => $this->_hydrate,
-                'buffered' => $this->_useBufferedResults,
                 'formatters' => count($this->_formatters),
                 'mapReducers' => count($this->_mapReduce),
                 'contain' => $this->_eagerLoader ? $this->_eagerLoader->getContain() : [],

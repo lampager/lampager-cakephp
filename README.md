@@ -13,20 +13,21 @@ Rapid pagination without using OFFSET
 
 ## Requirements
 
-- PHP: ^7.4 || ^8.0
-- CakePHP: ^4.5
+- PHP: ^8.1
+- CakePHP: ^5.0
 - [lampager/lampager][]: ^0.4
 
 ### Note
 
 - For CakePHP 2.x, use [lampager/lampager-cakephp2][].
 - For CakePHP 3.x, use [lampager/lampager-cakephp v1.x][].
-- For CakePHP 4.x, use lampager/lampager-cakephp v2.x (this version).
+- For CakePHP 4.x, use [lampager/lampager-cakephp v2.x][].
+- For CakePHP 5.x, use lampager/lampager-cakephp v3.x (this version).
 
 ## Installing
 
 ```bash
-composer require lampager/lampager-cakephp:^2.0
+composer require lampager/lampager-cakephp:^3.0
 ```
 
 For SQLite users, see [SQLite](#sqlite) to configure.
@@ -64,8 +65,8 @@ are specific to Lampager such as `forward`, `seekable`, or `cursor`.
 ```php
 $query = $this->Posts
     ->where(['Posts.type' => 'public'])
-    ->orderDesc('created')
-    ->orderDesc('id')
+    ->orderByDesc('created')
+    ->orderByDesc('id')
     ->limit(10);
 
 $posts = $this->paginate($query, [
@@ -121,9 +122,10 @@ $latest = $this->lampager()
     ->seekable()
     ->cursor($cursor)
     ->limit(10)
-    ->orderDesc('Posts.modified')
-    ->orderDesc('Posts.created')
-    ->orderDesc('Posts.id');
+    ->orderByDesc('Posts.modified')
+    ->orderByDesc('Posts.created')
+    ->orderByDesc('Posts.id')
+    ->paginate();
 
 foreach ($latest as $post) {
     /** @var \Cake\ORM\Entity $post */
@@ -144,9 +146,10 @@ $drafts = $this->lampager()
     ->seekable()
     ->cursor($cursor)
     ->limit(10)
-    ->orderDesc($this->selectQuery()->newExpr('modified'))
-    ->orderDesc($this->selectQuery()->newExpr('created'))
-    ->orderDesc($this->selectQuery()->newExpr('id'));
+    ->orderByDesc($this->selectQuery()->newExpr('modified'))
+    ->orderByDesc($this->selectQuery()->newExpr('created'))
+    ->orderByDesc($this->selectQuery()->newExpr('id'))
+    ->paginate();
 
 /** @var \Cake\ORM\Entity $sample */
 $sample = $drafts->sample();
@@ -159,20 +162,16 @@ $count = $drafts->count();
 
 See also: [lampager/lampager][].
 
-| Name                                                | Type  | Parent Class<br>Implemented Interface  | Description                                                                         |
-|:----------------------------------------------------|:------|:---------------------------------------|:------------------------------------------------------------------------------------|
-| Lampager\\Cake\\ORM\\`Query`                        | Class | Cake\\ORM\\`Query`                     | Fluent factory implementation for CakePHP                                           |
-| Lampager\\Cake\\Model\\Behavior\\`LampagerBehavior` | Class | Cake\\ORM\\`Behavior`                  | CakePHP behavior which returns Lampager\\Cake\\ORM\\`Query`                         |
-| Lampager\\Cake\\Datasource\\`Paginator`             | Class | Cake\\Datasource\\`Paginator`          | CakePHP paginatior which delegates to Lampager\\Cake\\ORM\\`Query`                  |
-| Lampager\\Cake\\`Paginator`                         | Class | Lampager\\`Paginator`                  | Paginator implementation for CakePHP                                                |
-| Lampager\\Cake\\`ArrayProcessor`                    | Class | Lampager\\`ArrayProcessor`             | Processor implementation for CakePHP                                                |
-| Lampager\\Cake\\`PaginationResult`                  | Class | Cake\\Datasource\\`ResultSetInterface` | PaginationResult implementation for CakePHP                                         |
-| Lampager\\Cake\\Database\\`SqliteCompiler`          | Class | Cake\\Database\\`SqliteCompiler`       | Query compiler implementation for SQLite                                            |
-| Lampager\\Cake\\Database\\Driver\\`Sqlite`          | Class | Cake\\Database\\Driver\\`Sqlite`       | Driver implementation which delegates to Lampager\\Cake\\Database\\`SqliteCompiler` |
-
-Note that `\Lampager\Cake\PaginationResult` does not extend
-`\Lampager\PaginationResult` as it conflicts with
-`\Cake\Datasource\ResultSetInterface`.
+| Name                                                | Type  | Parent Class<br>Implemented Interface                                          | Description                                                                         |
+|:----------------------------------------------------|:------|:-------------------------------------------------------------------------------|:------------------------------------------------------------------------------------|
+| Lampager\\Cake\\ORM\\`Query`                        | Class | Cake\\ORM\\`Query`                                                             | Fluent factory implementation for CakePHP                                           |
+| Lampager\\Cake\\Model\\Behavior\\`LampagerBehavior` | Class | Cake\\ORM\\`Behavior`                                                          | CakePHP behavior which returns Lampager\\Cake\\ORM\\`Query`                         |
+| Lampager\\Cake\\Datasource\\`Paginator`             | Class | Cake\\Datasource\\`Paginator`                                                  | CakePHP paginatior which delegates to Lampager\\Cake\\ORM\\`Query`                  |
+| Lampager\\Cake\\`Paginator`                         | Class | Lampager\\`Paginator`                                                          | Paginator implementation for CakePHP                                                |
+| Lampager\\Cake\\`ArrayProcessor`                    | Class | Lampager\\`ArrayProcessor`                                                     | Processor implementation for CakePHP                                                |
+| Lampager\\Cake\\`PaginationResult`                  | Class | Lampager\\`PaginationResult`<br>Cake\\Datasource\\Paging\\`PaginatedInterface` | PaginationResult implementation for CakePHP                                         |
+| Lampager\\Cake\\Database\\`SqliteCompiler`          | Class | Cake\\Database\\`SqliteCompiler`                                               | Query compiler implementation for SQLite                                            |
+| Lampager\\Cake\\Database\\Driver\\`Sqlite`          | Class | Cake\\Database\\Driver\\`Sqlite`                                               | Driver implementation which delegates to Lampager\\Cake\\Database\\`SqliteCompiler` |
 
 ## API
 
@@ -192,8 +191,8 @@ Create a new paginator instance. These methods are not intended to be directly
 used in your code.
 
 ```php
-static Paginator::create(\Cake\ORM\Query $builder): static
-Paginator::__construct(\Cake\ORM\Query $builder)
+static Paginator::create(\Cake\ORM\Query\SelectQuery $builder): static
+Paginator::__construct(\Cake\ORM\Query\SelectQuery $builder)
 ```
 
 ### Paginator::transform()
@@ -201,7 +200,7 @@ Paginator::__construct(\Cake\ORM\Query $builder)
 Transform a Lampager query into a CakePHP query.
 
 ```php
-Paginator::transform(\Lampager\Query $query): \Cake\ORM\Query
+Paginator::transform(\Lampager\Query $query): \Cake\ORM\Query\SelectQuery
 ```
 
 ### Paginator::build()
@@ -209,7 +208,7 @@ Paginator::transform(\Lampager\Query $query): \Cake\ORM\Query
 Perform configure + transform.
 
 ```php
-Paginator::build(\Lampager\Contracts\Cursor|array $cursor = []): \Cake\ORM\Query
+Paginator::build(\Lampager\Contracts\Cursor|array $cursor = []): \Cake\ORM\Query\SelectQuery
 ```
 
 ### Paginator::paginate()
@@ -270,8 +269,7 @@ object(Lampager\Cake\PaginationResult)#1 (6) {
 ### PaginationResult::\_\_call()
 
 `\Lampager\Cake\PaginationResult` implements
-`\Cake\Datasource\ResultSetInterface`. For how to make the best use of the
-`PaginationResult`, please refer to the Cookbook: [Working with Result Sets][].
+`\Cake\Datasource\Paging\PaginatedInterface`.
 
 ## Examples
 
@@ -303,8 +301,8 @@ class PostsController extends AppController
         // Query expression can be passed to PaginatorComponent::paginate() as normal
         $query = $this->Posts
             ->where(['Posts.type' => 'public'])
-            ->orderDesc('created')
-            ->orderDesc('id')
+            ->orderByDesc('created')
+            ->orderByDesc('id')
             ->limit(15);
 
         /** @var \Lampager\Cake\PaginationResult<\Cake\ORM\Entity> $posts */
@@ -415,6 +413,6 @@ return [
 
 [lampager/lampager]:              https://github.com/lampager/lampager
 [lampager/lampager-cakephp v1.x]: https://github.com/lampager/lampager-cakephp/tree/v1.x
+[lampager/lampager-cakephp v2.x]: https://github.com/lampager/lampager-cakephp/tree/v2.x
 [lampager/lampager-cakephp2]:     https://github.com/lampager/lampager-cakephp2
-[Pagination]:                     https://book.cakephp.org/4/en/controllers/pagination.html
-[Working with Result Sets]:       https://book.cakephp.org/4/en/orm/retrieving-data-and-resultsets.html#working-with-result-sets
+[Pagination]:                     https://book.cakephp.org/5/en/controllers/pagination.html

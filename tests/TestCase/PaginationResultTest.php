@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Lampager\Cake\Test\TestCase;
 
 use ArrayIterator;
-use Cake\I18n\FrozenTime;
+use Cake\I18n\DateTime;
 use Cake\ORM\Entity;
 use Generator;
 use IteratorAggregate;
@@ -40,29 +40,10 @@ class PaginationResultTest extends TestCase
      * @dataProvider arrayProvider
      * @dataProvider iteratorAggregateProvider
      */
-    public function testIteratorCurrent(array $entities, $records, array $meta): void
+    public function testCurrentPage(array $entities, $records, array $meta): void
     {
         $actual = new PaginationResult($records, $meta);
-
-        $this->assertEquals($entities[0], $actual->current());
-
-        $actual->next();
-        $this->assertTrue($actual->valid());
-        $this->assertEquals(1, $actual->key());
-        $this->assertEquals($entities[1], $actual->current());
-
-        $actual->next();
-        $this->assertTrue($actual->valid());
-        $this->assertEquals(2, $actual->key());
-        $this->assertEquals($entities[2], $actual->current());
-
-        $actual->next();
-        $this->assertFalse($actual->valid());
-
-        $actual->rewind();
-        $this->assertTrue($actual->valid());
-        $this->assertEquals(0, $actual->key());
-        $this->assertEquals($entities[0], $actual->current());
+        $this->assertEquals(0, $actual->currentPage());
     }
 
     /**
@@ -72,29 +53,10 @@ class PaginationResultTest extends TestCase
      * @dataProvider arrayProvider
      * @dataProvider iteratorAggregateProvider
      */
-    public function testIteratorKey(array $entities, $records, array $meta): void
+    public function testPerPage(array $entities, $records, array $meta): void
     {
         $actual = new PaginationResult($records, $meta);
-
-        $this->assertEquals(0, $actual->key());
-
-        $actual->next();
-        $this->assertTrue($actual->valid());
-        $this->assertEquals(1, $actual->key());
-        $this->assertEquals($entities[1], $actual->current());
-
-        $actual->next();
-        $this->assertTrue($actual->valid());
-        $this->assertEquals(2, $actual->key());
-        $this->assertEquals($entities[2], $actual->current());
-
-        $actual->next();
-        $this->assertFalse($actual->valid());
-
-        $actual->rewind();
-        $this->assertTrue($actual->valid());
-        $this->assertEquals(0, $actual->key());
-        $this->assertEquals($entities[0], $actual->current());
+        $this->assertEquals(3, $actual->perPage());
     }
 
     /**
@@ -104,27 +66,10 @@ class PaginationResultTest extends TestCase
      * @dataProvider arrayProvider
      * @dataProvider iteratorAggregateProvider
      */
-    public function testIteratorNext(array $entities, $records, array $meta): void
+    public function testTotalCount(array $entities, $records, array $meta): void
     {
         $actual = new PaginationResult($records, $meta);
-
-        $actual->next();
-        $this->assertTrue($actual->valid());
-        $this->assertEquals(1, $actual->key());
-        $this->assertEquals($entities[1], $actual->current());
-
-        $actual->next();
-        $this->assertTrue($actual->valid());
-        $this->assertEquals(2, $actual->key());
-        $this->assertEquals($entities[2], $actual->current());
-
-        $actual->next();
-        $this->assertFalse($actual->valid());
-
-        $actual->rewind();
-        $this->assertTrue($actual->valid());
-        $this->assertEquals(0, $actual->key());
-        $this->assertEquals($entities[0], $actual->current());
+        $this->assertNull($actual->totalCount());
     }
 
     /**
@@ -134,31 +79,70 @@ class PaginationResultTest extends TestCase
      * @dataProvider arrayProvider
      * @dataProvider iteratorAggregateProvider
      */
-    public function testIteratorValid(array $entities, $records, array $meta): void
+    public function testPageCount(array $entities, $records, array $meta): void
     {
         $actual = new PaginationResult($records, $meta);
+        $this->assertNull($actual->pageCount());
+    }
 
-        $this->assertTrue($actual->valid());
-        $this->assertEquals(0, $actual->key());
-        $this->assertEquals($entities[0], $actual->current());
+    /**
+     * @param Entity[]                     $entities
+     * @param Entity[]|Traversable<Entity> $records
+     * @param mixed[]                      $meta
+     * @dataProvider arrayProvider
+     * @dataProvider iteratorAggregateProvider
+     */
+    public function testHasPrevPage(array $entities, $records, array $meta): void
+    {
+        $actual = new PaginationResult($records, $meta);
+        $this->assertEquals((bool)$meta['hasPrevious'], $actual->hasPrevPage());
+    }
 
-        $actual->next();
-        $this->assertTrue($actual->valid());
-        $this->assertEquals(1, $actual->key());
-        $this->assertEquals($entities[1], $actual->current());
+    /**
+     * @param Entity[]                     $entities
+     * @param Entity[]|Traversable<Entity> $records
+     * @param mixed[]                      $meta
+     * @dataProvider arrayProvider
+     * @dataProvider iteratorAggregateProvider
+     */
+    public function testHasNextPage(array $entities, $records, array $meta): void
+    {
+        $actual = new PaginationResult($records, $meta);
+        $this->assertEquals((bool)$meta['hasNext'], $actual->hasNextPage());
+    }
 
-        $actual->next();
-        $this->assertTrue($actual->valid());
-        $this->assertEquals(2, $actual->key());
-        $this->assertEquals($entities[2], $actual->current());
+    /**
+     * @param Entity[]                     $entities
+     * @param Entity[]|Traversable<Entity> $records
+     * @param mixed[]                      $meta
+     * @dataProvider arrayProvider
+     * @dataProvider iteratorAggregateProvider
+     */
+    public function testItems(array $entities, $records, array $meta): void
+    {
+        $paginationResult = new PaginationResult($records, $meta);
+        $expected = is_array($records) ? $records : iterator_to_array($records);
+        $actual = is_array($paginationResult->items()) ? $paginationResult->items() : iterator_to_array($paginationResult->items());
+        $this->assertEquals($expected, $actual);
+    }
 
-        $actual->next();
-        $this->assertFalse($actual->valid());
-
-        $actual->rewind();
-        $this->assertTrue($actual->valid());
-        $this->assertEquals(0, $actual->key());
-        $this->assertEquals($entities[0], $actual->current());
+    /**
+     * @param Entity[]                     $entities
+     * @param Entity[]|Traversable<Entity> $records
+     * @param mixed[]                      $meta
+     * @dataProvider arrayProvider
+     * @dataProvider iteratorAggregateProvider
+     */
+    public function testPagingParam(array $entities, $records, array $meta): void
+    {
+        $actual = new PaginationResult($records, $meta);
+        $this->assertEquals(count($entities), $actual->pagingParam('count'));
+        $this->assertNull($actual->pagingParam('totalCount'));
+        $this->assertEquals($meta['limit'], $actual->pagingParam('perPage'));
+        $this->assertNull($actual->pagingParam('pageCount'));
+        $this->assertEquals(0, $actual->pagingParam('currentPage'));
+        $this->assertEquals($meta['hasPrevious'], $actual->pagingParam('hasPrevPage'));
+        $this->assertEquals($meta['hasNext'], $actual->pagingParam('hasNextPage'));
     }
 
     /**
@@ -172,20 +156,6 @@ class PaginationResultTest extends TestCase
     {
         $actual = json_encode(new PaginationResult($records, $meta));
         $this->assertJsonStringEqualsJsonString($expected, $actual);
-    }
-
-    /**
-     * @param Entity[]                     $entities
-     * @param Entity[]|Traversable<Entity> $records
-     * @param mixed[]                      $meta
-     * @dataProvider arrayProvider
-     * @dataProvider iteratorAggregateProvider
-     */
-    public function testSerializeAndUnserialize(array $entities, $records, array $meta): void
-    {
-        $actual = unserialize(serialize(new PaginationResult($records, $meta)));
-        $expected = new PaginationResult($records, $meta);
-        $this->assertJsonEquals($expected, $actual);
     }
 
     /**
@@ -226,51 +196,35 @@ class PaginationResultTest extends TestCase
         $this->assertEquals($meta['nextCursor'], $paginationResult->nextCursor);
     }
 
-    /**
-     * @param Entity[]                     $entities
-     * @param Entity[]|Traversable<Entity> $records
-     * @param mixed[]                      $meta
-     * @dataProvider arrayProvider
-     * @dataProvider iteratorAggregateProvider
-     */
-    public function testUndefinedProperties(array $entities, $records, array $meta): void
-    {
-        $this->expectException(\ErrorException::class);
-        $this->expectExceptionMessageMatches('/^Undefined property via __get\(\): undefinedProperty/');
-
-        $paginationResult = new PaginationResult($records, $meta);
-        $paginationResult->undefinedProperty;
-    }
-
-    public function arrayProvider(): Generator
+    public static function arrayProvider(): Generator
     {
         yield 'Array iteration' => [
             [
                 new Entity([
                     'id' => 1,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 3,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 5,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
             ],
             [
                 new Entity([
                     'id' => 1,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 3,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 5,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
             ],
             [
@@ -279,8 +233,9 @@ class PaginationResultTest extends TestCase
                 'hasNext' => true,
                 'nextCursor' => [
                     'Posts.id' => 2,
-                    'Posts.modified' => new FrozenTime('2017-01-01 11:00:00'),
+                    'Posts.modified' => new DateTime('2017-01-01 11:00:00'),
                 ],
+                'limit' => 3,
             ],
             '{
                 "records": [
@@ -311,29 +266,29 @@ class PaginationResultTest extends TestCase
             [
                 new Entity([
                     'id' => 1,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 3,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 5,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
             ],
             new ArrayIterator([
                 new Entity([
                     'id' => 1,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 3,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 5,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
             ]),
             [
@@ -342,8 +297,9 @@ class PaginationResultTest extends TestCase
                 'hasNext' => true,
                 'nextCursor' => [
                     'Posts.id' => 2,
-                    'Posts.modified' => new FrozenTime('2017-01-01 11:00:00'),
+                    'Posts.modified' => new DateTime('2017-01-01 11:00:00'),
                 ],
+                'limit' => 3,
             ],
             '{
                 "records": [
@@ -371,21 +327,21 @@ class PaginationResultTest extends TestCase
         ];
     }
 
-    public function iteratorAggregateProvider(): Generator
+    public static function iteratorAggregateProvider(): Generator
     {
         yield 'IteratorAggregate iteration' => [
             [
                 new Entity([
                     'id' => 1,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 3,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
                 new Entity([
                     'id' => 5,
-                    'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                    'modified' => new DateTime('2017-01-01 10:00:00'),
                 ]),
             ],
             new class implements IteratorAggregate {
@@ -394,15 +350,15 @@ class PaginationResultTest extends TestCase
                     return new ArrayIterator([
                         new Entity([
                             'id' => 1,
-                            'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                            'modified' => new DateTime('2017-01-01 10:00:00'),
                         ]),
                         new Entity([
                             'id' => 3,
-                            'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                            'modified' => new DateTime('2017-01-01 10:00:00'),
                         ]),
                         new Entity([
                             'id' => 5,
-                            'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                            'modified' => new DateTime('2017-01-01 10:00:00'),
                         ]),
                     ]);
                 }
@@ -413,8 +369,9 @@ class PaginationResultTest extends TestCase
                 'hasNext' => true,
                 'nextCursor' => [
                     'Posts.id' => 2,
-                    'Posts.modified' => new FrozenTime('2017-01-01 11:00:00'),
+                    'Posts.modified' => new DateTime('2017-01-01 11:00:00'),
                 ],
+                'limit' => 3,
             ],
             '{
                 "records": [

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Lampager\Cake\Test\TestCase\Model\Behavior;
 
-use Cake\I18n\FrozenTime;
+use Cake\I18n\DateTime;
 use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
@@ -16,7 +16,7 @@ use Lampager\PaginationResult;
 
 class LampagerBehaviorTest extends TestCase
 {
-    public $fixtures = [
+    public array $fixtures = [
         'plugin.Lampager\\Cake.Posts',
     ];
 
@@ -32,10 +32,10 @@ class LampagerBehaviorTest extends TestCase
 
         /** @var Query $query */
         $query = $factory($posts);
-        $this->assertJsonEquals($expected, $query->all());
+        $this->assertJsonEquals($expected, $query->paginate());
     }
 
-    public function valueProvider(): Generator
+    public static function valueProvider(): Generator
     {
         yield 'Ascending forward start inclusive' => [
             function (Table $posts) {
@@ -44,22 +44,22 @@ class LampagerBehaviorTest extends TestCase
                     ->forward()
                     ->seekable()
                     ->limit(3)
-                    ->orderAsc('modified')
-                    ->orderAsc('id');
+                    ->orderByAsc('modified')
+                    ->orderByAsc('id');
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 1,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -68,7 +68,7 @@ class LampagerBehaviorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 2,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ],
                 ]
             ),
@@ -82,22 +82,22 @@ class LampagerBehaviorTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderAsc('modified')
-                    ->orderAsc('id');
+                    ->orderByAsc('modified')
+                    ->orderByAsc('id');
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 1,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -106,7 +106,7 @@ class LampagerBehaviorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
@@ -119,38 +119,38 @@ class LampagerBehaviorTest extends TestCase
                     ->forward()
                     ->seekable()
                     ->limit(3)
-                    ->orderAsc('modified')
-                    ->orderAsc('id')
+                    ->orderByAsc('modified')
+                    ->orderByAsc('id')
                     ->cursor([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]);
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 1,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 4,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ],
                 ]
             ),
@@ -164,33 +164,33 @@ class LampagerBehaviorTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderAsc('modified')
-                    ->orderAsc('id')
+                    ->orderByAsc('modified')
+                    ->orderByAsc('id')
                     ->cursor([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]);
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 4,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => false,
                     'nextCursor' => null,
@@ -205,29 +205,29 @@ class LampagerBehaviorTest extends TestCase
                     ->backward()
                     ->seekable()
                     ->limit(3)
-                    ->orderAsc('modified')
-                    ->orderAsc('id');
+                    ->orderByAsc('modified')
+                    ->orderByAsc('id');
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 4,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => null,
                     'nextCursor' => null,
@@ -243,29 +243,29 @@ class LampagerBehaviorTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderAsc('modified')
-                    ->orderAsc('id');
+                    ->orderByAsc('modified')
+                    ->orderByAsc('id');
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 4,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => null,
                     'nextCursor' => null,
@@ -280,22 +280,22 @@ class LampagerBehaviorTest extends TestCase
                     ->backward()
                     ->seekable()
                     ->limit(3)
-                    ->orderAsc('modified')
-                    ->orderAsc('id')
+                    ->orderByAsc('modified')
+                    ->orderByAsc('id')
                     ->cursor([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]);
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 1,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -304,7 +304,7 @@ class LampagerBehaviorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
@@ -318,18 +318,18 @@ class LampagerBehaviorTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderAsc('modified')
-                    ->orderAsc('id')
+                    ->orderByAsc('modified')
+                    ->orderByAsc('id')
                     ->cursor([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]);
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 1,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -338,7 +338,7 @@ class LampagerBehaviorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 1,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
@@ -351,22 +351,22 @@ class LampagerBehaviorTest extends TestCase
                     ->forward()
                     ->seekable()
                     ->limit(3)
-                    ->orderDesc('modified')
-                    ->orderDesc('id');
+                    ->orderByDesc('modified')
+                    ->orderByDesc('id');
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 4,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -375,7 +375,7 @@ class LampagerBehaviorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
@@ -389,22 +389,22 @@ class LampagerBehaviorTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderDesc('modified')
-                    ->orderDesc('id');
+                    ->orderByDesc('modified')
+                    ->orderByDesc('id');
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 4,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -413,7 +413,7 @@ class LampagerBehaviorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
@@ -426,29 +426,29 @@ class LampagerBehaviorTest extends TestCase
                     ->forward()
                     ->seekable()
                     ->limit(3)
-                    ->orderDesc('modified')
-                    ->orderDesc('id')
+                    ->orderByDesc('modified')
+                    ->orderByDesc('id')
                     ->cursor([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]);
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 1,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => false,
                     'nextCursor' => null,
@@ -464,25 +464,25 @@ class LampagerBehaviorTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderDesc('modified')
-                    ->orderDesc('id')
+                    ->orderByDesc('modified')
+                    ->orderByDesc('id')
                     ->cursor([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]);
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 1,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 1,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => false,
                     'nextCursor' => null,
@@ -497,29 +497,29 @@ class LampagerBehaviorTest extends TestCase
                     ->backward()
                     ->seekable()
                     ->limit(3)
-                    ->orderDesc('modified')
-                    ->orderDesc('id');
+                    ->orderByDesc('modified')
+                    ->orderByDesc('id');
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 1,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 2,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ],
                     'hasNext' => null,
                     'nextCursor' => null,
@@ -535,29 +535,29 @@ class LampagerBehaviorTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderDesc('modified')
-                    ->orderDesc('id');
+                    ->orderByDesc('modified')
+                    ->orderByDesc('id');
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 1,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => null,
                     'nextCursor' => null,
@@ -572,38 +572,38 @@ class LampagerBehaviorTest extends TestCase
                     ->backward()
                     ->seekable()
                     ->limit(3)
-                    ->orderDesc('modified')
-                    ->orderDesc('id')
+                    ->orderByDesc('modified')
+                    ->orderByDesc('id')
                     ->cursor([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]);
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 2,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 4,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ],
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 1,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
@@ -617,26 +617,26 @@ class LampagerBehaviorTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderDesc('modified')
-                    ->orderDesc('id')
+                    ->orderByDesc('modified')
+                    ->orderByDesc('id')
                     ->cursor([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]);
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 4,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -645,14 +645,14 @@ class LampagerBehaviorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
         ];
     }
 
-    public function queryExpressionProvider(): Generator
+    public static function queryExpressionProvider(): Generator
     {
         yield 'Ascending forward start inclusive with QueryExpression' => [
             function (Table $posts) {
@@ -661,22 +661,22 @@ class LampagerBehaviorTest extends TestCase
                     ->forward()
                     ->seekable()
                     ->limit(3)
-                    ->orderAsc($posts->selectQuery()->expr('modified'))
-                    ->orderAsc($posts->selectQuery()->expr('id'));
+                    ->orderByAsc($posts->selectQuery()->expr('modified'))
+                    ->orderByAsc($posts->selectQuery()->expr('id'));
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 1,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -685,7 +685,7 @@ class LampagerBehaviorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 2,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ],
                 ]
             ),
@@ -698,38 +698,38 @@ class LampagerBehaviorTest extends TestCase
                     ->forward()
                     ->seekable()
                     ->limit(3)
-                    ->orderAsc($posts->selectQuery()->expr('modified'))
-                    ->orderAsc($posts->selectQuery()->expr('id'))
+                    ->orderByAsc($posts->selectQuery()->expr('modified'))
+                    ->orderByAsc($posts->selectQuery()->expr('id'))
                     ->cursor([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]);
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 1,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 4,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ],
                 ]
             ),
@@ -743,33 +743,33 @@ class LampagerBehaviorTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderAsc($posts->selectQuery()->expr('modified'))
-                    ->orderAsc($posts->selectQuery()->expr('id'))
+                    ->orderByAsc($posts->selectQuery()->expr('modified'))
+                    ->orderByAsc($posts->selectQuery()->expr('id'))
                     ->cursor([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]);
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 4,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => false,
                     'nextCursor' => null,
@@ -784,29 +784,29 @@ class LampagerBehaviorTest extends TestCase
                     ->backward()
                     ->seekable()
                     ->limit(3)
-                    ->orderAsc($posts->selectQuery()->expr('modified'))
-                    ->orderAsc($posts->selectQuery()->expr('id'));
+                    ->orderByAsc($posts->selectQuery()->expr('modified'))
+                    ->orderByAsc($posts->selectQuery()->expr('id'));
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 4,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => null,
                     'nextCursor' => null,
@@ -822,29 +822,29 @@ class LampagerBehaviorTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderAsc($posts->selectQuery()->expr('modified'))
-                    ->orderAsc($posts->selectQuery()->expr('id'));
+                    ->orderByAsc($posts->selectQuery()->expr('modified'))
+                    ->orderByAsc($posts->selectQuery()->expr('id'));
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 4,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => null,
                     'nextCursor' => null,
@@ -859,22 +859,22 @@ class LampagerBehaviorTest extends TestCase
                     ->backward()
                     ->seekable()
                     ->limit(3)
-                    ->orderAsc($posts->selectQuery()->expr('modified'))
-                    ->orderAsc($posts->selectQuery()->expr('id'))
+                    ->orderByAsc($posts->selectQuery()->expr('modified'))
+                    ->orderByAsc($posts->selectQuery()->expr('id'))
                     ->cursor([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]);
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 1,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -883,7 +883,7 @@ class LampagerBehaviorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
@@ -897,18 +897,18 @@ class LampagerBehaviorTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderAsc($posts->selectQuery()->expr('modified'))
-                    ->orderAsc($posts->selectQuery()->expr('id'))
+                    ->orderByAsc($posts->selectQuery()->expr('modified'))
+                    ->orderByAsc($posts->selectQuery()->expr('id'))
                     ->cursor([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]);
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 1,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -917,7 +917,7 @@ class LampagerBehaviorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 1,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
@@ -930,22 +930,22 @@ class LampagerBehaviorTest extends TestCase
                     ->forward()
                     ->seekable()
                     ->limit(3)
-                    ->orderDesc($posts->selectQuery()->expr('modified'))
-                    ->orderDesc($posts->selectQuery()->expr('id'));
+                    ->orderByDesc($posts->selectQuery()->expr('modified'))
+                    ->orderByDesc($posts->selectQuery()->expr('id'));
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 4,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -954,7 +954,7 @@ class LampagerBehaviorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
@@ -968,22 +968,22 @@ class LampagerBehaviorTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderDesc($posts->selectQuery()->expr('modified'))
-                    ->orderDesc($posts->selectQuery()->expr('id'));
+                    ->orderByDesc($posts->selectQuery()->expr('modified'))
+                    ->orderByDesc($posts->selectQuery()->expr('id'));
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 4,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -992,7 +992,7 @@ class LampagerBehaviorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
@@ -1005,29 +1005,29 @@ class LampagerBehaviorTest extends TestCase
                     ->forward()
                     ->seekable()
                     ->limit(3)
-                    ->orderDesc($posts->selectQuery()->expr('modified'))
-                    ->orderDesc($posts->selectQuery()->expr('id'))
+                    ->orderByDesc($posts->selectQuery()->expr('modified'))
+                    ->orderByDesc($posts->selectQuery()->expr('id'))
                     ->cursor([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]);
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 1,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => false,
                     'nextCursor' => null,
@@ -1043,25 +1043,25 @@ class LampagerBehaviorTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderDesc($posts->selectQuery()->expr('modified'))
-                    ->orderDesc($posts->selectQuery()->expr('id'))
+                    ->orderByDesc($posts->selectQuery()->expr('modified'))
+                    ->orderByDesc($posts->selectQuery()->expr('id'))
                     ->cursor([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]);
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 1,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 1,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => false,
                     'nextCursor' => null,
@@ -1076,29 +1076,29 @@ class LampagerBehaviorTest extends TestCase
                     ->backward()
                     ->seekable()
                     ->limit(3)
-                    ->orderDesc($posts->selectQuery()->expr('modified'))
-                    ->orderDesc($posts->selectQuery()->expr('id'));
+                    ->orderByDesc($posts->selectQuery()->expr('modified'))
+                    ->orderByDesc($posts->selectQuery()->expr('id'));
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 1,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 2,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ],
                     'hasNext' => null,
                     'nextCursor' => null,
@@ -1114,29 +1114,29 @@ class LampagerBehaviorTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderDesc($posts->selectQuery()->expr('modified'))
-                    ->orderDesc($posts->selectQuery()->expr('id'));
+                    ->orderByDesc($posts->selectQuery()->expr('modified'))
+                    ->orderByDesc($posts->selectQuery()->expr('id'));
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 1,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                     'hasNext' => null,
                     'nextCursor' => null,
@@ -1151,38 +1151,38 @@ class LampagerBehaviorTest extends TestCase
                     ->backward()
                     ->seekable()
                     ->limit(3)
-                    ->orderDesc($posts->selectQuery()->expr('modified'))
-                    ->orderDesc($posts->selectQuery()->expr('id'))
+                    ->orderByDesc($posts->selectQuery()->expr('modified'))
+                    ->orderByDesc($posts->selectQuery()->expr('id'))
                     ->cursor([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]);
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 2,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                     new Entity([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
                     'hasPrevious' => true,
                     'previousCursor' => [
                         'id' => 4,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ],
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 1,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),
@@ -1196,26 +1196,26 @@ class LampagerBehaviorTest extends TestCase
                     ->seekable()
                     ->exclusive()
                     ->limit(3)
-                    ->orderDesc($posts->selectQuery()->expr('modified'))
-                    ->orderDesc($posts->selectQuery()->expr('id'))
+                    ->orderByDesc($posts->selectQuery()->expr('modified'))
+                    ->orderByDesc($posts->selectQuery()->expr('id'))
                     ->cursor([
                         'id' => 3,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]);
             },
             new PaginationResult(
                 [
                     new Entity([
                         'id' => 4,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 2,
-                        'modified' => new FrozenTime('2017-01-01 11:00:00'),
+                        'modified' => new DateTime('2017-01-01 11:00:00'),
                     ]),
                     new Entity([
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ]),
                 ],
                 [
@@ -1224,7 +1224,7 @@ class LampagerBehaviorTest extends TestCase
                     'hasNext' => true,
                     'nextCursor' => [
                         'id' => 5,
-                        'modified' => new FrozenTime('2017-01-01 10:00:00'),
+                        'modified' => new DateTime('2017-01-01 10:00:00'),
                     ],
                 ]
             ),

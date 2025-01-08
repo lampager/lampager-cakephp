@@ -13,6 +13,7 @@ use Lampager\Cake\Model\Behavior\LampagerBehavior;
 use Lampager\Cake\ORM\Query;
 use Lampager\Cake\Test\TestCase\TestCase;
 use Lampager\PaginationResult;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class LampagerBehaviorTest extends TestCase
 {
@@ -20,10 +21,8 @@ class LampagerBehaviorTest extends TestCase
         'plugin.Lampager\\Cake.Posts',
     ];
 
-    /**
-     * @dataProvider valueProvider
-     * @dataProvider queryExpressionProvider
-     */
+    #[DataProvider('valueProvider')]
+    #[DataProvider('queryExpressionProvider')]
     public function testLampager(callable $factory, PaginationResult $expected): void
     {
         /** @var LampagerBehavior&Table $posts */

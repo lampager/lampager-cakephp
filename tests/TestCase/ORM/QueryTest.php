@@ -19,6 +19,7 @@ use Lampager\Contracts\Exceptions\LampagerException;
 use Lampager\Exceptions\Query\BadKeywordException;
 use Lampager\Exceptions\Query\InsufficientConstraintsException;
 use Lampager\Exceptions\Query\LimitParameterException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class QueryTest extends TestCase
@@ -46,10 +47,8 @@ class QueryTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @dataProvider orderProvider
-     */
-    public function testorderBy(callable $factory, PaginationResult $expected): void
+    #[DataProvider('orderProvider')]
+    public function testOrderBy(callable $factory, PaginationResult $expected): void
     {
         /** @var LampagerBehavior&Table $posts */
         $posts = TableRegistry::getTableLocator()->get('Posts');
@@ -60,9 +59,7 @@ class QueryTest extends TestCase
         $this->assertJsonEquals($expected, $query->paginate());
     }
 
-    /**
-     * @dataProvider orderProvider
-     */
+    #[DataProvider('orderProvider')]
     public function testOrderClear(callable $factory): void
     {
         $this->expectException(LampagerException::class);
@@ -309,9 +306,7 @@ class QueryTest extends TestCase
         $this->assertArrayHasKey('extraOptions', $actual);
     }
 
-    /**
-     * @dataProvider countProvider
-     */
+    #[DataProvider('countProvider')]
     public function testCount(callable $factory, int $expected): void
     {
         /** @var LampagerBehavior&Table $posts */

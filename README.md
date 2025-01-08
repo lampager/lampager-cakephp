@@ -14,7 +14,7 @@ Rapid pagination without using OFFSET
 ## Requirements
 
 - PHP: ^8.1
-- CakePHP: ^5.0
+- CakePHP: ^5.1
 - [lampager/lampager][]: ^0.4
 
 ### Note
@@ -170,7 +170,7 @@ See also: [lampager/lampager][].
 | Lampager\\Cake\\`Paginator`                         | Class | Lampager\\`Paginator`                                                          | Paginator implementation for CakePHP                                                |
 | Lampager\\Cake\\`ArrayProcessor`                    | Class | Lampager\\`ArrayProcessor`                                                     | Processor implementation for CakePHP                                                |
 | Lampager\\Cake\\`PaginationResult`                  | Class | Lampager\\`PaginationResult`<br>Cake\\Datasource\\Paging\\`PaginatedInterface` | PaginationResult implementation for CakePHP                                         |
-| Lampager\\Cake\\Database\\`SqliteCompiler`          | Class | Cake\\Database\\`SqliteCompiler`                                               | Query compiler implementation for SQLite                                            |
+| Lampager\\Cake\\Database\\`SqliteCompiler`          | Class | Cake\\Database\\`QueryCompiler`                                                | Query compiler implementation for SQLite                                            |
 | Lampager\\Cake\\Database\\Driver\\`Sqlite`          | Class | Cake\\Database\\Driver\\`Sqlite`                                               | Driver implementation which delegates to Lampager\\Cake\\Database\\`SqliteCompiler` |
 
 ## API

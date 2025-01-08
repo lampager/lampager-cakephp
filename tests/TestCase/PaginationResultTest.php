@@ -10,6 +10,7 @@ use Cake\ORM\Entity;
 use Generator;
 use IteratorAggregate;
 use Lampager\Cake\PaginationResult;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Traversable;
 
 class PaginationResultTest extends TestCase
@@ -37,9 +38,9 @@ class PaginationResultTest extends TestCase
      * @param Entity[]                     $entities
      * @param Entity[]|Traversable<Entity> $records
      * @param mixed[]                      $meta
-     * @dataProvider arrayProvider
-     * @dataProvider iteratorAggregateProvider
      */
+    #[DataProvider('arrayProvider')]
+    #[DataProvider('iteratorAggregateProvider')]
     public function testCurrentPage(array $entities, $records, array $meta): void
     {
         $actual = new PaginationResult($records, $meta);
@@ -50,9 +51,9 @@ class PaginationResultTest extends TestCase
      * @param Entity[]                     $entities
      * @param Entity[]|Traversable<Entity> $records
      * @param mixed[]                      $meta
-     * @dataProvider arrayProvider
-     * @dataProvider iteratorAggregateProvider
      */
+    #[DataProvider('arrayProvider')]
+    #[DataProvider('iteratorAggregateProvider')]
     public function testPerPage(array $entities, $records, array $meta): void
     {
         $actual = new PaginationResult($records, $meta);
@@ -63,9 +64,9 @@ class PaginationResultTest extends TestCase
      * @param Entity[]                     $entities
      * @param Entity[]|Traversable<Entity> $records
      * @param mixed[]                      $meta
-     * @dataProvider arrayProvider
-     * @dataProvider iteratorAggregateProvider
      */
+    #[DataProvider('arrayProvider')]
+    #[DataProvider('iteratorAggregateProvider')]
     public function testTotalCount(array $entities, $records, array $meta): void
     {
         $actual = new PaginationResult($records, $meta);
@@ -76,9 +77,9 @@ class PaginationResultTest extends TestCase
      * @param Entity[]                     $entities
      * @param Entity[]|Traversable<Entity> $records
      * @param mixed[]                      $meta
-     * @dataProvider arrayProvider
-     * @dataProvider iteratorAggregateProvider
      */
+    #[DataProvider('arrayProvider')]
+    #[DataProvider('iteratorAggregateProvider')]
     public function testPageCount(array $entities, $records, array $meta): void
     {
         $actual = new PaginationResult($records, $meta);
@@ -89,9 +90,9 @@ class PaginationResultTest extends TestCase
      * @param Entity[]                     $entities
      * @param Entity[]|Traversable<Entity> $records
      * @param mixed[]                      $meta
-     * @dataProvider arrayProvider
-     * @dataProvider iteratorAggregateProvider
      */
+    #[DataProvider('arrayProvider')]
+    #[DataProvider('iteratorAggregateProvider')]
     public function testHasPrevPage(array $entities, $records, array $meta): void
     {
         $actual = new PaginationResult($records, $meta);
@@ -102,9 +103,9 @@ class PaginationResultTest extends TestCase
      * @param Entity[]                     $entities
      * @param Entity[]|Traversable<Entity> $records
      * @param mixed[]                      $meta
-     * @dataProvider arrayProvider
-     * @dataProvider iteratorAggregateProvider
      */
+    #[DataProvider('arrayProvider')]
+    #[DataProvider('iteratorAggregateProvider')]
     public function testHasNextPage(array $entities, $records, array $meta): void
     {
         $actual = new PaginationResult($records, $meta);
@@ -115,9 +116,9 @@ class PaginationResultTest extends TestCase
      * @param Entity[]                     $entities
      * @param Entity[]|Traversable<Entity> $records
      * @param mixed[]                      $meta
-     * @dataProvider arrayProvider
-     * @dataProvider iteratorAggregateProvider
      */
+    #[DataProvider('arrayProvider')]
+    #[DataProvider('iteratorAggregateProvider')]
     public function testItems(array $entities, $records, array $meta): void
     {
         $paginationResult = new PaginationResult($records, $meta);
@@ -130,9 +131,9 @@ class PaginationResultTest extends TestCase
      * @param Entity[]                     $entities
      * @param Entity[]|Traversable<Entity> $records
      * @param mixed[]                      $meta
-     * @dataProvider arrayProvider
-     * @dataProvider iteratorAggregateProvider
      */
+    #[DataProvider('arrayProvider')]
+    #[DataProvider('iteratorAggregateProvider')]
     public function testPagingParam(array $entities, $records, array $meta): void
     {
         $actual = new PaginationResult($records, $meta);
@@ -149,9 +150,9 @@ class PaginationResultTest extends TestCase
      * @param Entity[]                     $entities
      * @param Entity[]|Traversable<Entity> $records
      * @param mixed[]                      $meta
-     * @dataProvider arrayProvider
-     * @dataProvider iteratorAggregateProvider
      */
+    #[DataProvider('arrayProvider')]
+    #[DataProvider('iteratorAggregateProvider')]
     public function testJsonSerialize(array $entities, $records, array $meta, string $expected): void
     {
         $actual = json_encode(new PaginationResult($records, $meta));
@@ -162,9 +163,9 @@ class PaginationResultTest extends TestCase
      * @param Entity[]                     $entities
      * @param Entity[]|Traversable<Entity> $records
      * @param mixed[]                      $meta
-     * @dataProvider arrayProvider
-     * @dataProvider iteratorAggregateProvider
      */
+    #[DataProvider('arrayProvider')]
+    #[DataProvider('iteratorAggregateProvider')]
     public function testDebugInfo(array $entities, $records, array $meta): void
     {
         $actual = (new PaginationResult($records, $meta))->__debugInfo();
@@ -183,9 +184,9 @@ class PaginationResultTest extends TestCase
      * @param Entity[]                     $entities
      * @param Entity[]|Traversable<Entity> $records
      * @param mixed[]                      $meta
-     * @dataProvider arrayProvider
-     * @dataProvider iteratorAggregateProvider
      */
+    #[DataProvider('arrayProvider')]
+    #[DataProvider('iteratorAggregateProvider')]
     public function testPublicProperties(array $entities, $records, array $meta): void
     {
         $paginationResult = new PaginationResult($records, $meta);

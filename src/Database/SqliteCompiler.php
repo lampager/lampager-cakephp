@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Lampager\Cake\Database;
 
 use Cake\Database\Query;
-use Cake\Database\SqliteCompiler as BaseSqliteCompiler;
+use Cake\Database\QueryCompiler;
 use Cake\Database\ValueBinder;
 
-class SqliteCompiler extends BaseSqliteCompiler
+class SqliteCompiler extends QueryCompiler
 {
     /**
      * {@inheritdoc}

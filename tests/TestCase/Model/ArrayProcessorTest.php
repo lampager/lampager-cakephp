@@ -13,6 +13,7 @@ use Lampager\Cake\ORM\Query;
 use Lampager\Cake\PaginationResult;
 use Lampager\Cake\Paginator;
 use Lampager\Cake\Test\TestCase\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class ArrayProcessorTest extends TestCase
@@ -21,8 +22,8 @@ class ArrayProcessorTest extends TestCase
      * @param mixed[]  $options
      * @param ?mixed[] $cursor
      * @param Entity[] $rows
-     * @dataProvider processProvider
      */
+    #[DataProvider('processProvider')]
     public function testProcess(array $options, ?array $cursor, array $rows, PaginationResult $expected): void
     {
         /** @var MockObject&Table $repository */

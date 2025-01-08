@@ -18,6 +18,7 @@ use Lampager\Cake\Model\Behavior\LampagerBehavior;
 use Lampager\Cake\PaginationResult;
 use Lampager\Cake\Test\TestCase\TestCase;
 use Lampager\Exceptions\InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class PaginatorTest extends TestCase
@@ -26,10 +27,8 @@ class PaginatorTest extends TestCase
         'plugin.Lampager\\Cake.Posts',
     ];
 
-    /**
-     * @dataProvider valueProvider
-     * @dataProvider queryExpressionProvider
-     */
+    #[DataProvider('valueProvider')]
+    #[DataProvider('queryExpressionProvider')]
     public function testPaginateTable(callable $factory, PaginationResult $expected): void
     {
         $controller = new class(new ServerRequest()) extends Controller {
@@ -48,10 +47,8 @@ class PaginatorTest extends TestCase
         $this->assertJsonEquals($expected, $controller->paginate('Posts', $options));
     }
 
-    /**
-     * @dataProvider valueProvider
-     * @dataProvider queryExpressionProvider
-     */
+    #[DataProvider('valueProvider')]
+    #[DataProvider('queryExpressionProvider')]
     public function testPaginateTableFinder(callable $factory, PaginationResult $expected): void
     {
         $controller = new class(new ServerRequest()) extends Controller {
@@ -74,10 +71,8 @@ class PaginatorTest extends TestCase
         $this->assertJsonEquals($expected, $controller->paginate('Posts', $options));
     }
 
-    /**
-     * @dataProvider valueProvider
-     * @dataProvider queryExpressionProvider
-     */
+    #[DataProvider('valueProvider')]
+    #[DataProvider('queryExpressionProvider')]
     public function testPaginateCakeQuery(callable $factory, PaginationResult $expected): void
     {
         $controller = new class(new ServerRequest()) extends Controller {
@@ -96,10 +91,8 @@ class PaginatorTest extends TestCase
         $this->assertJsonEquals($expected, $controller->paginate($posts->find('all'), $options));
     }
 
-    /**
-     * @dataProvider valueProvider
-     * @dataProvider queryExpressionProvider
-     */
+    #[DataProvider('valueProvider')]
+    #[DataProvider('queryExpressionProvider')]
     public function testPaginateExtraSettings(callable $factory): void
     {
         $controller = new class(new ServerRequest()) extends Controller {
@@ -122,10 +115,8 @@ class PaginatorTest extends TestCase
         });
     }
 
-    /**
-     * @dataProvider valueProvider
-     * @dataProvider queryExpressionProvider
-     */
+    #[DataProvider('valueProvider')]
+    #[DataProvider('queryExpressionProvider')]
     public function testPaginateLampagerCakeQuery(callable $factory): void
     {
         $this->expectException(InvalidArgumentException::class);
